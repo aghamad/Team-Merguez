@@ -7,7 +7,7 @@ import java.text.ParseException;
 import java.util.StringTokenizer;
 
 /**
- * Interface du système de gestion d'une bibliothèque.
+ * Interface du système de gestion d'une bibliothèque +.
  *
  * Ce programme permet d'appeler les transactions de base d'une
  * bibliothèque.  Il gère des livres, des membres et des
