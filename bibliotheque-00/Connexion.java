@@ -50,14 +50,15 @@ public class Connexion {
                     + bd,
                     user,
                     pass);
-            } else if(serveur.equals("postgres")) {
-                d = (Driver) Class.forName("org.postgresql.Driver").newInstance();
-                DriverManager.registerDriver(d);
-                this.conn = DriverManager.getConnection("jdbc:postgresql:"
-                    + bd,
-                    user,
-                    pass);
             }
+            //            else if(serveur.equals("postgres")) {
+            //                d = (Driver) Class.forName("org.postgresql.Driver").newInstance();
+            //                DriverManager.registerDriver(d);
+            //                this.conn = DriverManager.getConnection("jdbc:postgresql:"
+            //                    + bd,
+            //                    user,
+            //                    pass);
+            //            }
             //    else // access
             //        {
             //        d = (Driver) Class.forName("org.postgresql.Driver").newInstance();
