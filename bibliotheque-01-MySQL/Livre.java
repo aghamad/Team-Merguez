@@ -1,7 +1,11 @@
-import java.sql.*;
+import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Types;
 
 /**
- * Permet d'effectuer les accès à la table livre.
+ * Permet d'effectuer les accï¿½s ï¿½ la table livre.
  */
 
 public class Livre {
@@ -13,7 +17,7 @@ private PreparedStatement stmtDelete;
 private Connexion cx;
 
 /**
-  * Creation d'une instance. Des énoncés SQL pour chaque requête sont précompilés.
+  * Creation d'une instance. Des ï¿½noncï¿½s SQL pour chaque requï¿½te sont prï¿½compilï¿½s.
   */
 public Livre(Connexion cx) throws SQLException {
 
@@ -31,7 +35,7 @@ stmtDelete = cx.getConnection().prepareStatement
 }
 
 /**
-  * Retourner la connexion associée.
+  * Retourner la connexion associï¿½e.
   */
 public Connexion getConnexion() {
 
@@ -100,7 +104,7 @@ return stmtUpdate.executeUpdate();
 }
 
 /**
-  * Rendre le livre disponible (non-prêté)
+  * Rendre le livre disponible (non-prï¿½tï¿½)
   */
 public int retourner(int idLivre)
   throws SQLException

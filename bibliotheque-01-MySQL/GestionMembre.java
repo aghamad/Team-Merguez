@@ -1,17 +1,17 @@
-import java.sql.*;
+import java.sql.SQLException;
 
 /**
- * Gestion des transactions de reliées à la création et
- * suppresion de membres dans une bibliothèque.
+ * Gestion des transactions de reliï¿½es ï¿½ la crï¿½ation et
+ * suppresion de membres dans une bibliothï¿½que.
  *
- * Ce programme permet de gérer les transaction reliées à la 
- * création et suppresion de membres.
+ * Ce programme permet de gï¿½rer les transaction reliï¿½es ï¿½ la 
+ * crï¿½ation et suppresion de membres.
  *
- * Pré-condition
- *   la base de données de la bibliothèque doit exister
+ * Prï¿½-condition
+ *   la base de donnï¿½es de la bibliothï¿½que doit exister
  *
  * Post-condition
- *   le programme effectue les maj associées à chaque
+ *   le programme effectue les maj associï¿½es ï¿½ chaque
  *   transaction
  * </pre>
  */
@@ -40,7 +40,7 @@ public void inscrire(int idMembre, String nom, long telephone, int limitePret)
   throws SQLException, BiblioException, Exception
 {
 try {
-    /* Vérifie si le membre existe déja */
+    /* Vï¿½rifie si le membre existe dï¿½ja */
     if (membre.existe(idMembre))
         throw new BiblioException("Membre existe deja: " + idMembre);
 
@@ -62,7 +62,7 @@ public void desinscrire(int idMembre)
   throws SQLException, BiblioException, Exception
 {
 try {
-    /* Vérifie si le membre existe et son nombre de pret en cours */
+    /* Vï¿½rifie si le membre existe et son nombre de pret en cours */
     TupleMembre tupleMembre = membre.getMembre(idMembre);
     if (tupleMembre == null)
         throw new BiblioException("Membre inexistant: " + idMembre);
@@ -71,7 +71,7 @@ try {
             ("Le membre " + idMembre + " a encore des prets.");
     if (reservation.getReservationMembre(idMembre) !=null)
         throw new BiblioException
-        ("Membre " + idMembre + " a des réservations");
+        ("Membre " + idMembre + " a des rï¿½servations");
 
     /* Suppression du membre */
     int nb = membre.desinscrire(idMembre);

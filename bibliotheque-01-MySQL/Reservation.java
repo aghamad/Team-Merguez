@@ -1,10 +1,12 @@
-import java.sql.*;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 /**
- * Permet d'effectuer les accès à la table reservation.
+ * Permet d'effectuer les accï¿½s ï¿½ la table reservation.
  *<pre>
  *
- * Cette classe gère tous les accès à la table reservation.
+ * Cette classe gï¿½re tous les accï¿½s ï¿½ la table reservation.
  *
  *</pre>
  */
@@ -42,7 +44,7 @@ stmtDelete = cx.getConnection().prepareStatement
 }
 
 /**
-  * Retourner la connexion associée.
+  * Retourner la connexion associï¿½e.
   */
 public Connexion getConnexion() {
 
@@ -82,7 +84,7 @@ else
 }
 
 /**
-  * Lecture de la première reservation d'un livre.
+  * Lecture de la premiï¿½re reservation d'un livre.
   */
 public TupleReservation getReservationLivre(int idLivre) throws SQLException {
 
@@ -102,7 +104,7 @@ else
 }
 
 /**
-  * Lecture de la première reservation d'un livre.
+  * Lecture de la premiï¿½re reservation d'un livre.
   */
 public TupleReservation getReservationMembre(int idMembre) throws SQLException {
 
@@ -122,7 +124,7 @@ else
 }
 
 /**
-  * Réservation d'un livre.
+  * Rï¿½servation d'un livre.
   */
 public void reserver(int idReservation, int idLivre, int idMembre,  String dateReservation)
   throws SQLException

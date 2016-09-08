@@ -1,8 +1,10 @@
-import java.sql.*;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 /**
- * Permet d'effectuer les accès à la table membre.
- * Cette classe gère tous les accès à la table membre.
+ * Permet d'effectuer les accï¿½s ï¿½ la table membre.
+ * Cette classe gï¿½re tous les accï¿½s ï¿½ la table membre.
  *
  *</pre>
  */
@@ -17,7 +19,7 @@ private PreparedStatement stmtDelete;
 private Connexion cx;
 
 /**
-  * Creation d'une instance. Précompilation d'énoncés SQL.
+  * Creation d'une instance. Prï¿½compilation d'ï¿½noncï¿½s SQL.
   */
 public Membre(Connexion cx)
   throws SQLException
@@ -37,7 +39,7 @@ stmtDelete = cx.getConnection().prepareStatement
 }
 
 /**
-  * Retourner la connexion associée.
+  * Retourner la connexion associï¿½e.
   */
 public Connexion getConnexion() {
 

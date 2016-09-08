@@ -1,17 +1,18 @@
-import java.sql.*;
+import java.sql.Date;
+import java.sql.SQLException;
 
 /**
- * Gestion des transactions de reliées aux prêts de livres
- * aux membres dans une bibliothèque.
+ * Gestion des transactions de reliï¿½es aux prï¿½ts de livres
+ * aux membres dans une bibliothï¿½que.
  *
- * Ce programme permet de gérer les transactions prêter,
+ * Ce programme permet de gï¿½rer les transactions prï¿½ter,
  * renouveler et retourner.
  *
- * Pré-condition
- *   la base de données de la bibliothèque doit exister
+ * Prï¿½-condition
+ *   la base de donnï¿½es de la bibliothï¿½que doit exister
  *
  * Post-condition
- *   le programme effectue les maj associées à chaque
+ *   le programme effectue les maj associï¿½es ï¿½ chaque
  *   transaction
  * </pre>
  */
@@ -25,8 +26,8 @@ private Connexion cx;
 
 /**
   * Creation d'une instance.
-  * La connection de l'instance de livre et de membre doit être la même que cx,
-  * afin d'assurer l'intégrité des transactions.
+  * La connection de l'instance de livre et de membre doit ï¿½tre la mï¿½me que cx,
+  * afin d'assurer l'intï¿½gritï¿½ des transactions.
   */
 public GestionPret(Livre livre, Membre membre, Reservation reservation)
   throws BiblioException
@@ -34,7 +35,7 @@ public GestionPret(Livre livre, Membre membre, Reservation reservation)
 if (livre.getConnexion() != membre.getConnexion() ||
     reservation.getConnexion() != membre.getConnexion())
     throw new BiblioException
-        ("Les instances de livre, de membre et de reservation n'utilisent pas la même connexion au serveur");
+        ("Les instances de livre, de membre et de reservation n'utilisent pas la mï¿½me connexion au serveur");
 this.cx = livre.getConnexion();
 this.livre = livre;
 this.membre = membre;
@@ -42,9 +43,9 @@ this.reservation = reservation;
 }
 
 /**
-  * Pret d'un livre à un membre.
-  * Le livre ne doit pas être prêté.
-  * Le membre ne doit pas avoir dépassé sa limite de pret.
+  * Pret d'un livre ï¿½ un membre.
+  * Le livre ne doit pas ï¿½tre prï¿½tï¿½.
+  * Le membre ne doit pas avoir dï¿½passï¿½ sa limite de pret.
   */
 public void preter(int idLivre, int idMembre, String datePret)
   throws SQLException, BiblioException, Exception
@@ -58,7 +59,7 @@ try {
         throw new BiblioException
             ("Livre " + idLivre + " deja prete a " + tupleLivre.idMembre);
 
-    /* Vérifie si le membre existe et sa limite de pret */
+    /* Vï¿½rifie si le membre existe et sa limite de pret */
     TupleMembre tupleMembre = membre.getMembre(idMembre);
     if (tupleMembre == null)
         throw new BiblioException("Membre inexistant: " + idMembre);
@@ -66,21 +67,21 @@ try {
         throw new BiblioException
             ("Limite de pret du membre " + idMembre + " atteinte");
 
-    /* Vérifie s'il existe une réservation pour le livre */
+    /* Vï¿½rifie s'il existe une rï¿½servation pour le livre */
     TupleReservation tupleReservation = reservation.getReservationLivre(idLivre);
     if (tupleReservation != null)
-        throw new BiblioException("Livre réservé par : " + tupleReservation.idMembre +
+        throw new BiblioException("Livre rï¿½servï¿½ par : " + tupleReservation.idMembre +
             " idReservation : " + tupleReservation.idReservation);
 
     /* Enregistrement du pret. */
     int nb1 = livre.preter(idLivre,idMembre,datePret);
     if (nb1 == 0)
         throw new BiblioException
-            ("Livre supprimé par une autre transaction");
+            ("Livre supprimï¿½ par une autre transaction");
     int nb2 = membre.preter(idMembre);
     if (nb2 == 0)
         throw new BiblioException
-            ("Membre supprimé par une autre transaction");
+            ("Membre supprimï¿½ par une autre transaction");
     cx.commit();
     }
 catch (Exception e)
@@ -92,14 +93,14 @@ catch (Exception e)
 
 /**
   * Renouvellement d'un pret.
-  * Le livre doit être prêté.
-  * Le livre ne doit pas être réservé.
+  * Le livre doit ï¿½tre prï¿½tï¿½.
+  * Le livre ne doit pas ï¿½tre rï¿½servï¿½.
   */
 public void renouveler(int idLivre, String datePret)
   throws SQLException, BiblioException, Exception
 {
 try {
-    /* Verifier si le livre est prêté */
+    /* Verifier si le livre est prï¿½tï¿½ */
     TupleLivre tupleLivre = livre.getLivre(idLivre);
     if (tupleLivre == null)
         throw new BiblioException("Livre inexistant: " + idLivre);
@@ -110,12 +111,12 @@ try {
     /* Verifier si date renouvellement >= datePret */
     if (Date.valueOf(datePret).before(tupleLivre.datePret))
         throw new BiblioException
-            ("Date de renouvellement inferieure à la date de pret");
+            ("Date de renouvellement inferieure ï¿½ la date de pret");
 
-    /* Vérifie s'il existe une réservation pour le livre */
+    /* Vï¿½rifie s'il existe une rï¿½servation pour le livre */
     TupleReservation tupleReservation = reservation.getReservationLivre(idLivre);
     if (tupleReservation != null)
-        throw new BiblioException("Livre réservé par : " + tupleReservation.idMembre +
+        throw new BiblioException("Livre rï¿½servï¿½ par : " + tupleReservation.idMembre +
             " idReservation : " + tupleReservation.idReservation);
 
     /* Enregistrement du pret. */
@@ -133,36 +134,36 @@ catch (Exception e)
 }
 
 /**
-  * Retourner un livre prêté
-  * Le livre doit être prêté.
+  * Retourner un livre prï¿½tï¿½
+  * Le livre doit ï¿½tre prï¿½tï¿½.
   */
 public void retourner(int idLivre, String dateRetour)
   throws SQLException, BiblioException, Exception
 {
 try {
-    /* Verifier si le livre est prêté */
+    /* Verifier si le livre est prï¿½tï¿½ */
     TupleLivre tupleLivre = livre.getLivre(idLivre);
     if (tupleLivre == null)
         throw new BiblioException("Livre inexistant: " + idLivre);
     if (tupleLivre.idMembre == 0)
         throw new BiblioException
-            ("Livre " + idLivre + " n'est pas prêté ");
+            ("Livre " + idLivre + " n'est pas prï¿½tï¿½ ");
 
     /* Verifier si date retour >= datePret */
     if (Date.valueOf(dateRetour).before(tupleLivre.datePret))
         throw new BiblioException
-            ("Date de retour inferieure à la date de pret");
+            ("Date de retour inferieure ï¿½ la date de pret");
 
     /* Retour du pret. */
     int nb1 = livre.retourner(idLivre);
     if (nb1 == 0)
         throw new BiblioException
-            ("Livre supprimé par une autre transaction");
+            ("Livre supprimï¿½ par une autre transaction");
 
     int nb2 = membre.retourner(tupleLivre.idMembre);
     if (nb2 == 0)
         throw new BiblioException
-            ("Livre supprimé par une autre transaction");
+            ("Livre supprimï¿½ par une autre transaction");
     cx.commit();
     }
 catch (Exception e)

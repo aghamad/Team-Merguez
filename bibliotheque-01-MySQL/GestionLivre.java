@@ -1,17 +1,17 @@
-import java.sql.*;
+import java.sql.SQLException;
 
 /**
- * Gestion des transactions de reliées à la création et
- * suppresion de livres dans une bibliothèque.
+ * Gestion des transactions de reliï¿½es ï¿½ la crï¿½ation et
+ * suppresion de livres dans une bibliothï¿½que.
  *
- * Ce programme permet de gérer les transaction reliées à la 
- * création et suppresion de livres.
+ * Ce programme permet de gï¿½rer les transaction reliï¿½es ï¿½ la 
+ * crï¿½ation et suppresion de livres.
  *
- * Pré-condition
- *   la base de données de la bibliothèque doit exister
+ * Prï¿½-condition
+ *   la base de donnï¿½es de la bibliothï¿½que doit exister
  *
  * Post-condition
- *   le programme effectue les maj associées à chaque
+ *   le programme effectue les maj associï¿½es ï¿½ chaque
  *   transaction
  * </pre>
  */
@@ -32,14 +32,14 @@ this.reservation = reservation;
 }
 
 /**
-  * Ajout d'un nouveau livre dans la base de données.
-  * S'il existe deja, une exception est levée.
+  * Ajout d'un nouveau livre dans la base de donnï¿½es.
+  * S'il existe deja, une exception est levï¿½e.
   */
 public void acquerir(int idLivre, String titre, String auteur, String dateAcquisition)
   throws SQLException, BiblioException, Exception
 {
 try {
-    /* Vérifie si le livre existe déja */
+    /* Vï¿½rifie si le livre existe dï¿½ja */
     if (livre.existe(idLivre))
         throw new BiblioException("Livre existe deja: " + idLivre);
 
@@ -70,7 +70,7 @@ try {
             ("Livre " + idLivre + " prete a " + tupleLivre.idMembre);
     if (reservation.getReservationLivre(idLivre) !=null)
         throw new BiblioException
-        ("Livre " + idLivre + " réservé ");
+        ("Livre " + idLivre + " rï¿½servï¿½ ");
     
     /* Suppression du livre. */
     int nb = livre.vendre(idLivre);
