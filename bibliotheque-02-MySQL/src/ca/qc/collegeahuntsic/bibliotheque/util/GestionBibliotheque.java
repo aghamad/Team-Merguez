@@ -2,6 +2,7 @@
 package ca.qc.collegeahuntsic.bibliotheque.util;
 
 import java.sql.SQLException;
+import ca.qc.collegeahuntsic.bibliotheque.db.Connexion;
 
 /**
  * Syst�me de gestion d'une biblioth�que
@@ -43,7 +44,7 @@ public class GestionBibliotheque {
       * Ouvre une connexion avec la BD relationnelle et
       * alloue les gestionnaires de transactions et de tables.
       * <pre>
-      * 
+      *
       * @param serveur SQL
       * @param bd nom de la bade de donn�es
       * @param user user id pour �tablir une connexion avec le serveur SQL
