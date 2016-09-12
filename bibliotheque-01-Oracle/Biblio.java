@@ -7,28 +7,28 @@ import java.text.ParseException;
 import java.util.StringTokenizer;
 
 /**
- * Interface du système de gestion d'une bibliothèque +.
+ * Interface du systï¿½me de gestion d'une bibliothï¿½que +.
  *
  * Ce programme permet d'appeler les transactions de base d'une
- * bibliothèque.  Il gère des livres, des membres et des
- * réservations. Les données sont conservées dans une base de
- * données relationnelles accédée avec JDBC. Pour une liste des
- * transactions traitées, voir la méthode afficherAide().
+ * bibliothï¿½que.  Il gï¿½re des livres, des membres et des
+ * rï¿½servations. Les donnï¿½es sont conservï¿½es dans une base de
+ * donnï¿½es relationnelles accï¿½dï¿½e avec JDBC. Pour une liste des
+ * transactions traitï¿½es, voir la mï¿½thode afficherAide().
  *
- * Paramètres
+ * Paramï¿½tres
  * 0- site du serveur SQL ("local", "distant" ou "postgres")
  * 1- nom de la BD
- * 2- user id pour établir une connexion avec le serveur SQL
+ * 2- user id pour ï¿½tablir une connexion avec le serveur SQL
  * 3- mot de passe pour le user id
  * 4- fichier de transaction [optionnel]
- *           si non spécifié, les transactions sont lues au
+ *           si non spï¿½cifiï¿½, les transactions sont lues au
  *           clavier (System.in)
  *
- * Pré-condition
- *   la base de données de la bibliothèque doit exister
+ * Prï¿½-condition
+ *   la base de donnï¿½es de la bibliothï¿½que doit exister
  *
  * Post-condition
- *   le programme effectue les maj associées à chaque
+ *   le programme effectue les maj associï¿½es ï¿½ chaque
  *   transaction
  * </pre>
  */
@@ -43,7 +43,7 @@ public class Biblio {
      * fermeture de la BD.
      */
     public static void main(String argv[]) throws Exception {
-        // validation du nombre de paramètres
+        // validation du nombre de paramï¿½tres
         if(argv.length < 4) {
             System.out.println("Usage: java Biblio <serveur> <bd> <user> <password> [<fichier-transactions>]");
             System.out.println(Connexion.serveursSupportes());
@@ -52,7 +52,7 @@ public class Biblio {
 
         try {
             // ouverture du fichier de transactions
-            // s'il est spécifié comme argument
+            // s'il est spï¿½cifiï¿½ comme argument
             lectureAuClavier = true;
             InputStream sourceTransaction = System.in;
             if(argv.length > 4) {
@@ -74,13 +74,13 @@ public class Biblio {
     }
 
     /**
-      * Traitement des transactions de la bibliothèque
+      * Traitement des transactions de la bibliothï¿½que
       */
     static void traiterTransactions(BufferedReader reader) throws Exception {
         afficherAide();
         String transaction = lireTransaction(reader);
         while(!finTransaction(transaction)) {
-            /* découpage de la transaction en mots*/
+            /* dï¿½coupage de la transaction en mots*/
             StringTokenizer tokenizer = new StringTokenizer(transaction,
                 " ");
             if(tokenizer.hasMoreTokens()) {
@@ -97,14 +97,15 @@ public class Biblio {
         System.out.print("> ");
         String transaction = reader.readLine();
         /* echo si lecture dans un fichier */
-        if(!lectureAuClavier) {
+        if(!lectureAuClavier
+            && transaction != null) {
             System.out.println(transaction);
         }
         return transaction;
     }
 
     /**
-      * Décodage et traitement d'une transaction
+      * Dï¿½codage et traitement d'une transaction
       */
     static void executerTransaction(StringTokenizer tokenizer) throws Exception {
         try {
@@ -166,7 +167,7 @@ public class Biblio {
         }
     }
 
-    /** Affiche le menu des transactions acceptées par le système */
+    /** Affiche le menu des transactions acceptï¿½es par le systï¿½me */
     static void afficherAide() {
         System.out.println();
         System.out.println("Chaque transaction comporte un nom et une liste d'arguments");
@@ -192,7 +193,7 @@ public class Biblio {
     }
 
     /**
-     * Vérifie si la fin du traitement des transactions est
+     * Vï¿½rifie si la fin du traitement des transactions est
      * atteinte.
      */
     static boolean finTransaction(String transaction) {
@@ -218,17 +219,17 @@ public class Biblio {
         }
     }
 
-    /** lecture d'une chaîne de caractères de la transaction entrée à l'écran */
+    /** lecture d'une chaï¿½ne de caractï¿½res de la transaction entrï¿½e ï¿½ l'ï¿½cran */
     static String readString(StringTokenizer tokenizer) throws BiblioException {
         if(tokenizer.hasMoreElements()) {
             return tokenizer.nextToken();
         } else {
-            throw new BiblioException("autre paramètre attendu");
+            throw new BiblioException("autre paramï¿½tre attendu");
         }
     }
 
     /**
-      * lecture d'un int java de la transaction entrée à l'écran
+      * lecture d'un int java de la transaction entrï¿½e ï¿½ l'ï¿½cran
       */
     static int readInt(StringTokenizer tokenizer) throws BiblioException {
         if(tokenizer.hasMoreElements()) {
@@ -236,17 +237,17 @@ public class Biblio {
             try {
                 return Integer.valueOf(token).intValue();
             } catch(NumberFormatException e) {
-                throw new BiblioException("Nombre attendu à la place de \""
+                throw new BiblioException("Nombre attendu ï¿½ la place de \""
                     + token
                     + "\"");
             }
         } else {
-            throw new BiblioException("autre paramètre attendu");
+            throw new BiblioException("autre paramï¿½tre attendu");
         }
     }
 
     /**
-      * lecture d'un long java de la transaction entrée à l'écran
+      * lecture d'un long java de la transaction entrï¿½e ï¿½ l'ï¿½cran
       */
     static long readLong(StringTokenizer tokenizer) throws BiblioException {
         if(tokenizer.hasMoreElements()) {
@@ -254,12 +255,12 @@ public class Biblio {
             try {
                 return Long.valueOf(token).longValue();
             } catch(NumberFormatException e) {
-                throw new BiblioException("Nombre attendu à la place de \""
+                throw new BiblioException("Nombre attendu ï¿½ la place de \""
                     + token
                     + "\"");
             }
         } else {
-            throw new BiblioException("autre paramètre attendu");
+            throw new BiblioException("autre paramï¿½tre attendu");
         }
     }
 
@@ -273,12 +274,12 @@ public class Biblio {
                 FormatDate.convertirDate(token);
                 return token;
             } catch(ParseException e) {
-                throw new BiblioException("Date en format YYYY-MM-DD attendue à la place  de \""
+                throw new BiblioException("Date en format YYYY-MM-DD attendue ï¿½ la place  de \""
                     + token
                     + "\"");
             }
         } else {
-            throw new BiblioException("autre paramètre attendu");
+            throw new BiblioException("autre paramï¿½tre attendu");
         }
     }
 }//class
