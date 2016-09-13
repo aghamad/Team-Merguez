@@ -1,6 +1,11 @@
+
+package ca.qc.collegeahuntsic.bibliotheque.dao;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import ca.qc.collegeahuntsic.bibliotheque.db.Connexion;
+import ca.qc.collegeahuntsic.bibliotheque.dto.ReservationDTO;
 
 /**
  * Permet d'effectuer les acc�s � la table reservation.
@@ -11,7 +16,7 @@ import java.sql.SQLException;
  *</pre>
  */
 
-public class Reservation {
+public class ReservationDAO {
 
     private PreparedStatement stmtExiste;
 
@@ -28,7 +33,7 @@ public class Reservation {
     /**
       * Creation d'une instance.
       */
-    public Reservation(Connexion cx) throws SQLException {
+    public ReservationDAO(Connexion cx) throws SQLException {
 
         this.cx = cx;
         this.stmtExiste = cx.getConnection().prepareStatement("select idReservation, idLivre, idMembre, dateReservation "
@@ -67,13 +72,13 @@ public class Reservation {
     /**
       * Lecture d'une reservation.
       */
-    public TupleReservation getReservation(int idReservation) throws SQLException {
+    public ReservationDTO getReservation(int idReservation) throws SQLException {
 
         this.stmtExiste.setInt(1,
             idReservation);
         ResultSet rset = this.stmtExiste.executeQuery();
         if(rset.next()) {
-            TupleReservation tupleReservation = new TupleReservation();
+            ReservationDTO tupleReservation = new ReservationDTO();
             tupleReservation.idReservation = rset.getInt(1);
             tupleReservation.idLivre = rset.getInt(2);
             ;
@@ -88,13 +93,13 @@ public class Reservation {
     /**
       * Lecture de la premi�re reservation d'un livre.
       */
-    public TupleReservation getReservationLivre(int idLivre) throws SQLException {
+    public ReservationDTO getReservationLivre(int idLivre) throws SQLException {
 
         this.stmtExisteLivre.setInt(1,
             idLivre);
         ResultSet rset = this.stmtExisteLivre.executeQuery();
         if(rset.next()) {
-            TupleReservation tupleReservation = new TupleReservation();
+            ReservationDTO tupleReservation = new ReservationDTO();
             tupleReservation.idReservation = rset.getInt(1);
             tupleReservation.idLivre = rset.getInt(2);
             ;
@@ -109,13 +114,13 @@ public class Reservation {
     /**
       * Lecture de la premi�re reservation d'un livre.
       */
-    public TupleReservation getReservationMembre(int idMembre) throws SQLException {
+    public ReservationDTO getReservationMembre(int idMembre) throws SQLException {
 
         this.stmtExisteMembre.setInt(1,
             idMembre);
         ResultSet rset = this.stmtExisteMembre.executeQuery();
         if(rset.next()) {
-            TupleReservation tupleReservation = new TupleReservation();
+            ReservationDTO tupleReservation = new ReservationDTO();
             tupleReservation.idReservation = rset.getInt(1);
             tupleReservation.idLivre = rset.getInt(2);
             ;
