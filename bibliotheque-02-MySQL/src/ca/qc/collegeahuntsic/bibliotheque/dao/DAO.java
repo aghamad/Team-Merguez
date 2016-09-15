@@ -1,3 +1,6 @@
+// Fichier DAO.java
+// Auteur : Team Merguez
+// Date de création : 2016-09-15
 
 package ca.qc.collegeahuntsic.bibliotheque.dao;
 
@@ -11,9 +14,9 @@ public class DAO implements Serializable {
     private static final long serialVersionUID = 1L;
 
     /**
-     * 
+     *
      */
-    public DAO(Connexion connexion) {
+    public DAO(@SuppressWarnings("unused") Connexion connexion) {
         // TODO Auto-generated constructor stub
         super();
     }

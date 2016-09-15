@@ -1,3 +1,6 @@
+// Fichier LivreDAO.java
+// Auteur : Team Merguez
+// Date de création : 2016-09-15
 
 package ca.qc.collegeahuntsic.bibliotheque.dao;
 

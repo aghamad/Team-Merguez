@@ -1,3 +1,6 @@
+// Fichier Connexion.java
+// Auteur : Team Merguez
+// Date de création : 2016-09-15
 
 package ca.qc.collegeahuntsic.bibliotheque.db;
 
@@ -48,11 +51,10 @@ public class Connexion {
             } else if(serveur.equals("distant")) {
                 d = (Driver) Class.forName("oracle.jdbc.driver.OracleDriver").newInstance();
                 DriverManager.registerDriver(d);
-                this.conn = DriverManager
-                    .getConnection("jdbc:oracle:thin:@collegeahuntsic.info:1521:"
-                        + bd,
-                        user,
-                        pass);
+                this.conn = DriverManager.getConnection("jdbc:oracle:thin:@collegeahuntsic.info:1521:"
+                    + bd,
+                    user,
+                    pass);
             } else if(serveur.equals("postgres")) {
                 d = (Driver) Class.forName("org.postgresql.Driver").newInstance();
                 DriverManager.registerDriver(d);
