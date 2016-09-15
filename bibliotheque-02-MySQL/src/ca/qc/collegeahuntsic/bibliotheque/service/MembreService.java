@@ -72,7 +72,7 @@ public class MembreService {
                 throw new BibliothequeException("Membre inexistant: "
                     + idMembre);
             }
-            if(tupleMembre.nbPret > 0) {
+            if(tupleMembre.getNbPret() > 0) {
                 throw new BibliothequeException("Le membre "
                     + idMembre
                     + " a encore des prets.");
