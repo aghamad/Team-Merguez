@@ -1,3 +1,6 @@
+// Fichier ReservationService.java
+// Auteur : Sasha Benjamin
+// Date de création : 2016-09-15
 
 package ca.qc.collegeahuntsic.bibliotheque.service;
 
@@ -31,7 +34,8 @@ public class ReservationService {
         ReservationDAO reservation) throws BibliothequeException {
         if(livre.getConnexion() != membre.getConnexion()
             || reservation.getConnexion() != membre.getConnexion()) {
-            throw new BibliothequeException("Les instances de livre, de membre et de reservation n'utilisent pas la m�me connexion au serveur");
+            throw new BibliothequeException(
+                "Les instances de livre, de membre et de reservation n'utilisent pas la m�me connexion au serveur");
         }
         this.cx = livre.getConnexion();
         this.livre = livre;
@@ -117,7 +121,8 @@ public class ReservationService {
             }
 
             /* V�rifie que c'est la premi�re r�servation pour le livre */
-            ReservationDTO tupleReservationPremiere = this.reservation.getReservationLivre(tupleReservation.idLivre);
+            ReservationDTO tupleReservationPremiere = this.reservation
+                .getReservationLivre(tupleReservation.idLivre);
             if(tupleReservation.idReservation != tupleReservationPremiere.idReservation) {
                 throw new BibliothequeException("La r�servation n'est pas la premi�re de la liste "
                     + "pour ce livre; la premiere est "
