@@ -41,7 +41,7 @@ public GestionInterrogation gestionInterrogation;
   *</pre>
   */
 public GestionBibliotheque(String serveur, String bd, String user, String password)
-  throws BiblioException, SQLException
+  throws BibliothequeException, SQLException
 {
 // allocation des objets pour le traitement des transactions
 cx = new Connexion(serveur, bd, user, password);

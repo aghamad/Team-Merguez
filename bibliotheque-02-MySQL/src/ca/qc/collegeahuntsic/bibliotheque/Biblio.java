@@ -1,3 +1,6 @@
+
+package ca.qc.collegeahuntsic.bibliotheque;
+
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -5,6 +8,10 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.text.ParseException;
 import java.util.StringTokenizer;
+import ca.qc.collegeahuntsic.bibliotheque.db.Connexion;
+import ca.qc.collegeahuntsic.bibliotheque.exception.BibliothequeException;
+import ca.qc.collegeahuntsic.bibliotheque.util.FormatDate;
+import ca.qc.collegeahuntsic.bibliotheque.util.GestionBibliotheque;
 
 /**
  * Interface du syst�me de gestion d'une biblioth�que +.
@@ -161,7 +168,7 @@ public class Biblio {
             /* ***********************   */ else {
                 System.out.println("  Transactions non reconnue.  Essayer \"aide\"");
             }
-        } catch(BiblioException e) {
+        } catch(BibliothequeException e) {
             System.out.println("** "
                 + e.toString());
         }
@@ -220,66 +227,66 @@ public class Biblio {
     }
 
     /** lecture d'une cha�ne de caract�res de la transaction entr�e � l'�cran */
-    static String readString(StringTokenizer tokenizer) throws BiblioException {
+    static String readString(StringTokenizer tokenizer) throws BibliothequeException {
         if(tokenizer.hasMoreElements()) {
             return tokenizer.nextToken();
         } else {
-            throw new BiblioException("autre param�tre attendu");
+            throw new BibliothequeException("autre param�tre attendu");
         }
     }
 
     /**
       * lecture d'un int java de la transaction entr�e � l'�cran
       */
-    static int readInt(StringTokenizer tokenizer) throws BiblioException {
+    static int readInt(StringTokenizer tokenizer) throws BibliothequeException {
         if(tokenizer.hasMoreElements()) {
             String token = tokenizer.nextToken();
             try {
                 return Integer.valueOf(token).intValue();
             } catch(NumberFormatException e) {
-                throw new BiblioException("Nombre attendu � la place de \""
+                throw new BibliothequeException("Nombre attendu � la place de \""
                     + token
                     + "\"");
             }
         } else {
-            throw new BiblioException("autre param�tre attendu");
+            throw new BibliothequeException("autre param�tre attendu");
         }
     }
 
     /**
       * lecture d'un long java de la transaction entr�e � l'�cran
       */
-    static long readLong(StringTokenizer tokenizer) throws BiblioException {
+    static long readLong(StringTokenizer tokenizer) throws BibliothequeException {
         if(tokenizer.hasMoreElements()) {
             String token = tokenizer.nextToken();
             try {
                 return Long.valueOf(token).longValue();
             } catch(NumberFormatException e) {
-                throw new BiblioException("Nombre attendu � la place de \""
+                throw new BibliothequeException("Nombre attendu � la place de \""
                     + token
                     + "\"");
             }
         } else {
-            throw new BiblioException("autre param�tre attendu");
+            throw new BibliothequeException("autre param�tre attendu");
         }
     }
 
     /**
       * lecture d'une date en format YYYY-MM-DD
       */
-    static String readDate(StringTokenizer tokenizer) throws BiblioException {
+    static String readDate(StringTokenizer tokenizer) throws BibliothequeException {
         if(tokenizer.hasMoreElements()) {
             String token = tokenizer.nextToken();
             try {
                 FormatDate.convertirDate(token);
                 return token;
             } catch(ParseException e) {
-                throw new BiblioException("Date en format YYYY-MM-DD attendue � la place  de \""
+                throw new BibliothequeException("Date en format YYYY-MM-DD attendue � la place  de \""
                     + token
                     + "\"");
             }
         } else {
-            throw new BiblioException("autre param�tre attendu");
+            throw new BibliothequeException("autre param�tre attendu");
         }
     }
 }//class

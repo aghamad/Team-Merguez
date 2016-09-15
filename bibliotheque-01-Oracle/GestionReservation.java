@@ -30,11 +30,11 @@ private Connexion cx;
   * afin d'assurer l'int�grit� des transactions.
   */
 public GestionReservation(Livre livre, Membre membre, Reservation reservation)
-  throws BiblioException
+  throws BibliothequeException
 {
   if (livre.getConnexion() != membre.getConnexion() ||
       reservation.getConnexion() != membre.getConnexion())
-      throw new BiblioException
+      throw new BibliothequeException
           ("Les instances de livre, de membre et de reservation n'utilisent pas la m�me connexion au serveur");
   this.cx = livre.getConnexion();
   this.livre = livre;
@@ -47,33 +47,33 @@ public GestionReservation(Livre livre, Membre membre, Reservation reservation)
   * Le livre doit �tre pr�t�.
   */
 public void reserver(int idReservation, int idLivre, int idMembre, String dateReservation)
-  throws SQLException, BiblioException, Exception
+  throws SQLException, BibliothequeException, Exception
 {
 try {
     /* Verifier que le livre est pret� */
     TupleLivre tupleLivre = livre.getLivre(idLivre);
     if (tupleLivre == null)
-        throw new BiblioException("Livre inexistant: " + idLivre);
+        throw new BibliothequeException("Livre inexistant: " + idLivre);
     if (tupleLivre.idMembre == 0)
-        throw new BiblioException
+        throw new BibliothequeException
             ("Livre " + idLivre + " n'est pas prete");
     if (tupleLivre.idMembre == idMembre)
-        throw new BiblioException
+        throw new BibliothequeException
             ("Livre " + idLivre + " deja prete a ce membre");
 
     /* V�rifier que le membre existe */
     TupleMembre tupleMembre = membre.getMembre(idMembre);
     if (tupleMembre == null)
-        throw new BiblioException("Membre inexistant: " + idMembre);
+        throw new BibliothequeException("Membre inexistant: " + idMembre);
 
     /* Verifier si date reservation >= datePret */
     if (Date.valueOf(dateReservation).before(tupleLivre.datePret))
-        throw new BiblioException
+        throw new BibliothequeException
             ("Date de reservation inferieure � la date de pret");
 
     /* V�rifier que la r�servation n'existe pas */
     if (reservation.existe(idReservation))
-        throw new BiblioException("R�servation " + idReservation + " existe deja");
+        throw new BibliothequeException("R�servation " + idReservation + " existe deja");
 
     /* Creation de la reservation */
     reservation.reserver(idReservation,idLivre,idMembre,dateReservation);
@@ -93,48 +93,48 @@ catch (Exception e)
   * La r�servation doit la �tre la premi�re en liste.
   */
 public void prendreRes(int idReservation, String datePret)
-  throws SQLException, BiblioException, Exception
+  throws SQLException, BibliothequeException, Exception
 {
 try {
     /* V�rifie s'il existe une r�servation pour le livre */
     TupleReservation tupleReservation = reservation.getReservation(idReservation);
     if (tupleReservation == null)
-        throw new BiblioException("R�servation inexistante : " + idReservation);
+        throw new BibliothequeException("R�servation inexistante : " + idReservation);
 
     /* V�rifie que c'est la premi�re r�servation pour le livre */
     TupleReservation tupleReservationPremiere =
         reservation.getReservationLivre(tupleReservation.idLivre);
     if (tupleReservation.idReservation != tupleReservationPremiere.idReservation)
-        throw new BiblioException("La r�servation n'est pas la premi�re de la liste " +
+        throw new BibliothequeException("La r�servation n'est pas la premi�re de la liste " +
             "pour ce livre; la premiere est " + tupleReservationPremiere.idReservation);
 
     /* Verifier si le livre est disponible */
     TupleLivre tupleLivre = livre.getLivre(tupleReservation.idLivre);
     if (tupleLivre == null)
-        throw new BiblioException("Livre inexistant: " + tupleReservation.idLivre);
+        throw new BibliothequeException("Livre inexistant: " + tupleReservation.idLivre);
     if (tupleLivre.idMembre != 0)
-        throw new BiblioException
+        throw new BibliothequeException
             ("Livre " + tupleLivre.idLivre + " deja pr�t� � " + tupleLivre.idMembre);
 
     /* V�rifie si le membre existe et sa limite de pret */
     TupleMembre tupleMembre = membre.getMembre(tupleReservation.idMembre);
     if (tupleMembre == null)
-        throw new BiblioException("Membre inexistant: " + tupleReservation.idMembre);
+        throw new BibliothequeException("Membre inexistant: " + tupleReservation.idMembre);
     if (tupleMembre.nbPret >= tupleMembre.limitePret)
-        throw new BiblioException
+        throw new BibliothequeException
             ("Limite de pr�t du membre " + tupleReservation.idMembre + " atteinte");
 
     /* Verifier si datePret >= tupleReservation.dateReservation */
     if (Date.valueOf(datePret).before(tupleReservation.dateReservation))
-        throw new BiblioException
+        throw new BibliothequeException
             ("Date de pr�t inf�rieure � la date de r�servation");
 
     /* Enregistrement du pret. */
     if (livre.preter(tupleReservation.idLivre,tupleReservation.idMembre,datePret) == 0)
-        throw new BiblioException
+        throw new BibliothequeException
             ("Livre supprim� par une autre transaction");
     if (membre.preter(tupleReservation.idMembre) == 0)
-        throw new BiblioException
+        throw new BibliothequeException
             ("Membre supprim� par une autre transaction");
     /* Eliminer la r�servation */
     reservation.annulerRes(idReservation);
@@ -152,13 +152,13 @@ catch (Exception e)
   * La r�servation doit exister.
   */
 public void annulerRes(int idReservation)
-  throws SQLException, BiblioException, Exception
+  throws SQLException, BibliothequeException, Exception
 {
 try {
 
     /* V�rifier que la r�servation existe */
     if (reservation.annulerRes(idReservation) == 0)
-        throw new BiblioException("R�servation " + idReservation + " n'existe pas");
+        throw new BibliothequeException("R�servation " + idReservation + " n'existe pas");
 
     cx.commit();
     }

@@ -37,12 +37,12 @@ this.reservation = reservation;
   * S'il existe deja, une exception est levee.
   */
 public void inscrire(int idMembre, String nom, long telephone, int limitePret)
-  throws SQLException, BiblioException, Exception
+  throws SQLException, BibliothequeException, Exception
 {
 try {
     /* V�rifie si le membre existe d�ja */
     if (membre.existe(idMembre))
-        throw new BiblioException("Membre existe deja: " + idMembre);
+        throw new BibliothequeException("Membre existe deja: " + idMembre);
 
     /* Ajout du membre. */
     membre.inscrire(idMembre, nom, telephone, limitePret);
@@ -59,24 +59,24 @@ catch (Exception e)
   * Suppression d'un membre de la base de donnees.
   */
 public void desinscrire(int idMembre)
-  throws SQLException, BiblioException, Exception
+  throws SQLException, BibliothequeException, Exception
 {
 try {
     /* V�rifie si le membre existe et son nombre de pret en cours */
     TupleMembre tupleMembre = membre.getMembre(idMembre);
     if (tupleMembre == null)
-        throw new BiblioException("Membre inexistant: " + idMembre);
+        throw new BibliothequeException("Membre inexistant: " + idMembre);
     if (tupleMembre.nbPret > 0)
-        throw new BiblioException
+        throw new BibliothequeException
             ("Le membre " + idMembre + " a encore des prets.");
     if (reservation.getReservationMembre(idMembre) !=null)
-        throw new BiblioException
+        throw new BibliothequeException
         ("Membre " + idMembre + " a des r�servations");
 
     /* Suppression du membre */
     int nb = membre.desinscrire(idMembre);
     if (nb == 0)
-        throw new BiblioException
+        throw new BibliothequeException
         ("Membre " + idMembre + " inexistant");
     cx.commit();
     }
