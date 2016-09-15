@@ -1,3 +1,6 @@
+// Fichier ResevationDTO.java
+// Auteur: Abdel Lee h.
+// Date de création : 15-09-2016
 package ca.qc.collegeahuntsic.bibliotheque.dto;
 import java.sql.Date;
 
