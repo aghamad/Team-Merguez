@@ -1,3 +1,6 @@
+// Fichier PretService.java
+// Auteur : Sasha Benjamin
+// Date de création : 2016-09-15
 
 package ca.qc.collegeahuntsic.bibliotheque.service;
 
@@ -31,7 +34,8 @@ public class PretService {
         ReservationDAO reservation) throws BibliothequeException {
         if(livre.getConnexion() != membre.getConnexion()
             || reservation.getConnexion() != membre.getConnexion()) {
-            throw new BibliothequeException("Les instances de livre, de membre et de reservation n'utilisent pas la m�me connexion au serveur");
+            throw new BibliothequeException(
+                "Les instances de livre, de membre et de reservation n'utilisent pas la m�me connexion au serveur");
         }
         this.cx = livre.getConnexion();
         this.livre = livre;
@@ -126,7 +130,8 @@ public class PretService {
 
             /* Verifier si date renouvellement >= datePret */
             if(Date.valueOf(datePret).before(tupleLivre.datePret)) {
-                throw new BibliothequeException("Date de renouvellement inferieure � la date de pret");
+                throw new BibliothequeException(
+                    "Date de renouvellement inferieure � la date de pret");
             }
 
             /* V�rifie s'il existe une r�servation pour le livre */

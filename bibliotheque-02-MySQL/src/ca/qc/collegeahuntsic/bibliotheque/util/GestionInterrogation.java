@@ -1,3 +1,6 @@
+// Fichier GestionInterrogation.java
+// Auteur : Sasha Benjamin
+// Date de création : 2016-09-15
 
 package ca.qc.collegeahuntsic.bibliotheque.util;
 
@@ -39,12 +42,14 @@ public class GestionInterrogation {
     public GestionInterrogation(Connexion cx) throws SQLException {
 
         this.cx = cx;
-        this.stmtLivresTitreMot = cx.getConnection().prepareStatement("select t1.idLivre, t1.titre, t1.auteur, t1.idmembre, t1.datePret + 14 "
-            + "from livre t1 "
-            + "where lower(titre) like ?");
+        this.stmtLivresTitreMot = cx.getConnection().prepareStatement(
+            "select t1.idLivre, t1.titre, t1.auteur, t1.idmembre, t1.datePret + 14 "
+                + "from livre t1 "
+                + "where lower(titre) like ?");
 
-        this.stmtListeTousLivres = cx.getConnection().prepareStatement("select t1.idLivre, t1.titre, t1.auteur, t1.idmembre, t1.datePret "
-            + "from livre t1");
+        this.stmtListeTousLivres = cx.getConnection()
+            .prepareStatement("select t1.idLivre, t1.titre, t1.auteur, t1.idmembre, t1.datePret "
+                + "from livre t1");
     }
 
     /**
