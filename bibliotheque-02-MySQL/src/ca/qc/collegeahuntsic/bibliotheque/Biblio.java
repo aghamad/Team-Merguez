@@ -69,13 +69,18 @@ public class Biblio {
                 sourceTransaction = new FileInputStream(argv[4]);
                 lectureAuClavier = false;
             }
-            BufferedReader reader = new BufferedReader(new InputStreamReader(sourceTransaction));
 
             gestionBiblio = new GestionBibliotheque(argv[0],
                 argv[1],
                 argv[2],
                 argv[3]);
-            traiterTransactions(reader);
+
+            //  try-with-resources Statement
+            try(
+                BufferedReader reader = new BufferedReader(new InputStreamReader(sourceTransaction))) {
+                traiterTransactions(reader);
+            }
+
         } catch(Exception e) {
             e.printStackTrace(System.out);
         } finally {
@@ -165,12 +170,15 @@ public class Biblio {
             } else if("listerLivresTitre".startsWith(command)) {
                 gestionBiblio.gestionInterrogation.listerLivresTitre(readString(tokenizer) /* mot */);
             } else if("--".startsWith(command)) {
-            } // ne rien faire; c'est un commentaire
+                // ne rien faire; c'est un commentaire
+            }
             /* ***********************   */
             /* TRANSACTION NON RECONNUEE */
-            /* ***********************   */ else {
+            /* ***********************   */
+            else {
                 System.out.println("  Transactions non reconnue.  Essayer \"aide\"");
             }
+
         } catch(BibliothequeException e) {
             System.out.println("** "
                 + e.toString());
@@ -222,74 +230,85 @@ public class Biblio {
 
         /* commande "exit" */
         String commande = tokenizer.nextToken();
-        if(commande.equals("exit")) {
-            return true;
-        } else {
-            return false;
-        }
+
+        return commande.equals("exit");
     }
 
     /** lecture d'une cha�ne de caract�res de la transaction entr�e � l'�cran */
     static String readString(StringTokenizer tokenizer) throws BibliothequeException {
-        if(tokenizer.hasMoreElements()) {
-            return tokenizer.nextToken();
-        } else {
-            throw new BibliothequeException("autre param�tre attendu");
+
+        if(!tokenizer.hasMoreElements()) {
+            throw new BibliothequeException("autre paramètre attendu");
         }
+
+        return tokenizer.nextToken();
     }
 
     /**
       * lecture d'un int java de la transaction entr�e � l'�cran
       */
     static int readInt(StringTokenizer tokenizer) throws BibliothequeException {
-        if(tokenizer.hasMoreElements()) {
-            String token = tokenizer.nextToken();
-            try {
-                return Integer.valueOf(token).intValue();
-            } catch(NumberFormatException e) {
-                throw new BibliothequeException("Nombre attendu � la place de \""
-                    + token
-                    + "\"");
-            }
-        } else {
-            throw new BibliothequeException("autre param�tre attendu");
+
+        if(!tokenizer.hasMoreElements()) {
+            throw new BibliothequeException("autre paramètre attendu");
         }
+
+        int value; // 0 par default
+
+        String token = tokenizer.nextToken();
+        try {
+            value = Integer.valueOf(token).intValue();
+        } catch(NumberFormatException e) {
+            throw new BibliothequeException("Nombre attendu a la place de \""
+                + token
+                + "\"");
+        }
+
+        return value;
     }
 
     /**
       * lecture d'un long java de la transaction entr�e � l'�cran
       */
     static long readLong(StringTokenizer tokenizer) throws BibliothequeException {
-        if(tokenizer.hasMoreElements()) {
-            String token = tokenizer.nextToken();
-            try {
-                return Long.valueOf(token).longValue();
-            } catch(NumberFormatException e) {
-                throw new BibliothequeException("Nombre attendu � la place de \""
-                    + token
-                    + "\"");
-            }
-        } else {
-            throw new BibliothequeException("autre param�tre attendu");
+
+        if(!tokenizer.hasMoreElements()) {
+            throw new BibliothequeException("autre paramètre attendu");
         }
+
+        long value;
+
+        String token = tokenizer.nextToken();
+        try {
+            value = Long.valueOf(token).longValue();
+        } catch(NumberFormatException e) {
+            throw new BibliothequeException("Nombre attendu a la place de \""
+                + token
+                + "\"");
+        }
+
+        return value;
     }
 
     /**
       * lecture d'une date en format YYYY-MM-DD
       */
     static String readDate(StringTokenizer tokenizer) throws BibliothequeException {
-        if(tokenizer.hasMoreElements()) {
-            String token = tokenizer.nextToken();
-            try {
-                FormatDate.convertirDate(token);
-                return token;
-            } catch(ParseException e) {
-                throw new BibliothequeException("Date en format YYYY-MM-DD attendue � la place  de \""
-                    + token
-                    + "\"");
-            }
-        } else {
-            throw new BibliothequeException("autre param�tre attendu");
+
+        if(!tokenizer.hasMoreElements()) {
+            throw new BibliothequeException("autre paramètre attendu");
         }
+
+        String token = tokenizer.nextToken();
+        try {
+            FormatDate.convertirDate(token);
+        } catch(ParseException e) {
+            throw new BibliothequeException("Date en format YYYY-MM-DD attendue � la place  de \""
+                + token
+                + "\"");
+        }
+
+        return token;
     }
-}//class
+
+}
