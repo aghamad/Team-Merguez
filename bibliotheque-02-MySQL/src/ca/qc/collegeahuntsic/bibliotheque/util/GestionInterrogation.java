@@ -42,14 +42,12 @@ public class GestionInterrogation {
     public GestionInterrogation(Connexion cx) throws SQLException {
 
         this.cx = cx;
-        this.stmtLivresTitreMot = cx.getConnection().prepareStatement(
-            "select t1.idLivre, t1.titre, t1.auteur, t1.idmembre, t1.datePret + 14 "
-                + "from livre t1 "
-                + "where lower(titre) like ?");
+        this.stmtLivresTitreMot = cx.getConnection().prepareStatement("select t1.idLivre, t1.titre, t1.auteur, t1.idmembre, t1.datePret + 14 "
+            + "from livre t1 "
+            + "where lower(titre) like ?");
 
-        this.stmtListeTousLivres = cx.getConnection()
-            .prepareStatement("select t1.idLivre, t1.titre, t1.auteur, t1.idmembre, t1.datePret "
-                + "from livre t1");
+        this.stmtListeTousLivres = cx.getConnection().prepareStatement("select t1.idLivre, t1.titre, t1.auteur, t1.idmembre, t1.datePret "
+            + "from livre t1");
     }
 
     /**
@@ -61,26 +59,32 @@ public class GestionInterrogation {
             "%"
                 + mot
                 + "%");
-        ResultSet rset = this.stmtLivresTitreMot.executeQuery();
 
-        int idMembre;
-        System.out.println("idLivre titre auteur idMembre dateRetour");
-        while(rset.next()) {
-            System.out.print(rset.getInt(1)
-                + " "
-                + rset.getString(2)
-                + " "
-                + rset.getString(3));
-            idMembre = rset.getInt(4);
-            if(!rset.wasNull()) {
-                System.out.print(" "
-                    + idMembre
+        try(
+            ResultSet rset = this.stmtLivresTitreMot.executeQuery()) {
+            int idMembre;
+            System.out.println("idLivre titre auteur idMembre dateRetour");
+
+            while(rset.next()) {
+                System.out.print(rset.getInt(1)
                     + " "
-                    + rset.getDate(5));
+                    + rset.getString(2)
+                    + " "
+                    + rset.getString(3));
+                idMembre = rset.getInt(4);
+                if(!rset.wasNull()) {
+                    System.out.print(" "
+                        + idMembre
+                        + " "
+                        + rset.getDate(5));
+                }
+                System.out.println();
             }
-            System.out.println();
+
+            this.cx.commit();
+
         }
-        this.cx.commit();
+
     }
 
     /**
@@ -88,25 +92,28 @@ public class GestionInterrogation {
      */
     public void listerLivres() throws SQLException {
 
-        ResultSet rset = this.stmtListeTousLivres.executeQuery();
+        try(
+            ResultSet rset = this.stmtListeTousLivres.executeQuery()) {
 
-        System.out.println("idLivre titre auteur idMembre datePret");
-        int idMembre;
-        while(rset.next()) {
-            System.out.print(rset.getInt("idLivre")
-                + " "
-                + rset.getString("titre")
-                + " "
-                + rset.getString("auteur"));
-            idMembre = rset.getInt("idMembre");
-            if(!rset.wasNull()) {
-                System.out.print(" "
-                    + idMembre
+            System.out.println("idLivre titre auteur idMembre datePret");
+            int idMembre;
+            while(rset.next()) {
+                System.out.print(rset.getInt("idLivre")
                     + " "
-                    + rset.getDate("datePret"));
+                    + rset.getString("titre")
+                    + " "
+                    + rset.getString("auteur"));
+                idMembre = rset.getInt("idMembre");
+                if(!rset.wasNull()) {
+                    System.out.print(" "
+                        + idMembre
+                        + " "
+                        + rset.getDate("datePret"));
+                }
+                System.out.println();
             }
-            System.out.println();
+
+            this.cx.commit();
         }
-        this.cx.commit();
     }
 }
