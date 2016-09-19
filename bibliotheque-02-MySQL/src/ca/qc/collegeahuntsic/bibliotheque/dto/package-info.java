@@ -1,9 +1,6 @@
-/**
- * 
- */
-/**
- * @author 201278908
- *
+/**.
+ * package service
+ * @author Team-Merguez
  */
 
 package ca.qc.collegeahuntsic.bibliotheque.dto;

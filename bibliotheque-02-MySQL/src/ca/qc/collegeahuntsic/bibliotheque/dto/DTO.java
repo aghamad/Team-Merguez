@@ -5,13 +5,16 @@
 package ca.qc.collegeahuntsic.bibliotheque.dto;
 
 import java.io.Serializable;
-
+/**.
+ * DTO est une SuperClasse des classe du package DTO
+ * @author Team-merguez
+ */
 public class DTO implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    /**
-     * 
+    /**.
+     * constructeur DTO
      */
     public DTO() {
         super();
