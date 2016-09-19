@@ -12,17 +12,17 @@ import ca.qc.collegeahuntsic.bibliotheque.dto.ReservationDTO;
 
 /**
  * Permet d'effectuer les acc�s � la table reservation.
- *<pre>
+ *
  *
  * Cette classe g�re tous les acc�s � la table reservation.
  *
- *</pre>
+ * @author Team-Merguez
  */
 
 public class ReservationDAO extends DAO {
 
     /**
-     * TODO Auto-generated field javadoc
+     * TODO Auto-generated field javadoc.
      */
     private static final long serialVersionUID = 1L;
 
@@ -40,6 +40,10 @@ public class ReservationDAO extends DAO {
 
     /**
       * Creation d'une instance.
+      *
+      * @param cx connexion
+      *
+      *@throws SQLException Exeption
       */
     public ReservationDAO(Connexion cx) throws SQLException {
         super(cx);
@@ -67,6 +71,10 @@ public class ReservationDAO extends DAO {
 
     /**
       * Verifie si une reservation existe.
+      *
+      * @return ReservationExiste si le Reservation existe
+      * @throws SQLException Exeptions
+      * @param idReservation parametre id
       */
     public boolean existe(int idReservation) throws SQLException {
 
@@ -83,6 +91,10 @@ public class ReservationDAO extends DAO {
 
     /**
       * Lecture d'une reservation.
+      *
+      * @return tupleReservation si le reservation existe
+      * @throws SQLException Exeptions
+      * @param idReservation parametre id
       */
     public ReservationDTO getReservation(int idReservation) throws SQLException {
 
@@ -107,6 +119,10 @@ public class ReservationDAO extends DAO {
 
     /**
       * Lecture de la premi�re reservation d'un livre.
+      *
+      * @return tupleReservation si le livre a reserver existe
+      * @throws SQLException Exeptions
+      * @param idLivre parametre id
       */
     public ReservationDTO getReservationLivre(int idLivre) throws SQLException {
 
@@ -131,6 +147,10 @@ public class ReservationDAO extends DAO {
 
     /**
       * Lecture de la premi�re reservation d'un livre.
+      *
+      * @return tupleReservation si le membre qui veut reserver existe
+      * @throws SQLException Exeptions
+      * @param idMembre parametre id
       */
     public ReservationDTO getReservationMembre(int idMembre) throws SQLException {
 
@@ -156,6 +176,13 @@ public class ReservationDAO extends DAO {
 
     /**
       * R�servation d'un livre.
+      *
+      *  @param idReservation le id d'une reservation
+      * @param idLivre le id d'un livre
+      * @param idMembre le id d'un membre
+      * @param dateReservation la date de la reservation
+      *@throws SQLException Exeptions
+      *
       */
     public void reserver(int idReservation,
         int idLivre,
@@ -174,6 +201,10 @@ public class ReservationDAO extends DAO {
 
     /**
       * Suppression d'une reservation.
+      *
+      * @param idReservation la id de la reservation
+      *@throws SQLException Exeptions
+      *@return delete
       */
     public int annulerRes(int idReservation) throws SQLException {
         this.stmtDelete.setInt(1,

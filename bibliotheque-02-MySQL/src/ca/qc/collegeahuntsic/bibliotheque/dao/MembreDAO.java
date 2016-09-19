@@ -13,15 +13,11 @@ import ca.qc.collegeahuntsic.bibliotheque.dto.MembreDTO;
 /**
  * Permet d'effectuer les acc�s � la table membre.
  * Cette classe g�re tous les acc�s � la table membre.
- *
- *</pre>
+ * @author Team-Merguez
  */
 
 public class MembreDAO extends DAO {
 
-    /**
-     * TODO Auto-generated field javadoc
-     */
     private static final long serialVersionUID = 1L;
 
     private PreparedStatement stmtExiste;
@@ -38,6 +34,8 @@ public class MembreDAO extends DAO {
 
     /**
       * Creation d'une instance. Pr�compilation d'�nonc�s SQL.
+      * @param cx la connexion
+      * @throws SQLException l'exception du SQL
       */
     public MembreDAO(Connexion cx) throws SQLException {
 
@@ -63,6 +61,9 @@ public class MembreDAO extends DAO {
 
     /**
       * Verifie si un membre existe.
+      *  @return MembreExiste si le membre existe
+      * @throws SQLException Exeptions
+      * @param idMembre parametre id
       */
     public boolean existe(int idMembre) throws SQLException {
         this.stmtExiste.setInt(1,
@@ -78,6 +79,10 @@ public class MembreDAO extends DAO {
 
     /**
       * Lecture d'un membre.
+      *
+      * @return tupleMembre si le livre existe
+      * @throws SQLException Exeptions
+      * @param idMembre parametre id
       */
     public MembreDTO getMembre(int idMembre) throws SQLException {
         this.stmtExiste.setInt(1,
@@ -102,6 +107,12 @@ public class MembreDAO extends DAO {
 
     /**
       * Ajout d'un nouveau membre.
+      *
+      * @param idMembre le id d'un membre
+      * @param nom le nom
+      * @param telephone le telephone
+      * @param limitePret la limite du Pret
+      *  @throws SQLException Exeptions
       */
     public void inscrire(int idMembre,
         String nom,
@@ -121,6 +132,10 @@ public class MembreDAO extends DAO {
 
     /**
       * Incrementer le nb de pret d'un membre.
+      *
+      *  @param idMembre le id du membre
+      *@throws SQLException Exeptions
+      *@return update
       */
     public int preter(int idMembre) throws SQLException {
         this.stmtUpdateIncrNbPret.setInt(1,
@@ -130,6 +145,10 @@ public class MembreDAO extends DAO {
 
     /**
       * Decrementer le nb de pret d'un membre.
+      *
+      * @param idMembre le id du membre
+      *@throws SQLException Exeptions
+      *@return update
       */
     public int retourner(int idMembre) throws SQLException {
         this.stmtUpdateDecNbPret.setInt(1,
@@ -139,6 +158,10 @@ public class MembreDAO extends DAO {
 
     /**
       * Suppression d'un membre.
+      *
+      * @param idMembre le id du membre
+      *@throws SQLException Exeptions
+      *@return update
       */
     public int desinscrire(int idMembre) throws SQLException {
         this.stmtDelete.setInt(1,
