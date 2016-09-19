@@ -42,10 +42,15 @@ import ca.qc.collegeahuntsic.bibliotheque.util.GestionBibliotheque;
  *   transaction
  * @author Team-Merguez
  */
-public class Biblio {
+public final class Biblio {
     private static GestionBibliotheque gestionBiblio;
 
     private static boolean lectureAuClavier;
+
+    /** Constructeur de la classe Biblio. **/
+    private Biblio() {
+        super();
+    }
 
     /**
      * Ouverture de la BD,
@@ -179,13 +184,7 @@ public class Biblio {
                 gestionBiblio.gestionInterrogation.listerLivres();
             } else if("listerLivresTitre".startsWith(command)) {
                 gestionBiblio.gestionInterrogation.listerLivresTitre(readString(tokenizer) /* mot */);
-            } else if("--".startsWith(command)) {
-                // ne rien faire; c'est un commentaire
-            }
-            /* ***********************   */
-            /* TRANSACTION NON RECONNUEE */
-            /* ***********************   */
-            else {
+            } else if(!"--".startsWith(command)) {
                 System.out.println("  Transactions non reconnue.  Essayer \"aide\"");
             }
 
