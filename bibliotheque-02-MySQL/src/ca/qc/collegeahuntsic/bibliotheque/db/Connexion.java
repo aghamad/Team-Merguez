@@ -24,38 +24,44 @@ import java.sql.SQLException;
  *   (s'il est support� par le serveur).
  * </pre>
  */
+/**
+ * La classe Connexion permet de recupere une connection ainsi que de la fermer.
+ * @author Team-Merguez
+ * */
 public class Connexion {
 
     private Connection conn;
 
     /**
-     * Ouverture d'une connexion en mode autocommit false et s�rialisable (si support�)
+     * Ouverture d'une connexion en mode autocommit false et s�rialisable (si support�).
      * @param serveur serveur SQL de la BD
-     * @bd nom de la base de donn�es
-     * @user userid sur le serveur SQL
-     * @pass mot de passe sur le serveur SQL
+     * @param bd nom de la base de donn�es
+     * @param user id sur le serveur SQL
+     * @param pass mot de passe sur le serveur SQL
+     * @throws SQLException Une exception qui fournit des informations sur une erreur d'accès de base de données ou d'autres erreurs
      */
     public Connexion(String serveur,
         String bd,
         String user,
         String pass) throws SQLException {
-        Driver d;
+        final Driver d;
         try {
-            if(serveur.equals("local")) {
+
+            if("local".equals(serveur)) {
                 d = (Driver) Class.forName("com.mysql.jdbc.Driver").newInstance();
                 DriverManager.registerDriver(d);
                 this.conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/"
                     + bd,
                     user,
                     pass);
-            } else if(serveur.equals("distant")) {
+            } else if("distant".equals(serveur)) {
                 d = (Driver) Class.forName("oracle.jdbc.driver.OracleDriver").newInstance();
                 DriverManager.registerDriver(d);
                 this.conn = DriverManager.getConnection("jdbc:oracle:thin:@collegeahuntsic.info:1521:"
                     + bd,
                     user,
                     pass);
-            } else if(serveur.equals("postgres")) {
+            } else if("postgres".equals(serveur)) {
                 d = (Driver) Class.forName("org.postgresql.Driver").newInstance();
                 DriverManager.registerDriver(d);
                 this.conn = DriverManager.getConnection("jdbc:postgresql:"
@@ -77,7 +83,7 @@ public class Connexion {
 
             // mettre en mode s�rialisable si possible
             // (plus haut niveau d'integrit� l'acc�s concurrent aux donn�es)
-            DatabaseMetaData dbmd = this.conn.getMetaData();
+            final DatabaseMetaData dbmd = this.conn.getMetaData();
             if(dbmd.supportsTransactionIsolationLevel(Connection.TRANSACTION_SERIALIZABLE)) {
                 this.conn.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
                 System.out.println("Ouverture de la connexion en mode s�rialisable :\n"
@@ -92,9 +98,7 @@ public class Connexion {
                     + " "
                     + this.conn);
             }
-        } // try
-
-        catch(SQLException e) {
+        } catch(SQLException e) {
             throw e;
         } catch(Exception e) {
             e.printStackTrace(System.out);
@@ -103,7 +107,8 @@ public class Connexion {
     }
 
     /**
-     *fermeture d'une connexion
+     *fermeture d'une connexion.
+     *@throws SQLException Une exception qui fournit des informations sur une erreur d'accès de base de données ou d'autres erreurs
      */
     public void fermer() throws SQLException {
         this.conn.rollback();
@@ -114,28 +119,32 @@ public class Connexion {
     }
 
     /**
-     *commit
+     *commit.
+     *@throws SQLException Une exception qui fournit des informations sur une erreur d'accès de base de données ou d'autres erreurs
      */
     public void commit() throws SQLException {
         this.conn.commit();
     }
 
     /**
-     *rollback
+     *rollback.
+     *@throws SQLException Une exception qui fournit des informations sur une erreur d'accès de base de données ou d'autres erreurs
      */
     public void rollback() throws SQLException {
         this.conn.rollback();
     }
 
     /**
-     *retourne la Connection jdbc
+     *retourne la Connection jdbc.
+     *@return Connection
      */
     public Connection getConnection() {
         return this.conn;
     }
 
     /**
-      * Retourne la liste des serveurs support�s par ce gestionnaire de connexions
+      * Retourne la liste des serveurs support�s par ce gestionnaire de connexions.
+      * @return String
       */
     public static String serveursSupportes() {
         return "local : MySQL install� localement\n"
@@ -143,4 +152,4 @@ public class Connexion {
             + "postgres : Postgres install� localement\n"
             + "access : Microsoft Access install� localement et inscrit dans ODBC";
     }
-}// Classe Connexion
+}
