@@ -39,6 +39,7 @@ import ca.qc.collegeahuntsic.bibliotheque.service.ReservationService;
  * @author Sasha Benjamin
  */
 public class GestionBibliotheque {
+
     private Connexion cx;
 
     private LivreDAO livre;
@@ -56,6 +57,41 @@ public class GestionBibliotheque {
     private ReservationService gestionReservation;
 
     private GestionInterrogation gestionInterrogation;
+
+    /** Constructeur de classe.
+     * @throws SQLException est le nom de l'exception qui est lancer.
+     * @throws BibliothequeException est le nom de l'exception qui est lancer.
+      * @param serveur SQL
+      * @param bd nom de la bade de donn�es
+      * @param user user id pour �tablir une connexion avec le serveur SQL
+      * @param password mot de passe pour le user id
+     */
+
+    public GestionBibliotheque(String serveur,
+        String bd,
+        String user,
+        String password) throws BibliothequeException,
+        SQLException {
+        // allocation des objets pour le traitement des transactions
+        this.cx = new Connexion(serveur,
+            bd,
+            user,
+            password);
+        this.livre = new LivreDAO(this.cx);
+        this.membre = new MembreDAO(this.cx);
+        this.reservation = new ReservationDAO(this.cx);
+        this.gestionLivre = new LivreService(this.livre,
+            this.reservation);
+        this.gestionMembre = new MembreService(this.membre,
+            this.reservation);
+        this.gestionPret = new PretService(this.livre,
+            this.membre,
+            this.reservation);
+        this.gestionReservation = new ReservationService(this.livre,
+            this.membre,
+            this.reservation);
+        this.gestionInterrogation = new GestionInterrogation(this.cx);
+    }
 
     /** Set de connection.
      * @param cx nom de la variable connection.
@@ -85,15 +121,15 @@ public class GestionBibliotheque {
         return this.membre;
     }
 
-    /** Set de Livre.
+    /** Set de Membre.
      * @param membre initialisation de la variable membre.
      */
     public void setMembre(MembreDAO membre) {
         this.membre = membre;
     }
 
-    /** Get de Membre.
-     * @return this.membre retourne la valeur de this.membre.
+    /** Get de reservation.
+     * @return this.reservation retourne la valeur de this.reservation.
      */
     public ReservationDAO getReservation() {
         return this.reservation;
@@ -106,8 +142,8 @@ public class GestionBibliotheque {
         this.reservation = reservation;
     }
 
-    /** Get de Membre.
-     * @return this.membre retourne la valeur de this.membre.
+    /** Get de LivreService.
+     * @return this.gestionLivre retourne la valeur de this.gestionLivre.
      */
     public LivreService getGestionLivre() {
         return this.gestionLivre;
@@ -120,8 +156,8 @@ public class GestionBibliotheque {
         this.gestionLivre = gestionLivre;
     }
 
-    /** Get de Membre.
-     * @return this.membre retourne la valeur de this.membre.
+    /** Get de MembreService.
+     * @return this.gestionMembre retourne la valeur de this.GesitonMembre.
      */
     public MembreService getGestionMembre() {
         return this.gestionMembre;
@@ -134,8 +170,8 @@ public class GestionBibliotheque {
         this.gestionMembre = gestionMembre;
     }
 
-    /** Get de Membre.
-     * @return this.membre retourne la valeur de this.membre.
+    /** Get de PretService.
+     * @return this.gestionPret retourne la valeur de this.gestionPret.
      */
     public PretService getGestionPret() {
         return this.gestionPret;
@@ -148,8 +184,8 @@ public class GestionBibliotheque {
         this.gestionPret = gestionPret;
     }
 
-    /** Get de Membre.
-     * @return this.membre retourne la valeur de this.membre.
+    /** Get de ReservationService.
+     * @return this.gestionReservation retourne la valeur de this.gestionReservation.
      */
     public ReservationService getGestionReservation() {
         return this.gestionReservation;
@@ -162,8 +198,8 @@ public class GestionBibliotheque {
         this.gestionReservation = gestionReservation;
     }
 
-    /** Get de Membre.
-     * @return this.membre retourne la valeur de this.membre.
+    /** Get de GestionInterrogation.
+     * @return this.gestionInterrogation retourne la valeur de this.gestionInterrogation.
      */
     public GestionInterrogation getGestionInterrogation() {
         return this.gestionInterrogation;
@@ -179,45 +215,13 @@ public class GestionBibliotheque {
     /**
       * Ouvre une connexion avec la BD relationnelle et
       * alloue les gestionnaires de transactions et de tables.
-      * <pre>
-      *
-      * @param serveur SQL
-      * @param bd nom de la bade de donn�es
-      * @param user user id pour �tablir une connexion avec le serveur SQL
-      * @param password mot de passe pour le user id
-      *</pre>
+    
       */
-    /** Constructeur de classe.
-     * @throws SQLException est le nom de l'exception qui est lancer.
-     * @throws BibliothequeException est le nom de l'exception qui est lancer.
+    /**
+     * Ferme la connection.
+     * @throws SQLException est l'exception lancer.
+
      */
-
-    public GestionBibliotheque(String serveur,
-        String bd,
-        String user,
-        String password) throws BibliothequeException,
-        SQLException {
-        // allocation des objets pour le traitement des transactions
-        this.cx = new Connexion(serveur,
-            bd,
-            user,
-            password);
-        this.livre = new LivreDAO(this.cx);
-        this.membre = new MembreDAO(this.cx);
-        this.reservation = new ReservationDAO(this.cx);
-        this.gestionLivre = new LivreService(this.livre,
-            this.reservation);
-        this.gestionMembre = new MembreService(this.membre,
-            this.reservation);
-        this.gestionPret = new PretService(this.livre,
-            this.membre,
-            this.reservation);
-        this.gestionReservation = new ReservationService(this.livre,
-            this.membre,
-            this.reservation);
-        this.gestionInterrogation = new GestionInterrogation(this.cx);
-    }
-
     public void fermer() throws SQLException {
         // fermeture de la connexion
         this.cx.fermer();
