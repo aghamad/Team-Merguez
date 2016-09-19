@@ -22,7 +22,7 @@ public class LivreDAO extends DAO {
 
     /**
      * TODO Auto-generated field javadoc.
-     * * @author .
+     * * @author Livre
      */
     private static final long serialVersionUID = 1L;
 
@@ -38,6 +38,7 @@ public class LivreDAO extends DAO {
 
     /**
       * Creation d'une instance. Des �nonc�s SQL pour chaque requ�te sont pr�compil�s.
+      * @param cx
       */
     public LivreDAO(Connexion cx) throws SQLException {
         super(cx);
