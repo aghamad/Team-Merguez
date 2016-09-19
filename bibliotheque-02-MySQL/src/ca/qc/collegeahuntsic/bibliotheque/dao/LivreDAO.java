@@ -13,9 +13,8 @@ import ca.qc.collegeahuntsic.bibliotheque.db.Connexion;
 import ca.qc.collegeahuntsic.bibliotheque.dto.LivreDTO;
 
 /**
- *
- * Permet d'effectuer les acc�s � la table livre.
-
+ * DAO pour effectuer des CRUDs avec la table <code>livre</code>.
+ * @author Team-Merguez
  */
 
 public class LivreDAO extends DAO {
@@ -38,7 +37,10 @@ public class LivreDAO extends DAO {
 
     /**
       * Creation d'une instance. Des �nonc�s SQL pour chaque requ�te sont pr�compil�s.
-      * @param cx
+      *
+      * @param cx connexion
+      *
+      *@throws SQLException Exeption
       */
     public LivreDAO(Connexion cx) throws SQLException {
         super(cx);
@@ -63,6 +65,10 @@ public class LivreDAO extends DAO {
 
     /**
       * Verifie si un livre existe.
+      *
+      * @return livreExiste si le livre existe
+      * @throws SQLException Exeptions
+      * @param idLivre parametre id
       */
     public boolean existe(int idLivre) throws SQLException {
 
@@ -79,6 +85,10 @@ public class LivreDAO extends DAO {
 
     /**
       * Lecture d'un livre.
+      *
+      * @return tupleLivre si le livre existe
+      * @throws SQLException Exeptions
+      * @param idLivre parametre id
       */
     public LivreDTO getLivre(int idLivre) throws SQLException {
         // test
@@ -106,6 +116,11 @@ public class LivreDAO extends DAO {
 
     /**
       * Ajout d'un nouveau livre dans la base de donnees.
+      * @param idLivre le id d'un livre
+      * @param titre le titre
+      * @param auteur le auteur
+      * @param dateAcquisition la dateAcquisition
+      *  @throws SQLException Exeptions
       */
     public void acquerir(int idLivre,
         String titre,
@@ -125,6 +140,11 @@ public class LivreDAO extends DAO {
 
     /**
       * Enregistrement de l'emprunteur d'un livre.
+      *  @param idLivre le id d'un livre
+      * @param idMembre le id d'un membre
+      * @param datePret la date du pret
+      *@throws SQLException Exeptions
+      *@return update
       */
     public int preter(int idLivre,
         int idMembre,
@@ -140,7 +160,10 @@ public class LivreDAO extends DAO {
     }
 
     /**
-      * Rendre le livre disponible (non-pr�t�)
+      * Rendre le livre disponible (non-pr�t�).
+      * @param idLivre le id d'un livre
+      *@throws SQLException Exeptions
+      *@return update
       */
     public int retourner(int idLivre) throws SQLException {
         /* Enregistrement du pret. */
@@ -155,6 +178,10 @@ public class LivreDAO extends DAO {
 
     /**
       * Suppression d'un livre.
+      *
+      *  @param idLivre le id d'un livre
+      *@throws SQLException Exeptions
+      *@return update
       */
     public int vendre(int idLivre) throws SQLException {
         /* Suppression du livre. */

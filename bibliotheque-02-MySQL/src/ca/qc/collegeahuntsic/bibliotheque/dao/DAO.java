@@ -7,20 +7,34 @@ package ca.qc.collegeahuntsic.bibliotheque.dao;
 import java.io.Serializable;
 import ca.qc.collegeahuntsic.bibliotheque.db.Connexion;
 
+/**
+ *
+ *la classe DAO.
+ *
+ * @author Mohamed Nassim Laleg
+ *
+ */
 public class DAO implements Serializable {
-
-    private Connexion connexion;
 
     private static final long serialVersionUID = 1L;
 
+    private Connexion connexion;
+
     /**
-     *
+     *la connexion.
+     *@param connexion la connexion
      */
     public DAO(Connexion connexion) {
         // TODO Auto-generated constructor stub
         setConnexion(connexion);
     }
 
+    /**
+     *
+     * get connexion.
+     *
+     * @return connexion
+     */
     public Connexion getConnexion() {
         return this.connexion;
     }
