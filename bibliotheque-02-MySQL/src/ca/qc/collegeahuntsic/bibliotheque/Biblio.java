@@ -40,7 +40,7 @@ import ca.qc.collegeahuntsic.bibliotheque.util.GestionBibliotheque;
  * Post-condition
  *   le programme effectue les maj associ�es � chaque
  *   transaction
- * </pre>
+ * @author Team-Merguez
  */
 public class Biblio {
     private static GestionBibliotheque gestionBiblio;
@@ -51,8 +51,10 @@ public class Biblio {
      * Ouverture de la BD,
      * traitement des transactions et
      * fermeture de la BD.
+     * @throws Exception exeption
+     * @param argv parametre
      */
-    public static void main(String argv[]) throws Exception {
+    public static void main(String[] argv) throws Exception {
         // validation du nombre de param�tres
         if(argv.length < 4) {
             System.out.println("Usage: java Biblio <serveur> <bd> <user> <password> [<fichier-transactions>]");
@@ -89,14 +91,16 @@ public class Biblio {
     }
 
     /**
-      * Traitement des transactions de la biblioth�que
+      * Traitement des transactions de la biblioth�que.
+      *@param reader lire
+      *@throws Exception exeption
       */
     static void traiterTransactions(BufferedReader reader) throws Exception {
         afficherAide();
         String transaction = lireTransaction(reader);
         while(!finTransaction(transaction)) {
             /* d�coupage de la transaction en mots*/
-            StringTokenizer tokenizer = new StringTokenizer(transaction,
+            final StringTokenizer tokenizer = new StringTokenizer(transaction,
                 " ");
             if(tokenizer.hasMoreTokens()) {
                 executerTransaction(tokenizer);
@@ -106,11 +110,14 @@ public class Biblio {
     }
 
     /**
-      * Lecture d'une transaction
+      * Lecture d'une transaction.
+      * @param reader lire
+    *@throws IOException Exeption
+    *@return transaction
       */
     static String lireTransaction(BufferedReader reader) throws IOException {
         System.out.print("> ");
-        String transaction = reader.readLine();
+        final String transaction = reader.readLine();
         /* echo si lecture dans un fichier */
         if(!lectureAuClavier
             && transaction != null) {
@@ -120,11 +127,14 @@ public class Biblio {
     }
 
     /**
-      * D�codage et traitement d'une transaction
+      * D�codage et traitement d'une transaction.
+      *
+      *@throws Exception exeption
+      *@param tokenizer reader
       */
     static void executerTransaction(StringTokenizer tokenizer) throws Exception {
         try {
-            String command = tokenizer.nextToken();
+            final String command = tokenizer.nextToken();
 
             /* ******************* */
             /*         HELP        */
@@ -152,7 +162,7 @@ public class Biblio {
                 gestionBiblio.gestionMembre.inscrire(readInt(tokenizer) /* idMembre */,
                     readString(tokenizer) /* nom */,
                     readLong(tokenizer) /* tel */,
-                    readInt(tokenizer) /* limitePret */ );
+                    readInt(tokenizer) /* limitePret */);
             } else if("desinscrire".startsWith(command)) {
                 gestionBiblio.gestionMembre.desinscrire(readInt(tokenizer) /* idMembre */);
             } else if("reserver".startsWith(command)) {
@@ -185,7 +195,7 @@ public class Biblio {
         }
     }
 
-    /** Affiche le menu des transactions accept�es par le syst�me */
+    /** Affiche le menu des transactions accept�es par le syst�me .*/
     static void afficherAide() {
         System.out.println();
         System.out.println("Chaque transaction comporte un nom et une liste d'arguments");
@@ -213,6 +223,9 @@ public class Biblio {
     /**
      * V�rifie si la fin du traitement des transactions est
      * atteinte.
+     *
+     * @param transaction transaction
+     * @return commande commande
      */
     static boolean finTransaction(String transaction) {
         /* fin de fichier atteinte */
@@ -220,7 +233,7 @@ public class Biblio {
             return true;
         }
 
-        StringTokenizer tokenizer = new StringTokenizer(transaction,
+        final StringTokenizer tokenizer = new StringTokenizer(transaction,
             " ");
 
         /* ligne ne contenant que des espaces */
@@ -229,12 +242,19 @@ public class Biblio {
         }
 
         /* commande "exit" */
-        String commande = tokenizer.nextToken();
+        final String commande = tokenizer.nextToken();
 
         return commande.equals("exit");
     }
 
-    /** lecture d'une cha�ne de caract�res de la transaction entr�e � l'�cran */
+    /** lecture d'une cha�ne de caract�res de la transaction entr�e � l'�cran .
+     *
+     * @param tokenizer token
+     *  @throws BibliothequeException exeption
+     *  @return tokenizer token
+     *
+     * */
+
     static String readString(StringTokenizer tokenizer) throws BibliothequeException {
 
         if(!tokenizer.hasMoreElements()) {
@@ -245,17 +265,21 @@ public class Biblio {
     }
 
     /**
-      * lecture d'un int java de la transaction entr�e � l'�cran
+      * lecture d'un int java de la transaction entr�e � l'�cran.
+      *
+      * @param tokenizer token
+     *  @throws BibliothequeException exeption
+     *  @return tokenizer token
       */
     static int readInt(StringTokenizer tokenizer) throws BibliothequeException {
 
         if(!tokenizer.hasMoreElements()) {
             throw new BibliothequeException("autre paramètre attendu");
         }
+        // 0 par default
+        final int value;
 
-        int value; // 0 par default
-
-        String token = tokenizer.nextToken();
+        final String token = tokenizer.nextToken();
         try {
             value = Integer.valueOf(token).intValue();
         } catch(NumberFormatException e) {
@@ -268,7 +292,11 @@ public class Biblio {
     }
 
     /**
-      * lecture d'un long java de la transaction entr�e � l'�cran
+      * lecture d'un long java de la transaction entr�e � l'�cran.
+      *
+      *  @param tokenizer token
+     *  @throws BibliothequeException exeption
+     *  @return tokenizer token
       */
     static long readLong(StringTokenizer tokenizer) throws BibliothequeException {
 
@@ -276,9 +304,9 @@ public class Biblio {
             throw new BibliothequeException("autre paramètre attendu");
         }
 
-        long value;
+        final long value;
 
-        String token = tokenizer.nextToken();
+        final String token = tokenizer.nextToken();
         try {
             value = Long.valueOf(token).longValue();
         } catch(NumberFormatException e) {
@@ -291,7 +319,11 @@ public class Biblio {
     }
 
     /**
-      * lecture d'une date en format YYYY-MM-DD
+      * lecture d'une date en format YYYY-MM-DD.
+      *
+      *  @param tokenizer token
+     *  @throws BibliothequeException exeption
+     *  @return tokenizer token
       */
     static String readDate(StringTokenizer tokenizer) throws BibliothequeException {
 
@@ -299,7 +331,7 @@ public class Biblio {
             throw new BibliothequeException("autre paramètre attendu");
         }
 
-        String token = tokenizer.nextToken();
+        final String token = tokenizer.nextToken();
         try {
             FormatDate.convertirDate(token);
         } catch(ParseException e) {
