@@ -27,7 +27,11 @@ import ca.qc.collegeahuntsic.bibliotheque.db.Connexion;
  *
  * </pre>
  */
-
+/**
+ * TODO Auto-generated field javadoc.
+ *
+ * @author Sasha Benjamin
+ */
 public class GestionInterrogation {
 
     private PreparedStatement stmtLivresTitreMot;
@@ -37,21 +41,28 @@ public class GestionInterrogation {
     private Connexion cx;
 
     /**
-     * Creation d'une instance
+     * Creation d'une instance.
+     * @param cx est le nom donner a la connection.
+     * @throws SQLException est le nom de l'exception qui est lancer.
+     *
      */
     public GestionInterrogation(Connexion cx) throws SQLException {
 
         this.cx = cx;
-        this.stmtLivresTitreMot = cx.getConnection().prepareStatement("select t1.idLivre, t1.titre, t1.auteur, t1.idmembre, t1.datePret + 14 "
-            + "from livre t1 "
-            + "where lower(titre) like ?");
+        this.stmtLivresTitreMot = cx.getConnection().prepareStatement(
+            "select t1.idLivre, t1.titre, t1.auteur, t1.idmembre, t1.datePret + 14 "
+                + "from livre t1 "
+                + "where lower(titre) like ?");
 
-        this.stmtListeTousLivres = cx.getConnection().prepareStatement("select t1.idLivre, t1.titre, t1.auteur, t1.idmembre, t1.datePret "
-            + "from livre t1");
+        this.stmtListeTousLivres = cx.getConnection()
+            .prepareStatement("select t1.idLivre, t1.titre, t1.auteur, t1.idmembre, t1.datePret "
+                + "from livre t1");
     }
 
     /**
-     * Affiche les livres contenu un mot dans le titre
+     * Affiche les livres contenu un mot dans le titre.
+     * @throws SQLException est le nom de l'exception qui est lancer.
+     * @param mot est le nom de la variable 'String'.
      */
     public void listerLivresTitre(String mot) throws SQLException {
 
@@ -88,7 +99,8 @@ public class GestionInterrogation {
     }
 
     /**
-     * Affiche tous les livres de la BD
+     * Affiche tous les livres de la BD.
+     * @throws SQLException est le nom de l'exception qui est lancer.
      */
     public void listerLivres() throws SQLException {
 

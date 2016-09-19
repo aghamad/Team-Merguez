@@ -32,24 +32,149 @@ import ca.qc.collegeahuntsic.bibliotheque.service.ReservationService;
  *   transaction
  * </pre>
  */
+
+/**
+ * TODO Auto-generated field javadoc.
+ *
+ * @author Sasha Benjamin
+ */
 public class GestionBibliotheque {
-    public Connexion cx;
+    private Connexion cx;
 
-    public LivreDAO livre;
+    private LivreDAO livre;
 
-    public MembreDAO membre;
+    private MembreDAO membre;
 
-    public ReservationDAO reservation;
+    private ReservationDAO reservation;
 
-    public LivreService gestionLivre;
+    private LivreService gestionLivre;
 
-    public MembreService gestionMembre;
+    private MembreService gestionMembre;
 
-    public PretService gestionPret;
+    private PretService gestionPret;
 
-    public ReservationService gestionReservation;
+    private ReservationService gestionReservation;
 
-    public GestionInterrogation gestionInterrogation;
+    private GestionInterrogation gestionInterrogation;
+
+    /** Set de connection.
+     * @param cx nom de la variable connection.
+     */
+    public void setCx(Connexion cx) {
+        this.cx = cx;
+    }
+
+    /** Get de Livre.
+     * @return this.livre retourne la valeur de this.livre.
+     */
+    public LivreDAO getLivre() {
+        return this.livre;
+    }
+
+    /** Set de Livre.
+     * @param livre initialisation de la variable LivreDAO.
+     */
+    public void setLivre(LivreDAO livre) {
+        this.livre = livre;
+    }
+
+    /** Get de Membre.
+     * @return this.membre retourne la valeur de this.membre.
+     */
+    public MembreDAO getMembre() {
+        return this.membre;
+    }
+
+    /** Set de Livre.
+     * @param membre initialisation de la variable membre.
+     */
+    public void setMembre(MembreDAO membre) {
+        this.membre = membre;
+    }
+
+    /** Get de Membre.
+     * @return this.membre retourne la valeur de this.membre.
+     */
+    public ReservationDAO getReservation() {
+        return this.reservation;
+    }
+
+    /** Set de reservation.
+     * @param reservation initialisation de la variable reservation.
+     */
+    public void setReservation(ReservationDAO reservation) {
+        this.reservation = reservation;
+    }
+
+    /** Get de Membre.
+     * @return this.membre retourne la valeur de this.membre.
+     */
+    public LivreService getGestionLivre() {
+        return this.gestionLivre;
+    }
+
+    /** Set de gestionLivre.
+     * @param gestionLivre initialisation de la variable gestionLivre.
+     */
+    public void setGestionLivre(LivreService gestionLivre) {
+        this.gestionLivre = gestionLivre;
+    }
+
+    /** Get de Membre.
+     * @return this.membre retourne la valeur de this.membre.
+     */
+    public MembreService getGestionMembre() {
+        return this.gestionMembre;
+    }
+
+    /** Set de gestionMembre.
+     * @param gestionMembre initialisation de la variable gestionMembre.
+     */
+    public void setGestionMembre(MembreService gestionMembre) {
+        this.gestionMembre = gestionMembre;
+    }
+
+    /** Get de Membre.
+     * @return this.membre retourne la valeur de this.membre.
+     */
+    public PretService getGestionPret() {
+        return this.gestionPret;
+    }
+
+    /** Set de gestionPret.
+     * @param gestionPret initialisation de la variable gestionPret.
+     */
+    public void setGestionPret(PretService gestionPret) {
+        this.gestionPret = gestionPret;
+    }
+
+    /** Get de Membre.
+     * @return this.membre retourne la valeur de this.membre.
+     */
+    public ReservationService getGestionReservation() {
+        return this.gestionReservation;
+    }
+
+    /** Set de gestionReservation.
+     * @param gestionReservation initialisation de la variable gestionReservation.
+     */
+    public void setGestionReservation(ReservationService gestionReservation) {
+        this.gestionReservation = gestionReservation;
+    }
+
+    /** Get de Membre.
+     * @return this.membre retourne la valeur de this.membre.
+     */
+    public GestionInterrogation getGestionInterrogation() {
+        return this.gestionInterrogation;
+    }
+
+    /** Set de gestionInterrogation.
+     * @param gestionInterrogation initialisation de la variable gestionInterrogation.
+     */
+    public void setGestionInterrogation(GestionInterrogation gestionInterrogation) {
+        this.gestionInterrogation = gestionInterrogation;
+    }
 
     /**
       * Ouvre une connexion avec la BD relationnelle et
@@ -62,6 +187,11 @@ public class GestionBibliotheque {
       * @param password mot de passe pour le user id
       *</pre>
       */
+    /** Constructeur de classe.
+     * @throws SQLException est le nom de l'exception qui est lancer.
+     * @throws BibliothequeException est le nom de l'exception qui est lancer.
+     */
+
     public GestionBibliotheque(String serveur,
         String bd,
         String user,

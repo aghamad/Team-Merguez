@@ -19,8 +19,35 @@ import ca.qc.collegeahuntsic.bibliotheque.db.Connexion;
  *           3- mot de passe pour le user id
  *</pre>
  */
-class CreerBD {
-    public static void main(String args[]) throws Exception,
+
+/**
+ * TODO Auto-generated field javadoc.
+ *
+ * @author Sasha Benjamin
+ */
+
+final class CreerBD {
+    /**
+     * TODO Auto-generated field javadoc.
+     *
+     * Constructeur de classe de type private
+     *
+     */
+
+    private CreerBD() {
+        super();
+        // TODO Auto-generated constructor stub
+    }
+
+    /**
+     * TODO Auto-generated field javadoc.
+     *
+     * Main
+     * @throws SQLException est le nom de l'exception qui est lancer.
+     * @throws Exception est le nom de l'exception qui est lancer.
+     * @param args tableau de string.
+     */
+    public static void main(String[] args) throws Exception,
         SQLException {
 
         if(args.length < 3) {
@@ -28,7 +55,7 @@ class CreerBD {
             return;
         }
 
-        Connexion cx = new Connexion(args[0],
+        final Connexion cx = new Connexion(args[0],
             args[1],
             args[2],
             args[3]);
@@ -82,4 +109,5 @@ class CreerBD {
 
         cx.fermer();
     }
+
 }

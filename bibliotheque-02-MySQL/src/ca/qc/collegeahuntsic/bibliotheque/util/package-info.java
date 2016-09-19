@@ -1,9 +1,10 @@
 // Fichier package-info.java
 // Auteur : Sasha Benjamin
-// Date de cr�ation : 2016-09-12
+// Date de création : 2016-09-15
+
 /**
- * TODO Auto-generated class javadoc
- *
+ * TODO Auto-generated class javadoc.
+ *  package-info de la librairie Util
  * @author Sasha Benjamin
  */
 
