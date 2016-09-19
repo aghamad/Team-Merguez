@@ -4,6 +4,13 @@
 
 package ca.qc.collegeahuntsic.bibliotheque.exception;
 
-public class BDCreateurException {
+public class BDCreateurException extends Exception {
+    /**
+     * TODO Auto-generated field javadoc
+     */
+    private static final long serialVersionUID = 1L;
 
+    public BDCreateurException(String message) {
+        super(message);
+    }
 }

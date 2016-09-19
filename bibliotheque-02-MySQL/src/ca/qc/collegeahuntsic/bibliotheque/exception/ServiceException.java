@@ -4,6 +4,13 @@
 
 package ca.qc.collegeahuntsic.bibliotheque.exception;
 
-public class ServiceException {
+public class ServiceException extends Exception {
+    /**
+     * TODO Auto-generated field javadoc
+     */
+    private static final long serialVersionUID = 1L;
 
+    public ServiceException(String message) {
+        super(message);
+    }
 }

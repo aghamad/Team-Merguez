@@ -4,6 +4,13 @@
 
 package ca.qc.collegeahuntsic.bibliotheque.exception;
 
-public class ConnexionException {
+public class ConnexionException extends Exception {
+    /**
+     * TODO Auto-generated field javadoc
+     */
+    private static final long serialVersionUID = 1L;
 
+    public ConnexionException(String message) {
+        super(message);
+    }
 }
