@@ -244,7 +244,7 @@ public class Biblio {
         /* commande "exit" */
         final String commande = tokenizer.nextToken();
 
-        return commande.equals("exit");
+        return "exit".equals(commande);
     }
 
     /** lecture d'une cha�ne de caract�res de la transaction entr�e � l'�cran .
