@@ -4,13 +4,23 @@
 
 package ca.qc.collegeahuntsic.bibliotheque.exception;
 
+/**
+ * Cette classe consiste a gérer les exceptions relié à l'accès de la biliotheque .
+ *
+ * @author Ary-Carson Bernier
+ */
 public class BibliothequeException extends Exception {
 
-    /**
+    /**.
      * TODO Auto-generated field javadoc
      */
     private static final long serialVersionUID = 1L;
 
+    /**
+     * Cet méthode consiste à retourner le message d'erreur.
+     *
+     * @param message qui est le parametre dont on utilise afin de le retourner
+     */
     public BibliothequeException(String message) {
         super(message);
     }
