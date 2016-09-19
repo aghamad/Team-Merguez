@@ -11,6 +11,10 @@ import ca.qc.collegeahuntsic.bibliotheque.db.Connexion;
 import ca.qc.collegeahuntsic.bibliotheque.dto.LivreDTO;
 import ca.qc.collegeahuntsic.bibliotheque.exception.BibliothequeException;
 
+/**
+ * Cette classe avec la Connexion acqueit et vend un livre.
+ * @author Team-Marquez
+ * */
 public class LivreService {
 
     private LivreDAO livre;
@@ -20,7 +24,9 @@ public class LivreService {
     private Connexion cx;
 
     /**
-      * Creation d'une instance
+      * Creation d'une instance.
+      * @param livre Instance de la classe dao LivreDAO
+      * @param reservation Instance de la classe dao ReservationDAO
       */
     public LivreService(LivreDAO livre,
         ReservationDAO reservation) {
@@ -32,6 +38,13 @@ public class LivreService {
     /**
       * Ajout d'un nouveau livre dans la base de donn�es.
       * S'il existe deja, une exception est lev�e.
+      * @param titre Le titre d'un livre
+      * @param idLivre Le id d'un livre
+      * @param auteur L'auteur d'un livre
+      * @param dateAcquisition La date d'acquisition du livre par le membre
+      * @throws SQLException Une exception qui fournit des informations sur une erreur d'accès de base de données ou d'autres erreurs
+      * @throws BibliothequeException Une exception qui fournit des informations sur une erreur de la bibliotheque ou d'autres erreurs
+      * @throws Exception Une exception qui fournit des informations sur une erreur vague
       */
     public void acquerir(int idLivre,
         String titre,
@@ -61,12 +74,16 @@ public class LivreService {
 
     /**
       * Vente d'un livre.
+      * @param idLivre ID du Livre
+      * @throws SQLException Une exception qui fournit des informations sur une erreur d'accès de base de données ou d'autres erreurs
+      * @throws Exception  Une exception qui fournit des informations sur une erreur vague
+      * @throws BibliothequeException Une exception qui fournit des informations sur une erreur de la bibliotheque ou d'autres erreurs
       */
     public void vendre(int idLivre) throws SQLException,
         BibliothequeException,
         Exception {
         try {
-            LivreDTO tupleLivre = this.livre.getLivre(idLivre);
+            final LivreDTO tupleLivre = this.livre.getLivre(idLivre);
             if(tupleLivre == null) {
                 throw new BibliothequeException("Livre inexistant: "
                     + idLivre);
@@ -84,7 +101,7 @@ public class LivreService {
             }
 
             /* Suppression du livre. */
-            int nb = this.livre.vendre(idLivre);
+            final int nb = this.livre.vendre(idLivre);
             if(nb == 0) {
                 throw new BibliothequeException("Livre "
                     + idLivre

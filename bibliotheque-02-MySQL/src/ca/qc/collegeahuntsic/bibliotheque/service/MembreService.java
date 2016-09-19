@@ -11,6 +11,10 @@ import ca.qc.collegeahuntsic.bibliotheque.db.Connexion;
 import ca.qc.collegeahuntsic.bibliotheque.dto.MembreDTO;
 import ca.qc.collegeahuntsic.bibliotheque.exception.BibliothequeException;
 
+/**
+ * Cette classe avec la Connexion inscrit et deinscrit un membre.
+ * @author Team-Marquez
+ * */
 public class MembreService {
 
     private Connexion cx;
@@ -20,7 +24,9 @@ public class MembreService {
     private ReservationDAO reservation;
 
     /**
-      * Creation d'une instance
+      * Creation d'une instance.
+      * @param membre Instance de la classe dao MembreDAO
+      * @param reservation Instance de la classe dao ReservationDAO
       */
     public MembreService(MembreDAO membre,
         ReservationDAO reservation) {
@@ -33,6 +39,13 @@ public class MembreService {
     /**
       * Ajout d'un nouveau membre dans la base de donnees.
       * S'il existe deja, une exception est levee.
+      * @param idMembre Le id d'un membre
+      * @param nom Le nom d'un membre
+      * @param telephone Le numero de telephone d'un membre
+      * @param limitePret La limit de pret d'un membre
+      * @throws SQLException Une exception qui fournit des informations sur une erreur d'accès de base de données ou d'autres erreurs
+      * @throws BibliothequeException Une exception qui fournit des informations sur une erreur de la bibliotheque ou d'autres erreurs
+      * @throws Exception Une exception qui fournit des informations sur une erreur vague
       */
     public void inscrire(int idMembre,
         String nom,
@@ -61,13 +74,18 @@ public class MembreService {
 
     /**
       * Suppression d'un membre de la base de donnees.
+      * @param idMembre Le id d'un membre
+
+      * @throws SQLException Une exception qui fournit des informations sur une erreur d'accès de base de données ou d'autres erreurs
+      * @throws BibliothequeException Une exception qui fournit des informations sur une erreur de la bibliotheque ou d'autres erreurs
+      * @throws Exception Une exception qui fournit des informations sur une erreur vague
       */
     public void desinscrire(int idMembre) throws SQLException,
         BibliothequeException,
         Exception {
         try {
             /* V�rifie si le membre existe et son nombre de pret en cours */
-            MembreDTO tupleMembre = this.membre.getMembre(idMembre);
+            final MembreDTO tupleMembre = this.membre.getMembre(idMembre);
             if(tupleMembre == null) {
                 throw new BibliothequeException("Membre inexistant: "
                     + idMembre);
@@ -84,7 +102,7 @@ public class MembreService {
             }
 
             /* Suppression du membre */
-            int nb = this.membre.desinscrire(idMembre);
+            final int nb = this.membre.desinscrire(idMembre);
             if(nb == 0) {
                 throw new BibliothequeException("Membre "
                     + idMembre

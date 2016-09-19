@@ -15,6 +15,10 @@ import ca.qc.collegeahuntsic.bibliotheque.dto.MembreDTO;
 import ca.qc.collegeahuntsic.bibliotheque.dto.ReservationDTO;
 import ca.qc.collegeahuntsic.bibliotheque.exception.BibliothequeException;
 
+/**
+ * Cette classe avec la Connexion reserve, prend une reservation et annule une reservation d'un livre.
+ * @author Team-Marquez
+ * */
 public class ReservationService {
     private LivreDAO livre;
 
@@ -28,6 +32,10 @@ public class ReservationService {
       * Creation d'une instance.
       * La connection de l'instance de livre et de membre doit �tre la m�me que cx,
       * afin d'assurer l'int�grit� des transactions.
+      * @param livre Instance de la classe dao LivreDAO
+      * @param membre Instance de la classe dao MembreDAO
+      * @param reservation Instance de la classe dao ReservationDAO
+      * @throws BibliothequeException Une exception qui fournit des informations sur une erreur de la bibliotheque ou d'autres erreurs
       */
     public ReservationService(LivreDAO livre,
         MembreDAO membre,
@@ -45,6 +53,13 @@ public class ReservationService {
     /**
       * R�servation d'un livre par un membre.
       * Le livre doit �tre pr�t�.
+      * @param idReservation Le id d'une reservation
+      * @param idLivre Le id d'un livre
+      * @param idMembre Le id d'un membre
+      * @param dateReservation La date de reservation d'un livre
+      * @throws SQLException Une exception qui fournit des informations sur une erreur d'accès de base de données ou d'autres erreurs
+      * @throws BibliothequeException Une exception qui fournit des informations sur une erreur de la bibliotheque ou d'autres erreurs
+      * @throws Exception Une exception qui fournit des informations sur une erreur vague
       */
     public void reserver(int idReservation,
         int idLivre,
@@ -54,7 +69,7 @@ public class ReservationService {
         Exception {
         try {
             /* Verifier que le livre est pret� */
-            LivreDTO tupleLivre = this.livre.getLivre(idLivre);
+            final LivreDTO tupleLivre = this.livre.getLivre(idLivre);
             if(tupleLivre == null) {
                 throw new BibliothequeException("Livre inexistant: "
                     + idLivre);
@@ -71,7 +86,7 @@ public class ReservationService {
             }
 
             /* V�rifier que le membre existe */
-            MembreDTO tupleMembre = this.membre.getMembre(idMembre);
+            final MembreDTO tupleMembre = this.membre.getMembre(idMembre);
             if(tupleMembre == null) {
                 throw new BibliothequeException("Membre inexistant: "
                     + idMembre);
@@ -106,6 +121,11 @@ public class ReservationService {
       * Le livre ne doit pas �tre pr�t�.
       * Le membre ne doit pas avoir d�pass� sa limite de pret.
       * La r�servation doit la �tre la premi�re en liste.
+      * @param idReservation Le id d'une reservation
+      * @param datePret La date d'acquisition du livre par le membre
+      * @throws SQLException Une exception qui fournit des informations sur une erreur d'accès de base de données ou d'autres erreurs
+      * @throws BibliothequeException Une exception qui fournit des informations sur une erreur de la bibliotheque ou d'autres erreurs
+      * @throws Exception Une exception qui fournit des informations sur une erreur vague
       */
     public void prendreRes(int idReservation,
         String datePret) throws SQLException,
@@ -113,14 +133,14 @@ public class ReservationService {
         Exception {
         try {
             /* V�rifie s'il existe une r�servation pour le livre */
-            ReservationDTO tupleReservation = this.reservation.getReservation(idReservation);
+            final ReservationDTO tupleReservation = this.reservation.getReservation(idReservation);
             if(tupleReservation == null) {
                 throw new BibliothequeException("R�servation inexistante : "
                     + idReservation);
             }
 
             /* V�rifie que c'est la premi�re r�servation pour le livre */
-            ReservationDTO tupleReservationPremiere = this.reservation.getReservationLivre(tupleReservation.getIdLivre());
+            final ReservationDTO tupleReservationPremiere = this.reservation.getReservationLivre(tupleReservation.getIdLivre());
             if(tupleReservation.getIdReservation() != tupleReservationPremiere.getIdReservation()) {
                 throw new BibliothequeException("La r�servation n'est pas la premi�re de la liste "
                     + "pour ce livre; la premiere est "
@@ -128,7 +148,7 @@ public class ReservationService {
             }
 
             /* Verifier si le livre est disponible */
-            LivreDTO tupleLivre = this.livre.getLivre(tupleReservation.getIdLivre());
+            final LivreDTO tupleLivre = this.livre.getLivre(tupleReservation.getIdLivre());
             if(tupleLivre == null) {
                 throw new BibliothequeException("Livre inexistant: "
                     + tupleReservation.getIdLivre());
@@ -141,7 +161,7 @@ public class ReservationService {
             }
 
             /* V�rifie si le membre existe et sa limite de pret */
-            MembreDTO tupleMembre = this.membre.getMembre(tupleReservation.getIdMembre());
+            final MembreDTO tupleMembre = this.membre.getMembre(tupleReservation.getIdMembre());
             if(tupleMembre == null) {
                 throw new BibliothequeException("Membre inexistant: "
                     + tupleReservation.getIdMembre());
@@ -178,6 +198,10 @@ public class ReservationService {
     /**
       * Annulation d'une r�servation.
       * La r�servation doit exister.
+      * @param idReservation Le id d'une reservation
+      * @throws SQLException Une exception qui fournit des informations sur une erreur d'accès de base de données ou d'autres erreurs
+      * @throws BibliothequeException Une exception qui fournit des informations sur une erreur de la bibliotheque ou d'autres erreurs
+      * @throws Exception Une exception qui fournit des informations sur une erreur vague
       */
     public void annulerRes(int idReservation) throws SQLException,
         BibliothequeException,
