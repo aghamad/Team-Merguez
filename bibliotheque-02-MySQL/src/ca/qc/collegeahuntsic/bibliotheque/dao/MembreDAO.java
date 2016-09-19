@@ -17,7 +17,12 @@ import ca.qc.collegeahuntsic.bibliotheque.dto.MembreDTO;
  *</pre>
  */
 
-public class MembreDAO {
+public class MembreDAO extends DAO {
+
+    /**
+     * TODO Auto-generated field javadoc
+     */
+    private static final long serialVersionUID = 1L;
 
     private PreparedStatement stmtExiste;
 
@@ -35,7 +40,10 @@ public class MembreDAO {
       * Creation d'une instance. Pr�compilation d'�nonc�s SQL.
       */
     public MembreDAO(Connexion cx) throws SQLException {
-        this.cx = cx;
+
+        super(cx);
+        this.cx = super.getConnexion();
+
         this.stmtExiste = cx.getConnection().prepareStatement("select idMembre, nom, telephone, limitePret, nbpret from membre where idmembre = ?");
         this.stmtInsert = cx.getConnection().prepareStatement("insert into membre (idmembre, nom, telephone, limitepret, nbpret) "
             + "values (?,?,?,?,0)");
@@ -47,6 +55,7 @@ public class MembreDAO {
     /**
       * Retourner la connexion associ�e.
       */
+    @Override
     public Connexion getConnexion() {
 
         return this.cx;
@@ -58,9 +67,12 @@ public class MembreDAO {
     public boolean existe(int idMembre) throws SQLException {
         this.stmtExiste.setInt(1,
             idMembre);
-        ResultSet rset = this.stmtExiste.executeQuery();
-        boolean membreExiste = rset.next();
-        rset.close();
+        boolean membreExiste = false;
+        try(
+            ResultSet rset = this.stmtExiste.executeQuery()) {
+            membreExiste = rset.next();
+            rset.close();
+        }
         return membreExiste;
     }
 
@@ -70,18 +82,22 @@ public class MembreDAO {
     public MembreDTO getMembre(int idMembre) throws SQLException {
         this.stmtExiste.setInt(1,
             idMembre);
-        ResultSet rset = this.stmtExiste.executeQuery();
-        if(rset.next()) {
-            MembreDTO tupleMembre = new MembreDTO();
-            tupleMembre.setIdMembre(idMembre);
-            tupleMembre.setNom(rset.getString(2));
-            tupleMembre.setTelephone(rset.getLong(3));
-            tupleMembre.setLimitePret(rset.getInt(4));
-            tupleMembre.setNbPret(rset.getInt(5));
-            return tupleMembre;
-        } else {
-            return null;
+
+        MembreDTO tupleMembre = null;
+
+        try(
+            ResultSet rset = this.stmtExiste.executeQuery()) {
+
+            if(rset.next()) {
+                tupleMembre = new MembreDTO();
+                tupleMembre.setIdMembre(idMembre);
+                tupleMembre.setNom(rset.getString(2));
+                tupleMembre.setTelephone(rset.getLong(3));
+                tupleMembre.setLimitePret(rset.getInt(4));
+                tupleMembre.setNbPret(rset.getInt(5));
+            }
         }
+        return tupleMembre;
     }
 
     /**

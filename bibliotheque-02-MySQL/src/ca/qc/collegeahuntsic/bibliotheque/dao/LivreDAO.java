@@ -16,7 +16,12 @@ import ca.qc.collegeahuntsic.bibliotheque.dto.LivreDTO;
  * Permet d'effectuer les acc�s � la table livre.
  */
 
-public class LivreDAO {
+public class LivreDAO extends DAO {
+
+    /**
+     * TODO Auto-generated field javadoc
+     */
+    private static final long serialVersionUID = 1L;
 
     private PreparedStatement stmtExiste;
 
@@ -32,8 +37,8 @@ public class LivreDAO {
       * Creation d'une instance. Des �nonc�s SQL pour chaque requ�te sont pr�compil�s.
       */
     public LivreDAO(Connexion cx) throws SQLException {
-
-        this.cx = cx;
+        super(cx);
+        this.cx = super.getConnexion();
         this.stmtExiste = cx.getConnection()
             .prepareStatement("select idlivre, titre, auteur, dateAcquisition, idMembre, datePret from livre where idlivre = ?");
         this.stmtInsert = cx.getConnection().prepareStatement("insert into livre (idLivre, titre, auteur, dateAcquisition, idMembre, datePret) "
@@ -46,6 +51,7 @@ public class LivreDAO {
     /**
       * Retourner la connexion associ�e.
       */
+    @Override
     public Connexion getConnexion() {
 
         return this.cx;
@@ -58,9 +64,12 @@ public class LivreDAO {
 
         this.stmtExiste.setInt(1,
             idLivre);
-        ResultSet rset = this.stmtExiste.executeQuery();
-        boolean livreExiste = rset.next();
-        rset.close();
+        boolean livreExiste = false;
+        try(
+            ResultSet rset = this.stmtExiste.executeQuery()) {
+            livreExiste = rset.next();
+            rset.close();
+        }
         return livreExiste;
     }
 
@@ -68,22 +77,27 @@ public class LivreDAO {
       * Lecture d'un livre.
       */
     public LivreDTO getLivre(int idLivre) throws SQLException {
-
+        // test
         this.stmtExiste.setInt(1,
             idLivre);
-        ResultSet rset = this.stmtExiste.executeQuery();
-        if(rset.next()) {
-            LivreDTO tupleLivre = new LivreDTO();
-            tupleLivre.setIdLivre(idLivre);
-            tupleLivre.setTitre(rset.getString(2));
-            tupleLivre.setAuteur(rset.getString(3));
-            tupleLivre.setDateAcquisition(rset.getDate(4));
-            tupleLivre.setIdMembre(rset.getInt(5));
-            tupleLivre.setDatePret(rset.getDate(6));
-            return tupleLivre;
-        } else {
-            return null;
+
+        LivreDTO tupleLivre = null;
+
+        try(
+            ResultSet rset = this.stmtExiste.executeQuery()) {
+
+            if(rset.next()) {
+                tupleLivre = new LivreDTO();
+                tupleLivre.setIdLivre(idLivre);
+                tupleLivre.setTitre(rset.getString(2));
+                tupleLivre.setAuteur(rset.getString(3));
+                tupleLivre.setDateAcquisition(rset.getDate(4));
+                tupleLivre.setIdMembre(rset.getInt(5));
+                tupleLivre.setDatePret(rset.getDate(6));
+            }
         }
+
+        return tupleLivre;
     }
 
     /**

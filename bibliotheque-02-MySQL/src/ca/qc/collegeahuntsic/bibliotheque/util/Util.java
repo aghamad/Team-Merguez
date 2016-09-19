@@ -7,7 +7,11 @@ package ca.qc.collegeahuntsic.bibliotheque.util;
 import java.io.Serializable;
 
 public class Util implements Serializable {
-    public static final float serialVersionUID = 2L;
+
+    /**
+     * TODO Auto-generated field javadoc
+     */
+    private static final long serialVersionUID = 1L;
 
     public Util() {
         super();

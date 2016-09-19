@@ -16,9 +16,9 @@ public class DAO implements Serializable {
     /**
      *
      */
-    public DAO(@SuppressWarnings("unused") Connexion connexion) {
+    public DAO(Connexion connexion) {
         // TODO Auto-generated constructor stub
-        super();
+        setConnexion(connexion);
     }
 
     public Connexion getConnexion() {

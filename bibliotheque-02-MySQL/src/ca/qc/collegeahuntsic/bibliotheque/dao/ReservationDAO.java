@@ -19,7 +19,12 @@ import ca.qc.collegeahuntsic.bibliotheque.dto.ReservationDTO;
  *</pre>
  */
 
-public class ReservationDAO {
+public class ReservationDAO extends DAO {
+
+    /**
+     * TODO Auto-generated field javadoc
+     */
+    private static final long serialVersionUID = 1L;
 
     private PreparedStatement stmtExiste;
 
@@ -37,8 +42,8 @@ public class ReservationDAO {
       * Creation d'une instance.
       */
     public ReservationDAO(Connexion cx) throws SQLException {
-
-        this.cx = cx;
+        super(cx);
+        this.cx = super.getConnexion();
         this.stmtExiste = cx.getConnection().prepareStatement("select idReservation, idLivre, idMembre, dateReservation "
             + "from reservation where idReservation = ?");
         this.stmtExisteLivre = cx.getConnection().prepareStatement("select idReservation, idLivre, idMembre, dateReservation "
@@ -54,6 +59,7 @@ public class ReservationDAO {
     /**
       * Retourner la connexion associ�e.
       */
+    @Override
     public Connexion getConnexion() {
 
         return this.cx;
@@ -66,9 +72,12 @@ public class ReservationDAO {
 
         this.stmtExiste.setInt(1,
             idReservation);
-        ResultSet rset = this.stmtExiste.executeQuery();
-        boolean reservationExiste = rset.next();
-        rset.close();
+        boolean reservationExiste = false;
+        try(
+            ResultSet rset = this.stmtExiste.executeQuery()) {
+            reservationExiste = rset.next();
+            rset.close();
+        }
         return reservationExiste;
     }
 
@@ -79,18 +88,21 @@ public class ReservationDAO {
 
         this.stmtExiste.setInt(1,
             idReservation);
-        ResultSet rset = this.stmtExiste.executeQuery();
-        if(rset.next()) {
-            ReservationDTO tupleReservation = new ReservationDTO();
-            tupleReservation.setIdReservation(rset.getInt(1));
-            tupleReservation.setIdLivre(rset.getInt(2));
-            ;
-            tupleReservation.setIdMembre(rset.getInt(3));
-            tupleReservation.setDateReservation(rset.getDate(4));
-            return tupleReservation;
-        } else {
-            return null;
+        ReservationDTO tupleReservation = null;
+
+        try(
+            ResultSet rset = this.stmtExiste.executeQuery()) {
+            if(rset.next()) {
+                tupleReservation = new ReservationDTO();
+                tupleReservation.setIdReservation(rset.getInt(1));
+                tupleReservation.setIdLivre(rset.getInt(2));
+                tupleReservation.setIdMembre(rset.getInt(3));
+                tupleReservation.setDateReservation(rset.getDate(4));
+
+            }
         }
+
+        return tupleReservation;
     }
 
     /**
@@ -100,18 +112,21 @@ public class ReservationDAO {
 
         this.stmtExisteLivre.setInt(1,
             idLivre);
-        ResultSet rset = this.stmtExisteLivre.executeQuery();
-        if(rset.next()) {
-            ReservationDTO tupleReservation = new ReservationDTO();
-            tupleReservation.setIdReservation(rset.getInt(1));
-            tupleReservation.setIdLivre(rset.getInt(2));
-            ;
-            tupleReservation.setIdMembre(rset.getInt(3));
-            tupleReservation.setDateReservation(rset.getDate(4));
-            return tupleReservation;
-        } else {
-            return null;
+
+        ReservationDTO tupleReservation = null;
+
+        try(
+            ResultSet rset = this.stmtExisteLivre.executeQuery()) {
+            if(rset.next()) {
+                tupleReservation = new ReservationDTO();
+                tupleReservation.setIdReservation(rset.getInt(1));
+                tupleReservation.setIdLivre(rset.getInt(2));
+                tupleReservation.setIdMembre(rset.getInt(3));
+                tupleReservation.setDateReservation(rset.getDate(4));
+
+            }
         }
+        return tupleReservation;
     }
 
     /**
@@ -121,18 +136,22 @@ public class ReservationDAO {
 
         this.stmtExisteMembre.setInt(1,
             idMembre);
-        ResultSet rset = this.stmtExisteMembre.executeQuery();
-        if(rset.next()) {
-            ReservationDTO tupleReservation = new ReservationDTO();
-            tupleReservation.setIdReservation(rset.getInt(1));
-            tupleReservation.setIdLivre(rset.getInt(2));
-            ;
-            tupleReservation.setIdMembre(rset.getInt(3));
-            tupleReservation.setDateReservation(rset.getDate(4));
-            return tupleReservation;
-        } else {
-            return null;
+
+        ReservationDTO tupleReservation = null;
+
+        try(
+            ResultSet rset = this.stmtExisteMembre.executeQuery()) {
+            if(rset.next()) {
+                tupleReservation = new ReservationDTO();
+                tupleReservation.setIdReservation(rset.getInt(1));
+                tupleReservation.setIdLivre(rset.getInt(2));
+                tupleReservation.setIdMembre(rset.getInt(3));
+                tupleReservation.setDateReservation(rset.getDate(4));
+                return tupleReservation;
+            }
         }
+
+        return tupleReservation;
     }
 
     /**
