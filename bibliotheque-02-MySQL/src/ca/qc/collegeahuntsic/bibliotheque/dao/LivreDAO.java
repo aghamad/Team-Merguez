@@ -13,13 +13,16 @@ import ca.qc.collegeahuntsic.bibliotheque.db.Connexion;
 import ca.qc.collegeahuntsic.bibliotheque.dto.LivreDTO;
 
 /**
+ *
  * Permet d'effectuer les acc�s � la table livre.
+
  */
 
 public class LivreDAO extends DAO {
 
     /**
-     * TODO Auto-generated field javadoc
+     * TODO Auto-generated field javadoc.
+     * * @author .
      */
     private static final long serialVersionUID = 1L;
 
