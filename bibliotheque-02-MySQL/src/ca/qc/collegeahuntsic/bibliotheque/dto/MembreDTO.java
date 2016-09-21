@@ -20,18 +20,20 @@ public class MembreDTO {
     private int limitePret;
 
     private int nbPret;
-    
-    
 
-/**.
- * ceci est le  constructeur
- * @param idMembre  param id membre 
- * @param nom para nom
- * @param telephone para tel
- * @param limitePret para limite de pret 
- * @param nbPret para nombre pret 
- */
-    public MembreDTO(int idMembre, String nom, long telephone, int limitePret, int nbPret) {
+    /**.
+     * ceci est le  constructeur
+     * @param idMembre  param id membre
+     * @param nom para nom
+     * @param telephone para tel
+     * @param limitePret para limite de pret
+     * @param nbPret para nombre pret
+     */
+    public MembreDTO(int idMembre,
+        String nom,
+        long telephone,
+        int limitePret,
+        int nbPret) {
         super();
         this.idMembre = idMembre;
         this.nom = nom;
@@ -39,61 +41,74 @@ public class MembreDTO {
         this.limitePret = limitePret;
         this.nbPret = nbPret;
     }
- /**.
- *  elle get l'id Membre de pret
- *  @return idMembre 
- **/
+
+    /**.
+     * Ceci est le  constructeur vide
+     */
+    public MembreDTO() {
+        // TODO Auto-generated constructor stub
+    }
+
+    /**.
+     *  elle get l'id Membre de pret
+     *  @return idMembre
+     **/
     public int getIdMembre() {
         return this.idMembre;
     }
+
     /**.
      *  elle set l'id membre de pret
-     *  @param idMembre 
+     *  @param idMembre Le id d'un membre
      *  */
     public void setIdMembre(int idMembre) {
         this.idMembre = idMembre;
     }
+
     /**.
      *  elle get le nom de pret
-     *  @return nom 
+     *  @return nom
      *  */
     public String getNom() {
         return this.nom;
     }
+
     /**.
      *  elle set le nom de pret
-     *  @param nom 
+     *  @param nom le nom d'un membre
      *  */
     public void setNom(String nom) {
         this.nom = nom;
     }
+
     /**.
      *  elle get le telephone de pret
-     *  @return telephone 
+     *  @return telephone
      *  */
     public long getTelephone() {
         return this.telephone;
     }
+
     /**.
      *  elle set le nombre de pret
-     *  @param telephone 
+     *  @param telephone Numero de telephone
      *  */
-    
     public void setTelephone(long telephone) {
         this.telephone = telephone;
     }
-    
+
     /**.
      *  elle get le nombre de pret
-     *  @return limitePret 
+     *  @return limitePret
      *  */
-    
+
     public int getLimitePret() {
         return this.limitePret;
     }
+
     /**.
      *  elle set le nombre de pret
-     *  @param limitePret 
+     *  @param limitePret La limite de pret
      *  */
     public void setLimitePret(int limitePret) {
         this.limitePret = limitePret;
@@ -101,16 +116,16 @@ public class MembreDTO {
 
     /**.
      *  elle get le nombre de pret
-     *  @return getNbPret 
+     *  @return getNbPret
      *  */
-    
+
     public int getNbPret() {
         return this.nbPret;
     }
-    
+
     /**.
      *  elle set le nombre de pret
-     *  @param nbPret 
+     *  @param nbPret Le nombre de pret
      *  */
     public void setNbPret(int nbPret) {
         this.nbPret = nbPret;
