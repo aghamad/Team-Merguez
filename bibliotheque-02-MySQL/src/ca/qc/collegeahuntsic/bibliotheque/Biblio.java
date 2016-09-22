@@ -220,30 +220,26 @@ public final class Biblio {
     }
 
     /**
-     * V�rifie si la fin du traitement des transactions est
-     * atteinte.
+     * Verifie si la fin du traitement des transactions est en atteinte.
      *
      * @param transaction transaction
-     * @return commande commande
+     * @return fichierFin Boolean
      */
     static boolean finTransaction(String transaction) {
         /* fin de fichier atteinte */
-        if(transaction == null) {
-            return true;
+        boolean fichierFin = transaction == null;
+
+        if(!fichierFin) {
+            final StringTokenizer tokenizer = new StringTokenizer(transaction,
+                " ");
+
+            if(!tokenizer.hasMoreTokens()) {
+                fichierFin = false;
+            } else if("exit".equals(tokenizer.nextToken())) {
+                fichierFin = true;
+            }
         }
-
-        final StringTokenizer tokenizer = new StringTokenizer(transaction,
-            " ");
-
-        /* ligne ne contenant que des espaces */
-        if(!tokenizer.hasMoreTokens()) {
-            return false;
-        }
-
-        /* commande "exit" */
-        final String commande = tokenizer.nextToken();
-
-        return "exit".equals(commande);
+        return fichierFin;
     }
 
     /** lecture d'une cha�ne de caract�res de la transaction entr�e � l'�cran .
