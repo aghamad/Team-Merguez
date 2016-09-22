@@ -7,7 +7,7 @@ package ca.qc.collegeahuntsic.bibliotheque.dto;
 import java.sql.Date;
 
 /**
- * Permet de repr�senter un tuple de la table livre.
+ * Permet de représenter un tuple de la table livre.
  * @author Team-Merguez
 */
 
