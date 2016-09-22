@@ -28,7 +28,7 @@ import java.sql.SQLException;
  * La classe Connexion permet de recupere une connection ainsi que de la fermer.
  * @author Team-Merguez
  * */
-public class Connexion {
+public class Connexion implements AutoCloseable {
 
     private Connection conn;
 
@@ -151,5 +151,17 @@ public class Connexion {
             + "distant : Oracle install� au D�partement d'Informatique du Coll�ge Ahuntsic\n"
             + "postgres : Postgres install� localement\n"
             + "access : Microsoft Access install� localement et inscrit dans ODBC";
+    }
+
+    /**
+     * {@inheritDoc}}
+     */
+    @Override
+    public void close() throws Exception {
+        rollback();
+        getConnection().close();
+        System.out.println("\nConnexion fermée"
+            + " "
+            + getConnection());
     }
 }
