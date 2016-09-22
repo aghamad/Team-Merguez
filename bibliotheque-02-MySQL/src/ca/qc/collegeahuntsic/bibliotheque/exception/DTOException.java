@@ -1,24 +1,19 @@
-// Fichier FacadeException.java
-// Auteur : Ary-Carson Bernier
-// Date de création : 2016-09-12
 
 package ca.qc.collegeahuntsic.bibliotheque.exception;
 
 /**
- * Cette classe consiste a gérer les exceptions relié à la facade .
+ * Cette exception est utilisée en cas de problème avec l'objet {@link ca.qc.collegeahuntsic.bibliotheque.dto.DTO}.
  *
- * @author Ary-Carson Bernier
+ * @author Team-Merguez
  */
-public class FacadeException extends Exception {
-
-    private static final long serialVersionUID = 1L;
+public class DTOException {
 
     /**
      * Constructs a new exception with {@code null} as its detail message.
      * The cause is not initialized, and may subsequently be initialized by a
      * call to {@link java.lang.Throwable#initCause}.
      */
-    public FacadeException() {
+    public DTOException() {
         super();
     }
 
@@ -30,7 +25,7 @@ public class FacadeException extends Exception {
      * @param   message   the detail message. The detail message is saved for
      *          later retrieval by the {@link java.lang.Throwable#getMessage()} method.
      */
-    public FacadeException(String message) {
+    public DTOException(String message) {
         super(message);
     }
 
@@ -48,7 +43,7 @@ public class FacadeException extends Exception {
      *         unknown.)
      * @since  1.4
      */
-    public FacadeException(String message,
+    public DTOException(String message,
         Throwable cause) {
         super(message,
             cause);
@@ -68,7 +63,7 @@ public class FacadeException extends Exception {
      *         unknown.)
      * @since  1.4
      */
-    public FacadeException(Throwable cause) {
+    public DTOException(Throwable cause) {
         super(cause);
     }
 
@@ -86,7 +81,7 @@ public class FacadeException extends Exception {
      *                           be writable
      * @since 1.7
      */
-    protected FacadeException(String message,
+    protected DTOException(String message,
         Throwable cause,
         boolean enableSuppression,
         boolean writableStackTrace) {
@@ -95,4 +90,5 @@ public class FacadeException extends Exception {
             enableSuppression,
             writableStackTrace);
     }
+
 }
