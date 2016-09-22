@@ -10,6 +10,7 @@ import ca.qc.collegeahuntsic.bibliotheque.dao.ReservationDAO;
 import ca.qc.collegeahuntsic.bibliotheque.db.Connexion;
 import ca.qc.collegeahuntsic.bibliotheque.dto.LivreDTO;
 import ca.qc.collegeahuntsic.bibliotheque.exception.BibliothequeException;
+import ca.qc.collegeahuntsic.bibliotheque.exception.DAOException;
 import ca.qc.collegeahuntsic.bibliotheque.exception.ServiceException;
 
 /**
@@ -46,12 +47,12 @@ public class LivreService {
       * @throws ServiceException Une exception qui fournit des informations sur une erreur d'accès de base de données ou d'autres erreurs
       * @throws BibliothequeException Une exception qui fournit des informations sur une erreur de la bibliotheque ou d'autres erreurs
       * @throws Exception Une exception qui fournit des informations sur une erreur vague
+      * @throws SQLException Une exception qui fournit des informations sur une erreur vague
       */
     public void acquerir(int idLivre,
         String titre,
         String auteur,
-        String dateAcquisition) throws BibliothequeException,
-        ServiceException,
+        String dateAcquisition) throws ServiceException,
         Exception {
         try {
             /* V�rifie si le livre existe d�ja */
@@ -66,10 +67,10 @@ public class LivreService {
                 auteur,
                 dateAcquisition);
             this.cx.commit();
-        } catch(SQLException e) {
-            //            System.out.println(e);
+
+        } catch(DAOException e) {
             this.cx.rollback();
-            throw e;
+            throw new ServiceException(e);
         }
     }
 
@@ -79,24 +80,24 @@ public class LivreService {
       * @throws SQLException Une exception qui fournit des informations sur une erreur d'accès de base de données ou d'autres erreurs
       * @throws Exception  Une exception qui fournit des informations sur une erreur vague
       * @throws BibliothequeException Une exception qui fournit des informations sur une erreur de la bibliotheque ou d'autres erreurs
+      * @throws ServiceException Une exception de Serivce DAO
       */
-    public void vendre(int idLivre) throws SQLException,
-        BibliothequeException,
+    public void vendre(int idLivre) throws ServiceException,
         Exception {
         try {
             final LivreDTO tupleLivre = this.livre.getLivre(idLivre);
             if(tupleLivre == null) {
-                throw new BibliothequeException("Livre inexistant: "
+                throw new ServiceException("Livre inexistant: "
                     + idLivre);
             }
             if(tupleLivre.getIdMembre() != 0) {
-                throw new BibliothequeException("Livre "
+                throw new ServiceException("Livre "
                     + idLivre
                     + " prete a "
                     + tupleLivre.getIdMembre());
             }
             if(this.reservation.getReservationLivre(idLivre) != null) {
-                throw new BibliothequeException("Livre "
+                throw new ServiceException("Livre "
                     + idLivre
                     + " r�serv� ");
             }
@@ -104,14 +105,14 @@ public class LivreService {
             /* Suppression du livre. */
             final int nb = this.livre.vendre(idLivre);
             if(nb == 0) {
-                throw new BibliothequeException("Livre "
+                throw new ServiceException("Livre "
                     + idLivre
                     + " inexistant");
             }
             this.cx.commit();
-        } catch(Exception e) {
+        } catch(DAOException e) {
             this.cx.rollback();
-            throw e;
+            throw new ServiceException(e);
         }
     }
 }
