@@ -43,19 +43,15 @@ public class LivreService {
       * @param idLivre Le id d'un livre
       * @param auteur L'auteur d'un livre
       * @param dateAcquisition La date d'acquisition du livre par le membre
-      * @throws SQLException Une exception qui fournit des informations sur une erreur d'accès de base de données ou d'autres erreurs
+      * @throws ServiceException Une exception qui fournit des informations sur une erreur d'accès de base de données ou d'autres erreurs
       * @throws BibliothequeException Une exception qui fournit des informations sur une erreur de la bibliotheque ou d'autres erreurs
       * @throws Exception Une exception qui fournit des informations sur une erreur vague
       */
     public void acquerir(int idLivre,
         String titre,
         String auteur,
-        /**
-         *
-         *@throws ServiceException Une exception sort une exception pour gérer les erreurs.
-         */
-        String dateAcquisition) throws ServiceException,
-        BibliothequeException,
+        String dateAcquisition) throws BibliothequeException,
+        ServiceException,
         Exception {
         try {
             /* V�rifie si le livre existe d�ja */
