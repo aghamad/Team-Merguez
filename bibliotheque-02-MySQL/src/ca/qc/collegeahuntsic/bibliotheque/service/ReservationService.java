@@ -5,7 +5,6 @@
 package ca.qc.collegeahuntsic.bibliotheque.service;
 
 import java.sql.Date;
-import java.sql.SQLException;
 import ca.qc.collegeahuntsic.bibliotheque.dao.LivreDAO;
 import ca.qc.collegeahuntsic.bibliotheque.dao.MembreDAO;
 import ca.qc.collegeahuntsic.bibliotheque.dao.ReservationDAO;
@@ -14,12 +13,16 @@ import ca.qc.collegeahuntsic.bibliotheque.dto.LivreDTO;
 import ca.qc.collegeahuntsic.bibliotheque.dto.MembreDTO;
 import ca.qc.collegeahuntsic.bibliotheque.dto.ReservationDTO;
 import ca.qc.collegeahuntsic.bibliotheque.exception.BibliothequeException;
+import ca.qc.collegeahuntsic.bibliotheque.exception.ServiceException;
 
 /**
  * Cette classe avec la Connexion reserve, prend une reservation et annule une reservation d'un livre.
  * @author Team-Marquez
  * */
-public class ReservationService {
+public class ReservationService extends Service {
+
+    private static final long serialVersionUID = 1L;
+
     private LivreDAO livre;
 
     private MembreDAO membre;
@@ -57,14 +60,14 @@ public class ReservationService {
       * @param idLivre Le id d'un livre
       * @param idMembre Le id d'un membre
       * @param dateReservation La date de reservation d'un livre
-      * @throws SQLException Une exception qui fournit des informations sur une erreur d'accès de base de données ou d'autres erreurs
+      * @throws ServiceException Une exception qui fournit des informations sur une erreur d'accès de base de données ou d'autres erreurs
       * @throws BibliothequeException Une exception qui fournit des informations sur une erreur de la bibliotheque ou d'autres erreurs
       * @throws Exception Une exception qui fournit des informations sur une erreur vague
       */
     public void reserver(int idReservation,
         int idLivre,
         int idMembre,
-        String dateReservation) throws SQLException,
+        String dateReservation) throws ServiceException,
         BibliothequeException,
         Exception {
         try {
@@ -123,12 +126,12 @@ public class ReservationService {
       * La r�servation doit la �tre la premi�re en liste.
       * @param idReservation Le id d'une reservation
       * @param datePret La date d'acquisition du livre par le membre
-      * @throws SQLException Une exception qui fournit des informations sur une erreur d'accès de base de données ou d'autres erreurs
+      * @throws ServiceException Une exception qui fournit des informations sur une erreur d'accès de base de données ou d'autres erreurs
       * @throws BibliothequeException Une exception qui fournit des informations sur une erreur de la bibliotheque ou d'autres erreurs
       * @throws Exception Une exception qui fournit des informations sur une erreur vague
       */
     public void prendreRes(int idReservation,
-        String datePret) throws SQLException,
+        String datePret) throws ServiceException,
         BibliothequeException,
         Exception {
         try {
@@ -199,11 +202,11 @@ public class ReservationService {
       * Annulation d'une r�servation.
       * La r�servation doit exister.
       * @param idReservation Le id d'une reservation
-      * @throws SQLException Une exception qui fournit des informations sur une erreur d'accès de base de données ou d'autres erreurs
+      * @throws ServiceException Une exception qui fournit des informations sur une erreur d'accès de base de données ou d'autres erreurs
       * @throws BibliothequeException Une exception qui fournit des informations sur une erreur de la bibliotheque ou d'autres erreurs
       * @throws Exception Une exception qui fournit des informations sur une erreur vague
       */
-    public void annulerRes(int idReservation) throws SQLException,
+    public void annulerRes(int idReservation) throws ServiceException,
         BibliothequeException,
         Exception {
         try {
