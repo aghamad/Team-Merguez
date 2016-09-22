@@ -9,7 +9,8 @@ import ca.qc.collegeahuntsic.bibliotheque.dao.MembreDAO;
 import ca.qc.collegeahuntsic.bibliotheque.dao.ReservationDAO;
 import ca.qc.collegeahuntsic.bibliotheque.db.Connexion;
 import ca.qc.collegeahuntsic.bibliotheque.dto.MembreDTO;
-import ca.qc.collegeahuntsic.bibliotheque.exception.BibliothequeException;
+import ca.qc.collegeahuntsic.bibliotheque.exception.DAOException;
+//import ca.qc.collegeahuntsic.bibliotheque.exception.BibliothequeException;
 import ca.qc.collegeahuntsic.bibliotheque.exception.ServiceException;
 
 /**
@@ -45,19 +46,17 @@ public class MembreService {
       * @param telephone Le numero de telephone d'un membre
       * @param limitePret La limit de pret d'un membre
       * @throws ServiceException Une exception qui fournit des informations sur une erreur d'accès de base de données ou d'autres erreurs
-      * @throws BibliothequeException Une exception qui fournit des informations sur une erreur de la bibliotheque ou d'autres erreurs
       * @throws Exception Une exception qui fournit des informations sur une erreur vague
       */
     public void inscrire(int idMembre,
         String nom,
         long telephone,
         int limitePret) throws ServiceException,
-        BibliothequeException,
         Exception {
         try {
             /* V�rifie si le membre existe d�ja */
             if(this.membre.existe(idMembre)) {
-                throw new BibliothequeException("Membre existe deja: "
+                throw new ServiceException("Membre existe deja: "
                     + idMembre);
             }
 
@@ -67,7 +66,7 @@ public class MembreService {
                 telephone,
                 limitePret);
             this.cx.commit();
-        } catch(Exception e) {
+        } catch(DAOException e) {
             this.cx.rollback();
             throw e;
         }
@@ -78,26 +77,25 @@ public class MembreService {
       * @param idMembre Le id d'un membre
 
       * @throws ServiceException Une exception qui fournit des informations sur une erreur d'accès de base de données ou d'autres erreurs
-      * @throws BibliothequeException Une exception qui fournit des informations sur une erreur de la bibliotheque ou d'autres erreurs
+      
       * @throws Exception Une exception qui fournit des informations sur une erreur vague
       */
     public void desinscrire(int idMembre) throws ServiceException,
-        BibliothequeException,
         Exception {
         try {
             /* V�rifie si le membre existe et son nombre de pret en cours */
             final MembreDTO tupleMembre = this.membre.getMembre(idMembre);
             if(tupleMembre == null) {
-                throw new BibliothequeException("Membre inexistant: "
+                throw new ServiceException("Membre inexistant: "
                     + idMembre);
             }
             if(tupleMembre.getNbPret() > 0) {
-                throw new BibliothequeException("Le membre "
+                throw new ServiceException("Le membre "
                     + idMembre
                     + " a encore des prets.");
             }
             if(this.reservation.getReservationMembre(idMembre) != null) {
-                throw new BibliothequeException("Membre "
+                throw new ServiceException("Membre "
                     + idMembre
                     + " a des r�servations");
             }
@@ -105,12 +103,12 @@ public class MembreService {
             /* Suppression du membre */
             final int nb = this.membre.desinscrire(idMembre);
             if(nb == 0) {
-                throw new BibliothequeException("Membre "
+                throw new ServiceException("Membre "
                     + idMembre
                     + " inexistant");
             }
             this.cx.commit();
-        } catch(Exception e) {
+        } catch(DAOException e) {
             this.cx.rollback();
             throw e;
         }
