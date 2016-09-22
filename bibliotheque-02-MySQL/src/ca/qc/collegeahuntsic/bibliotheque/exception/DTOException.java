@@ -6,7 +6,9 @@ package ca.qc.collegeahuntsic.bibliotheque.exception;
  *
  * @author Team-Merguez
  */
-public class DTOException {
+public class DTOException extends Exception {
+
+    private static final long serialVersionUID = 1L;
 
     /**
      * Constructs a new exception with {@code null} as its detail message.
