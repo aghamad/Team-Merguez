@@ -17,7 +17,7 @@ import ca.qc.collegeahuntsic.bibliotheque.exception.DAOException;
 import ca.qc.collegeahuntsic.bibliotheque.exception.ServiceException;
 
 /**
- * Cette classe avec la Connexion reserve, prend une reservation et annule une reservation d'un livre.
+ * cette classe avec la Connexion reserve, prend une reservation et annule une reservation d'un livre.
  * @author Team-Marquez
  * */
 public class ReservationService extends Service {
