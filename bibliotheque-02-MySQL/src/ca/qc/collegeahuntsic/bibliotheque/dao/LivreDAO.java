@@ -11,6 +11,7 @@ import java.sql.SQLException;
 import java.sql.Types;
 import ca.qc.collegeahuntsic.bibliotheque.db.Connexion;
 import ca.qc.collegeahuntsic.bibliotheque.dto.LivreDTO;
+import ca.qc.collegeahuntsic.bibliotheque.exception.DAOException;
 
 /**
  * DAO pour effectuer des CRUDs avec la table <code>livre</code>.
@@ -40,18 +41,25 @@ public class LivreDAO extends DAO {
       *
       * @param cx connexion
       *
-      *@throws SQLException Exeption
+      *@throws DAOException Exeption
       */
-    public LivreDAO(Connexion cx) throws SQLException {
+    public LivreDAO(Connexion cx) throws DAOException {
         super(cx);
         this.cx = super.getConnexion();
-        this.stmtExiste = cx.getConnection()
-            .prepareStatement("select idlivre, titre, auteur, dateAcquisition, idMembre, datePret from livre where idlivre = ?");
-        this.stmtInsert = cx.getConnection().prepareStatement("insert into livre (idLivre, titre, auteur, dateAcquisition, idMembre, datePret) "
-            + "values (?,?,?,?,null,null)");
-        this.stmtUpdate = cx.getConnection().prepareStatement("update livre set idMembre = ?, datePret = ? "
-            + "where idLivre = ?");
-        this.stmtDelete = cx.getConnection().prepareStatement("delete from livre where idlivre = ?");
+        try {
+            this.stmtExiste = cx.getConnection().prepareStatement(
+                "select idlivre, titre, auteur, dateAcquisition, idMembre, datePret from livre where idlivre = ?");
+            this.stmtInsert = cx.getConnection().prepareStatement(
+                "insert into livre (idLivre, titre, auteur, dateAcquisition, idMembre, datePret) "
+                    + "values (?,?,?,?,null,null)");
+            this.stmtUpdate = cx.getConnection()
+                .prepareStatement("update livre set idMembre = ?, datePret = ? "
+                    + "where idLivre = ?");
+            this.stmtDelete = cx.getConnection()
+                .prepareStatement("delete from livre where idlivre = ?");
+        } catch(SQLException sqlException) {
+            throw new DAOException(sqlException);
+        }
     }
 
     /**
@@ -67,18 +75,23 @@ public class LivreDAO extends DAO {
       * Verifie si un livre existe.
       *
       * @return livreExiste si le livre existe
-      * @throws SQLException Exeptions
+      * @throws DAOException Exeptions
       * @param idLivre parametre id
       */
-    public boolean existe(int idLivre) throws SQLException {
+    public boolean existe(int idLivre) throws DAOException {
 
-        this.stmtExiste.setInt(1,
-            idLivre);
-        boolean livreExiste = false;
-        try(
-            ResultSet rset = this.stmtExiste.executeQuery()) {
-            livreExiste = rset.next();
-            rset.close();
+        boolean livreExiste;
+        try {
+            this.stmtExiste.setInt(1,
+                idLivre);
+            livreExiste = false;
+            try(
+                ResultSet rset = this.stmtExiste.executeQuery()) {
+                livreExiste = rset.next();
+                rset.close();
+            }
+        } catch(SQLException sqlException) {
+            throw new DAOException(sqlException);
         }
         return livreExiste;
     }
@@ -87,28 +100,33 @@ public class LivreDAO extends DAO {
       * Lecture d'un livre.
       *
       * @return tupleLivre si le livre existe
-      * @throws SQLException Exeptions
+      * @throws DAOException Exeptions
       * @param idLivre parametre id
       */
-    public LivreDTO getLivre(int idLivre) throws SQLException {
+    public LivreDTO getLivre(int idLivre) throws DAOException {
         // test
-        this.stmtExiste.setInt(1,
-            idLivre);
+        LivreDTO tupleLivre;
+        try {
+            this.stmtExiste.setInt(1,
+                idLivre);
 
-        LivreDTO tupleLivre = null;
+            tupleLivre = null;
 
-        try(
-            ResultSet rset = this.stmtExiste.executeQuery()) {
+            try(
+                ResultSet rset = this.stmtExiste.executeQuery()) {
 
-            if(rset.next()) {
-                tupleLivre = new LivreDTO();
-                tupleLivre.setIdLivre(idLivre);
-                tupleLivre.setTitre(rset.getString(2));
-                tupleLivre.setAuteur(rset.getString(3));
-                tupleLivre.setDateAcquisition(rset.getDate(4));
-                tupleLivre.setIdMembre(rset.getInt(5));
-                tupleLivre.setDatePret(rset.getDate(6));
+                if(rset.next()) {
+                    tupleLivre = new LivreDTO();
+                    tupleLivre.setIdLivre(idLivre);
+                    tupleLivre.setTitre(rset.getString(2));
+                    tupleLivre.setAuteur(rset.getString(3));
+                    tupleLivre.setDateAcquisition(rset.getDate(4));
+                    tupleLivre.setIdMembre(rset.getInt(5));
+                    tupleLivre.setDatePret(rset.getDate(6));
+                }
             }
+        } catch(SQLException sqlException) {
+            throw new DAOException(sqlException);
         }
 
         return tupleLivre;
@@ -120,22 +138,26 @@ public class LivreDAO extends DAO {
       * @param titre le titre
       * @param auteur le auteur
       * @param dateAcquisition la dateAcquisition
-      *  @throws SQLException Exeptions
+      * @throws DAOException Exeptions
       */
     public void acquerir(int idLivre,
         String titre,
         String auteur,
-        String dateAcquisition) throws SQLException {
+        String dateAcquisition) throws DAOException {
         /* Ajout du livre. */
-        this.stmtInsert.setInt(1,
-            idLivre);
-        this.stmtInsert.setString(2,
-            titre);
-        this.stmtInsert.setString(3,
-            auteur);
-        this.stmtInsert.setDate(4,
-            Date.valueOf(dateAcquisition));
-        this.stmtInsert.executeUpdate();
+        try {
+            this.stmtInsert.setInt(1,
+                idLivre);
+            this.stmtInsert.setString(2,
+                titre);
+            this.stmtInsert.setString(3,
+                auteur);
+            this.stmtInsert.setDate(4,
+                Date.valueOf(dateAcquisition));
+            this.stmtInsert.executeUpdate();
+        } catch(SQLException sqlException) {
+            throw new DAOException(sqlException);
+        }
     }
 
     /**
@@ -143,50 +165,62 @@ public class LivreDAO extends DAO {
       *  @param idLivre le id d'un livre
       * @param idMembre le id d'un membre
       * @param datePret la date du pret
-      *@throws SQLException Exeptions
+      *@throws DAOException Exeptions
       *@return update
       */
     public int preter(int idLivre,
         int idMembre,
-        String datePret) throws SQLException {
+        String datePret) throws DAOException {
         /* Enregistrement du pret. */
-        this.stmtUpdate.setInt(1,
-            idMembre);
-        this.stmtUpdate.setDate(2,
-            Date.valueOf(datePret));
-        this.stmtUpdate.setInt(3,
-            idLivre);
-        return this.stmtUpdate.executeUpdate();
+        try {
+            this.stmtUpdate.setInt(1,
+                idMembre);
+            this.stmtUpdate.setDate(2,
+                Date.valueOf(datePret));
+            this.stmtUpdate.setInt(3,
+                idLivre);
+            return this.stmtUpdate.executeUpdate();
+        } catch(SQLException sqlException) {
+            throw new DAOException(sqlException);
+        }
     }
 
     /**
       * Rendre le livre disponible (non-pr�t�).
       * @param idLivre le id d'un livre
-      *@throws SQLException Exeptions
+      *@throws DAOException Exeptions
       *@return update
       */
-    public int retourner(int idLivre) throws SQLException {
+    public int retourner(int idLivre) throws DAOException {
         /* Enregistrement du pret. */
-        this.stmtUpdate.setNull(1,
-            Types.INTEGER);
-        this.stmtUpdate.setNull(2,
-            Types.DATE);
-        this.stmtUpdate.setInt(3,
-            idLivre);
-        return this.stmtUpdate.executeUpdate();
+        try {
+            this.stmtUpdate.setNull(1,
+                Types.INTEGER);
+            this.stmtUpdate.setNull(2,
+                Types.DATE);
+            this.stmtUpdate.setInt(3,
+                idLivre);
+            return this.stmtUpdate.executeUpdate();
+        } catch(SQLException sqlException) {
+            throw new DAOException(sqlException);
+        }
     }
 
     /**
       * Suppression d'un livre.
       *
       *  @param idLivre le id d'un livre
-      *@throws SQLException Exeptions
+      *@throws DAOException Exeptions
       *@return update
       */
-    public int vendre(int idLivre) throws SQLException {
+    public int vendre(int idLivre) throws DAOException {
         /* Suppression du livre. */
-        this.stmtDelete.setInt(1,
-            idLivre);
-        return this.stmtDelete.executeUpdate();
+        try {
+            this.stmtDelete.setInt(1,
+                idLivre);
+            return this.stmtDelete.executeUpdate();
+        } catch(SQLException sqlException) {
+            throw new DAOException(sqlException);
+        }
     }
 }

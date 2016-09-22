@@ -7,6 +7,7 @@ package ca.qc.collegeahuntsic.bibliotheque.util;
 import java.sql.SQLException;
 import java.sql.Statement;
 import ca.qc.collegeahuntsic.bibliotheque.db.Connexion;
+import ca.qc.collegeahuntsic.bibliotheque.exception.DAOException;
 
 /**
  *<pre>
@@ -43,71 +44,74 @@ final class CreerBD {
      * TODO Auto-generated field javadoc.
      *
      * Main
-     * @throws SQLException est le nom de l'exception qui est lancer.
+     * @throws DAOException est le nom de l'exception qui est lancer.
      * @throws Exception est le nom de l'exception qui est lancer.
      * @param args tableau de string.
      */
-    public static void main(String[] args) throws Exception,
-        SQLException {
+    public static void main(String[] args) throws DAOException {
 
         if(args.length < 3) {
             System.out.println("Usage: java CreerBD <serveur> <bd> <user> <password>");
             return;
         }
 
-        final Connexion cx = new Connexion(args[0],
-            args[1],
-            args[2],
-            args[3]);
+        try {
+            final Connexion cx = new Connexion(args[0],
+                args[1],
+                args[2],
+                args[3]);
 
-        try(
-            Statement stmt = cx.getConnection().createStatement()) {
+            try(
+                Statement stmt = cx.getConnection().createStatement()) {
 
-            stmt.executeUpdate("DROP TABLE IF EXISTS reservation CASCADE");
+                stmt.executeUpdate("DROP TABLE IF EXISTS reservation CASCADE");
 
-            stmt.executeUpdate("DROP TABLE IF EXISTS livre CASCADE");
+                stmt.executeUpdate("DROP TABLE IF EXISTS livre CASCADE");
 
-            stmt.executeUpdate("DROP TABLE IF EXISTS membre CASCADE");
+                stmt.executeUpdate("DROP TABLE IF EXISTS membre CASCADE");
 
-            stmt.executeUpdate("CREATE TABLE membre "
-                + "( "
-                + "idMembre INTEGER(3) CHECK(idMembre > 0), "
-                + "nom VARCHAR(10) NOT NULL,"
-                + "telephone BIGINT(10) , "
-                + "limitePret INTEGER(2) CHECK(limitePret > 0 AND limitePret <= 10) , "
-                + "nbpret INTEGER(2) DEFAULT 0 CHECK(nbpret >= 0) , "
-                + "CONSTRAINT cleMembre PRIMARY KEY (idMembre), "
-                + "CONSTRAINT limiteNbPret CHECK(nbpret <= limitePret) "
-                + ")");
+                stmt.executeUpdate("CREATE TABLE membre "
+                    + "( "
+                    + "idMembre INTEGER(3) CHECK(idMembre > 0), "
+                    + "nom VARCHAR(10) NOT NULL,"
+                    + "telephone BIGINT(10) , "
+                    + "limitePret INTEGER(2) CHECK(limitePret > 0 AND limitePret <= 10) , "
+                    + "nbpret INTEGER(2) DEFAULT 0 CHECK(nbpret >= 0) , "
+                    + "CONSTRAINT cleMembre PRIMARY KEY (idMembre), "
+                    + "CONSTRAINT limiteNbPret CHECK(nbpret <= limitePret) "
+                    + ")");
 
-            stmt.executeUpdate("CREATE TABLE livre "
-                + "( "
-                + "idLivre INTEGER(3) CHECK(idLivre > 0) , "
-                + "titre VARCHAR(10) NOT NULL, "
-                + "auteur VARCHAR(10) NOT NULL,"
-                + "dateAcquisition DATE NOT NULL,"
-                + "idMembre INTEGER(3) , "
-                + "datePret DATE , "
-                + "CONSTRAINT cleLivre PRIMARY KEY (idLivre), "
-                + "CONSTRAINT refPretMembre FOREIGN KEY (idMembre) REFERENCES membre(idMembre) "
-                + ")");
+                stmt.executeUpdate("CREATE TABLE livre "
+                    + "( "
+                    + "idLivre INTEGER(3) CHECK(idLivre > 0) , "
+                    + "titre VARCHAR(10) NOT NULL, "
+                    + "auteur VARCHAR(10) NOT NULL,"
+                    + "dateAcquisition DATE NOT NULL,"
+                    + "idMembre INTEGER(3) , "
+                    + "datePret DATE , "
+                    + "CONSTRAINT cleLivre PRIMARY KEY (idLivre), "
+                    + "CONSTRAINT refPretMembre FOREIGN KEY (idMembre) REFERENCES membre(idMembre) "
+                    + ")");
 
-            stmt.executeUpdate("CREATE TABLE reservation "
-                + "( "
-                + "idReservation INTEGER(3) , "
-                + "idMembre INTEGER(3) , "
-                + "idLivre INTEGER(3) , "
-                + "dateReservation DATE , "
-                + "CONSTRAINT cleReservation PRIMARY KEY (idReservation) , "
-                + "CONSTRAINT cleCandidateReservation UNIQUE (idMembre,idLivre) ,"
-                + "CONSTRAINT refReservationMembre FOREIGN KEY (idMembre) REFERENCES membre(idMembre) ON DELETE CASCADE , "
-                + "CONSTRAINT refReservationLivre FOREIGN KEY (idLivre) REFERENCES livre(idLivre) ON DELETE CASCADE "
-                + ")");
+                stmt.executeUpdate("CREATE TABLE reservation "
+                    + "( "
+                    + "idReservation INTEGER(3) , "
+                    + "idMembre INTEGER(3) , "
+                    + "idLivre INTEGER(3) , "
+                    + "dateReservation DATE , "
+                    + "CONSTRAINT cleReservation PRIMARY KEY (idReservation) , "
+                    + "CONSTRAINT cleCandidateReservation UNIQUE (idMembre,idLivre) ,"
+                    + "CONSTRAINT refReservationMembre FOREIGN KEY (idMembre) REFERENCES membre(idMembre) ON DELETE CASCADE , "
+                    + "CONSTRAINT refReservationLivre FOREIGN KEY (idLivre) REFERENCES livre(idLivre) ON DELETE CASCADE "
+                    + ")");
 
-            stmt.close();
+                stmt.close();
+            }
+
+            cx.fermer();
+        } catch(SQLException sqlException) {
+            throw new DAOException(sqlException);
         }
-
-        cx.fermer();
     }
 
 }
