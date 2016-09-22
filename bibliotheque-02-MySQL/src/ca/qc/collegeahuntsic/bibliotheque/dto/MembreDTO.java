@@ -21,8 +21,8 @@ public class MembreDTO {
 
     private int nbPret;
 
-    /**.
-     * ceci est le  constructeur
+    /**
+     * ceci est le  constructeur.
      * @param idMembre  param id membre
      * @param nom para nom
      * @param telephone para tel
@@ -42,63 +42,63 @@ public class MembreDTO {
         this.nbPret = nbPret;
     }
 
-    /**.
-     * Ceci est le  constructeur vide
+    /**
+     * Ceci est le  constructeur vide.
      */
     public MembreDTO() {
         // TODO Auto-generated constructor stub
     }
 
-    /**.
-     *  elle get l'id Membre de pret
+    /**
+     *  elle get l'id Membre de pret.
      *  @return idMembre
      **/
     public int getIdMembre() {
         return this.idMembre;
     }
 
-    /**.
-     *  elle set l'id membre de pret
+    /**
+     *  elle set l'id membre de pret.
      *  @param idMembre Le id d'un membre
      *  */
     public void setIdMembre(int idMembre) {
         this.idMembre = idMembre;
     }
 
-    /**.
-     *  elle get le nom de pret
+    /**
+     *  elle get le nom de pret.
      *  @return nom
      *  */
     public String getNom() {
         return this.nom;
     }
 
-    /**.
-     *  elle set le nom de pret
+    /**
+     *  elle set le nom de pret.
      *  @param nom le nom d'un membre
      *  */
     public void setNom(String nom) {
         this.nom = nom;
     }
 
-    /**.
-     *  elle get le telephone de pret
+    /**
+     *  elle get le telephone de pret.
      *  @return telephone
      *  */
     public long getTelephone() {
         return this.telephone;
     }
 
-    /**.
-     *  elle set le nombre de pret
+    /**
+     *  elle set le nombre de pret.
      *  @param telephone Numero de telephone
      *  */
     public void setTelephone(long telephone) {
         this.telephone = telephone;
     }
 
-    /**.
-     *  elle get le nombre de pret
+    /**
+     *  elle get le nombre de pret.
      *  @return limitePret
      *  */
 
@@ -106,16 +106,16 @@ public class MembreDTO {
         return this.limitePret;
     }
 
-    /**.
-     *  elle set le nombre de pret
+    /**
+     *  elle set le nombre de pret.
      *  @param limitePret La limite de pret
      *  */
     public void setLimitePret(int limitePret) {
         this.limitePret = limitePret;
     }
 
-    /**.
-     *  elle get le nombre de pret
+    /**
+     *  elle get le nombre de pret.
      *  @return getNbPret
      *  */
 
@@ -123,8 +123,8 @@ public class MembreDTO {
         return this.nbPret;
     }
 
-    /**.
-     *  elle set le nombre de pret
+    /**
+     *  elle set le nombre de pret.
      *  @param nbPret Le nombre de pret
      *  */
     public void setNbPret(int nbPret) {

@@ -10,6 +10,7 @@ import ca.qc.collegeahuntsic.bibliotheque.dao.ReservationDAO;
 import ca.qc.collegeahuntsic.bibliotheque.db.Connexion;
 import ca.qc.collegeahuntsic.bibliotheque.dto.LivreDTO;
 import ca.qc.collegeahuntsic.bibliotheque.exception.BibliothequeException;
+import ca.qc.collegeahuntsic.bibliotheque.exception.ServiceException;
 
 /**
  * Cette classe avec la Connexion acqueit et vend un livre.
@@ -49,13 +50,17 @@ public class LivreService {
     public void acquerir(int idLivre,
         String titre,
         String auteur,
-        String dateAcquisition) throws SQLException,
+        /**
+         *
+         *@throws ServiceException Une exception sort une exception pour gérer les erreurs.
+         */
+        String dateAcquisition) throws ServiceException,
         BibliothequeException,
         Exception {
         try {
             /* V�rifie si le livre existe d�ja */
             if(this.livre.existe(idLivre)) {
-                throw new BibliothequeException("Livre existe deja: "
+                throw new ServiceException("Livre existe deja: "
                     + idLivre);
             }
 
@@ -65,7 +70,7 @@ public class LivreService {
                 auteur,
                 dateAcquisition);
             this.cx.commit();
-        } catch(Exception e) {
+        } catch(SQLException e) {
             //            System.out.println(e);
             this.cx.rollback();
             throw e;
