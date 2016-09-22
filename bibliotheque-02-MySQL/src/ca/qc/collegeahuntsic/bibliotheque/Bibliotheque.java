@@ -42,13 +42,13 @@ import ca.qc.collegeahuntsic.bibliotheque.util.GestionBibliotheque;
  *   transaction
  * @author Team-Merguez
  */
-public final class Biblio {
+public final class Bibliotheque {
     private static GestionBibliotheque gestionBiblio;
 
     private static boolean lectureAuClavier;
 
     /** Constructeur de la classe Biblio. **/
-    private Biblio() {
+    private Bibliotheque() {
         super();
     }
 
