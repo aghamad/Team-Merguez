@@ -4,12 +4,13 @@
 
 package ca.qc.collegeahuntsic.bibliotheque.service;
 
-import java.sql.SQLException;
+//import java.sql.SQLException;
 import ca.qc.collegeahuntsic.bibliotheque.dao.MembreDAO;
 import ca.qc.collegeahuntsic.bibliotheque.dao.ReservationDAO;
 import ca.qc.collegeahuntsic.bibliotheque.db.Connexion;
 import ca.qc.collegeahuntsic.bibliotheque.dto.MembreDTO;
 import ca.qc.collegeahuntsic.bibliotheque.exception.BibliothequeException;
+import ca.qc.collegeahuntsic.bibliotheque.exception.ServiceException;
 
 /**
  * Cette classe avec la Connexion inscrit et deinscrit un membre.
@@ -43,14 +44,14 @@ public class MembreService {
       * @param nom Le nom d'un membre
       * @param telephone Le numero de telephone d'un membre
       * @param limitePret La limit de pret d'un membre
-      * @throws SQLException Une exception qui fournit des informations sur une erreur d'accès de base de données ou d'autres erreurs
+      * @throws ServiceException Une exception qui fournit des informations sur une erreur d'accès de base de données ou d'autres erreurs
       * @throws BibliothequeException Une exception qui fournit des informations sur une erreur de la bibliotheque ou d'autres erreurs
       * @throws Exception Une exception qui fournit des informations sur une erreur vague
       */
     public void inscrire(int idMembre,
         String nom,
         long telephone,
-        int limitePret) throws SQLException,
+        int limitePret) throws ServiceException,
         BibliothequeException,
         Exception {
         try {
@@ -76,11 +77,11 @@ public class MembreService {
       * Suppression d'un membre de la base de donnees.
       * @param idMembre Le id d'un membre
 
-      * @throws SQLException Une exception qui fournit des informations sur une erreur d'accès de base de données ou d'autres erreurs
+      * @throws ServiceException Une exception qui fournit des informations sur une erreur d'accès de base de données ou d'autres erreurs
       * @throws BibliothequeException Une exception qui fournit des informations sur une erreur de la bibliotheque ou d'autres erreurs
       * @throws Exception Une exception qui fournit des informations sur une erreur vague
       */
-    public void desinscrire(int idMembre) throws SQLException,
+    public void desinscrire(int idMembre) throws ServiceException,
         BibliothequeException,
         Exception {
         try {
