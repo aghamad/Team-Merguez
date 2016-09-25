@@ -51,7 +51,7 @@ public class LivreDTO {
     }
 
     /**
-    * TODO Auto-generated constructor javadoc.
+    *Constructeur par défaut.
     *
     */
     public LivreDTO() {
@@ -59,96 +59,96 @@ public class LivreDTO {
     }
 
     /**
-    *  elle get l'id Livre de pret.
-    *  @return idLivre
+    *  Getter de la variable d'instance this.idLivre.
+    *  @return idLivre La variable d'instance this.idLivre
     *  */
     public int getIdLivre() {
         return this.idLivre;
     }
 
     /**
-    *  elle set l'id Livre de pret.
-    *  @param idLivre initialise idLivre
+    *  Setter de la variable d'instance this.idLivre.
+    *  @param idLivre - La valeur à utiliser pour la variable d'instance this.idLivre
     *  */
     public void setIdLivre(int idLivre) {
         this.idLivre = idLivre;
     }
 
     /**
-    *  elle get le titre de pret.
-    *  @return titre
+    *  Getter de la variable d'instance this.titre.
+    *  @return titre -La variable d'instance this.titre
     *  */
     public String getTitre() {
         return this.titre;
     }
 
     /**
-    *  elle set le titre de pret.
-    *  @param titre initialise titre
+    *  Setter de la variable d'instance this.titre.
+    *  @param titre - La valeur à utiliser pour la variable d'instance this.titre
     *  */
     public void setTitre(String titre) {
         this.titre = titre;
     }
 
     /**
-    *  elle get le auteur de pret.
-    *  @return auteur retourne la valeur auteur
+    *  Getter de la variable d'instance this.auteur.
+    *  @return auteur - La variable d'instance this.auteur
     *  */
     public String getAuteur() {
         return this.auteur;
     }
 
     /**
-    *  elle set le auteur de pret.
-    *  @param auteur initialise auteur
+    *  Setter de la variable d'instance this.auteur.
+    *  @param auteur - La valeur à utiliser pour la variable d'instance this.auteur
     *  */
     public void setAuteur(String auteur) {
         this.auteur = auteur;
     }
 
     /**
-    *  elle get le dateAcquisition de pret.
-    *  @return dataAcquisition
+    *  Getter de la variable d'instance this.dateAcquisition.
+    *  @return dataAcquisition - La variable d'instance this.dateAcquisition.
     *  */
     public Date getDateAcquisition() {
         return this.dateAcquisition;
     }
 
     /**
-    *  elle set le dateAquisition de pret.
-    *  @param dateAcquisition initialise dateAcquisition
+    *  Setter de la variable d'instance this.dateAcquisition.
+    *  @param dateAcquisition  - La valeur à utiliser pour la variable d'instance this.dateAcquisition
     *  */
     public void setDateAcquisition(Date dateAcquisition) {
         this.dateAcquisition = dateAcquisition;
     }
 
     /**
-    *  elle get l'Id membre de pret.
-    *  @return idMembre
+    *  Getter de la variable d'instance this.idMembre.
+    *  @return idMembre - La variable d'instance this.idMembre
     *  */
     public int getIdMembre() {
         return this.idMembre;
     }
 
     /**
-    *  elle set l'id membre de pret.
-    *  @param idMembre initialise idMembre
+    *  Setter de la variable d'instance this.idMembre.
+    *  @param idMembre - La valeur à utiliser pour la variable d'instance this.idMembre
     *  */
     public void setIdMembre(int idMembre) {
         this.idMembre = idMembre;
     }
 
     /**
-    *  elle get le date pret de pret.
-    *  @return datePret
+    *  Getter de la variable d'instance this.datePret.
+    *  @return datePret - La variable d'instance this.datePret
     *  */
     public Date getDatePret() {
         return this.datePret;
     }
 
     /**
-    *  elle set le datePret de pret.
-    *  @param datePret initialise datePret
+    *  Setter de la variable d'instance this.datePret.
+    *  @param datePret - La valeur à utiliser pour la variable d'instance this.datePret
     *  */
     public void setDatePret(Date datePret) {
         this.datePret = datePret;
