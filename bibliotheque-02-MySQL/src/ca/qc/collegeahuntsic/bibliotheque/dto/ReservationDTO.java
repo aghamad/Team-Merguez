@@ -11,7 +11,7 @@ import java.sql.Date;
  * @author Team-merguez
  */
 
-public class ReservationDTO {
+public class ReservationDTO extends DTO {
 
     private int idReservation;
 

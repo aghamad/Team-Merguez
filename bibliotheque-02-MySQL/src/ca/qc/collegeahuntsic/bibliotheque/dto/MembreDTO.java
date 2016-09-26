@@ -9,7 +9,7 @@ package ca.qc.collegeahuntsic.bibliotheque.dto;
  * @author [Team-Merguez]
  */
 
-public class MembreDTO {
+public class MembreDTO extends DTO {
 
     private int idMembre;
 
