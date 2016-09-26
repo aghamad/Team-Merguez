@@ -26,6 +26,21 @@ public class LivreDAO extends DAO {
      */
     private static final long serialVersionUID = 1L;
 
+    /*
+     * private static final String ADD_REQUEST = "INSERT INTO reservation "
+        + "VALUES (?, ?, ?, CURRENT_TIMESTAMP)";
+    
+    private static final String READ_REQUEST = "SELECT idReservation, idMembre, idLivre, dateReservation "
+        + "FROM reservation "
+        + "WHERE idReservation = ?";
+    
+    private static final String UPDATE_REQUEST = "UPDATE reservation "
+        + "SET idMembre = ?, idLivre = ?, dateReservation = ? "
+        + "WHERE idReservation = ?";
+    
+    private static final String DELETE_REQUEST = "DELETE FROM reservation "
+        + "WHERE idReservation = ?";
+     */
     private PreparedStatement stmtExiste;
 
     private PreparedStatement stmtInsert;
@@ -34,29 +49,26 @@ public class LivreDAO extends DAO {
 
     private PreparedStatement stmtDelete;
 
-    private Connexion cx;
+    private Connexion connection;
 
     /**
       * Creation d'une instance. Des �nonc�s SQL pour chaque requ�te sont pr�compil�s.
       *
-      * @param cx connexion
+      * @param connection connexion
       *
       *@throws DAOException Exeption
       */
-    public LivreDAO(Connexion cx) throws DAOException {
-        super(cx);
-        this.cx = super.getConnexion();
+    public LivreDAO(Connexion connection) throws DAOException {
+        super(connection);
+        this.connection = super.getConnexion();
         try {
-            this.stmtExiste = cx.getConnection().prepareStatement(
-                "select idlivre, titre, auteur, dateAcquisition, idMembre, datePret from livre where idlivre = ?");
-            this.stmtInsert = cx.getConnection().prepareStatement(
-                "insert into livre (idLivre, titre, auteur, dateAcquisition, idMembre, datePret) "
-                    + "values (?,?,?,?,null,null)");
-            this.stmtUpdate = cx.getConnection()
-                .prepareStatement("update livre set idMembre = ?, datePret = ? "
-                    + "where idLivre = ?");
-            this.stmtDelete = cx.getConnection()
-                .prepareStatement("delete from livre where idlivre = ?");
+            this.stmtExiste = connection.getConnection()
+                .prepareStatement("select idlivre, titre, auteur, dateAcquisition, idMembre, datePret from livre where idlivre = ?");
+            this.stmtInsert = connection.getConnection().prepareStatement("insert into livre (idLivre, titre, auteur, dateAcquisition, idMembre, datePret) "
+                + "values (?,?,?,?,null,null)");
+            this.stmtUpdate = connection.getConnection().prepareStatement("update livre set idMembre = ?, datePret = ? "
+                + "where idLivre = ?");
+            this.stmtDelete = connection.getConnection().prepareStatement("delete from livre where idlivre = ?");
         } catch(SQLException sqlException) {
             throw new DAOException(sqlException);
         }
@@ -68,7 +80,7 @@ public class LivreDAO extends DAO {
     @Override
     public Connexion getConnexion() {
 
-        return this.cx;
+        return this.connection;
     }
 
     /**
