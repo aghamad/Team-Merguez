@@ -1,5 +1,5 @@
 // Fichier Facade.java
-// Auteur : Sasha Benjamin
+// Auteur : Team-Merguez
 // Date de création : 2016-09-15
 
 package ca.qc.collegeahuntsic.bibliotheque.facade;
@@ -7,19 +7,16 @@ package ca.qc.collegeahuntsic.bibliotheque.facade;
 import java.io.Serializable;
 
 /**
- * Cette classe consiste a gérer les exceptions relié à la facade .
+ * Classe de base pour toutes les façades.
  *
- * @author Sasha Benjamin
+ * @author Team-Merguez
  */
 public class Facade implements Serializable {
-    /**
-     * TODO Auto-generated field javadoc.
-     */
     private static final long serialVersionUID = 1L;
 
     /**
-     * Cet méthode consiste à retourner créer l'objet.
      *
+     * Constructeur par défaut.
      *
      */
     public Facade() {
