@@ -1,5 +1,5 @@
 // Fichier MembreDAO.java
-// Auteur : Team Merguez
+// Auteur : Team-Merguez
 // Date de création : 2016-09-15
 
 package ca.qc.collegeahuntsic.bibliotheque.dao;
@@ -12,38 +12,37 @@ import ca.qc.collegeahuntsic.bibliotheque.dto.MembreDTO;
 import ca.qc.collegeahuntsic.bibliotheque.exception.DAOException;
 
 /**
- * Permet d'effectuer les acc�s � la table membre.
- * Cette classe g�re tous les acc�s � la table membre.
+ *
+ * DAO pour effectuer des CRUDs avec la table membre.
+ *
  * @author Team-Merguez
  */
 
 public class MembreDAO extends DAO {
 
-    private static final long serialVersionUID = 1L;
-
     /*
      * private static final String READ_REQUEST = "SELECT * FROM membre "
         + "WHERE idMembre = ?";
-    
+
     private static final String ADD_REQUEST = "INSERT INTO membre "
         + "VALUES (?,?,?,?,?)";
-    
+
     private static final String UPDATE_REQUEST = "UPDATE membre "
         + "SET nom = ?, telephone = ?, limitePret = ?, nbPret = ?"
         + "WHERE idMembre = ?";
-    
+
     private static final String EMPRUNT_REQUEST = "UPDATE membre "
         + "SET nom = ?, telephone = ?, limitePret = ?, nbPret = nbPret + 1 "
         + "WHERE idMembre = ?";
-    
+
     private static final String RETOUR_REQUEST = "UPDATE membre "
         + "SET nom = ?, telephone = ?, limitePret = ?, nbPret = nbPret - 1 "
         + "WHERE idMembre = ?";
-    
+
     private static final String DELETE_REQUEST = "DELETE FROM membre "
         + "WHERE idMembre = ?";
-    
-    
+
+
      * */
 
     private PreparedStatement stmtExiste;
@@ -56,45 +55,35 @@ public class MembreDAO extends DAO {
 
     private PreparedStatement stmtDelete;
 
-    private Connexion cx;
-
     /**
-      * Creation d'une instance. Pr�compilation d'�nonc�s SQL.
-      * @param cx la connexion
-      * @throws DAOException l'exception du SQL
-      */
-    public MembreDAO(Connexion cx) throws DAOException {
-
-        super(cx);
-        this.cx = super.getConnexion();
-
+     *
+     * Crée un DAO à partir d'une connexion à la base de données.
+     *
+     * @param connexion  La connexion à utiliser
+     * @throws DAOException S'il y a une erreur avec la base de données
+     */
+    public MembreDAO(Connexion connexion) throws DAOException {
+        super(connexion);
         try {
-            this.stmtExiste = cx.getConnection().prepareStatement("select idMembre, nom, telephone, limitePret, nbpret from membre where idmembre = ?");
-            this.stmtInsert = cx.getConnection().prepareStatement("insert into membre (idmembre, nom, telephone, limitepret, nbpret) "
+            this.stmtExiste = connexion.getConnection().prepareStatement("select idMembre, nom, telephone, limitePret, nbpret from membre where idmembre = ?");
+            this.stmtInsert = connexion.getConnection().prepareStatement("insert into membre (idmembre, nom, telephone, limitepret, nbpret) "
                 + "values (?,?,?,?,0)");
-            this.stmtUpdateIncrNbPret = cx.getConnection().prepareStatement("update membre set nbpret = nbPret + 1 where idMembre = ?");
-            this.stmtUpdateDecNbPret = cx.getConnection().prepareStatement("update membre set nbpret = nbPret - 1 where idMembre = ?");
-            this.stmtDelete = cx.getConnection().prepareStatement("delete from membre where idmembre = ?");
+            this.stmtUpdateIncrNbPret = connexion.getConnection().prepareStatement("update membre set nbpret = nbPret + 1 where idMembre = ?");
+            this.stmtUpdateDecNbPret = connexion.getConnection().prepareStatement("update membre set nbpret = nbPret - 1 where idMembre = ?");
+            this.stmtDelete = connexion.getConnection().prepareStatement("delete from membre where idmembre = ?");
         } catch(SQLException sqlException) {
             throw new DAOException(sqlException);
         }
     }
 
     /**
-      * Retourner la connexion associ�e.
-      */
-    @Override
-    public Connexion getConnexion() {
-
-        return this.cx;
-    }
-
-    /**
-      * Verifie si un membre existe.
-      *  @return MembreExiste si le membre existe
-      * @throws DAOException Exeptions
-      * @param idMembre parametre id
-      */
+     *
+     * Verifie si un livre existe.
+     *
+     * @param idMembre id du membre
+     * @return Si le membre existe ou pas
+     * @throws DAOException S'il y a une erreur avec la base de données
+     */
     public boolean existe(int idMembre) throws DAOException {
         boolean membreExiste;
         try {
@@ -113,12 +102,13 @@ public class MembreDAO extends DAO {
     }
 
     /**
-      * Lecture d'un membre.
-      *
-      * @return tupleMembre si le livre existe
-      * @throws DAOException Exeptions
-      * @param idMembre parametre id
-      */
+     *
+     * Lecture d'un membre.
+     *
+     * @param idMembre id du memebre
+     * @return Objet de membre MemebreDTO
+     * @throws DAOException S'il y a une erreur avec la base de données
+     */
     public MembreDTO getMembre(int idMembre) throws DAOException {
         MembreDTO tupleMembre;
         try {
@@ -146,14 +136,15 @@ public class MembreDAO extends DAO {
     }
 
     /**
-      * Ajout d'un nouveau membre.
-      *
-      * @param idMembre le id d'un membre
-      * @param nom le nom
-      * @param telephone le telephone
-      * @param limitePret la limite du Pret
-      *  @throws DAOException Exeptions
-      */
+     *
+     * Ajout d'un nouveau membre.
+     *
+     * @param idMembre id du membre à inscrire
+     * @param nom nom du membre à inscrire
+     * @param telephone numero de telephone du membre à inscrire
+     * @param limitePret limite de pret du membre à inscrire
+     * @throws DAOException S'il y a une erreur avec la base de données
+     */
     public void inscrire(int idMembre,
         String nom,
         long telephone,
@@ -175,12 +166,13 @@ public class MembreDAO extends DAO {
     }
 
     /**
-      * Incrementer le nb de pret d'un membre.
-      *
-      *  @param idMembre le id du membre
-      *@throws DAOException Exeptions
-      *@return update
-      */
+     *
+     * Incrementer le nb de pret d'un membre.
+     *
+     * @param idMembre id du membre
+     * @return resultat de la requete update en int
+     * @throws DAOException S'il y a une erreur avec la base de données
+     */
     public int preter(int idMembre) throws DAOException {
         try {
             this.stmtUpdateIncrNbPret.setInt(1,
@@ -192,12 +184,13 @@ public class MembreDAO extends DAO {
     }
 
     /**
-      * Decrementer le nb de pret d'un membre.
-      *
-      * @param idMembre le id du membre
-      *@throws DAOException Exeptions
-      *@return update
-      */
+     *
+     *  Decrementer le nb de pret d'un membre.
+     *
+     * @param idMembre id du memebre
+     * @return résultat de la requete update en int
+     * @throws DAOException S'il y a une erreur avec la base de données
+     */
     public int retourner(int idMembre) throws DAOException {
         try {
             this.stmtUpdateDecNbPret.setInt(1,
@@ -209,12 +202,13 @@ public class MembreDAO extends DAO {
     }
 
     /**
-      * Suppression d'un membre.
-      *
-      * @param idMembre le id du membre
-      *@throws DAOException Exeptions
-      *@return update
-      */
+     *
+     * Suppression d'un membre.
+     *
+     * @param idMembre id du membre à desinscrire
+     * @return résulat de requete delete
+     * @throws DAOException S'il y a une erreur avec la base de données
+     */
     public int desinscrire(int idMembre) throws DAOException {
         try {
             this.stmtDelete.setInt(1,
