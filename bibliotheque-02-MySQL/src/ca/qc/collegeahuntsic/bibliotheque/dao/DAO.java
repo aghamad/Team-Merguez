@@ -1,5 +1,5 @@
 // Fichier DAO.java
-// Auteur : Team Merguez
+// Auteur : Team-Merguez
 // Date de création : 2016-09-15
 
 package ca.qc.collegeahuntsic.bibliotheque.dao;
@@ -9,10 +9,9 @@ import ca.qc.collegeahuntsic.bibliotheque.db.Connexion;
 
 /**
  *
- *la classe DAO.
+ * Classe de base pour tous les DAOs.
  *
- * @author Mohamed Nassim Laleg
- *
+ * @author Team-Merguez
  */
 public class DAO implements Serializable {
 
@@ -21,8 +20,10 @@ public class DAO implements Serializable {
     private Connexion connexion;
 
     /**
-     *la connexion.
-     *@param connexion la connexion
+     *
+     * Crée un DAO à partir d'une connexion à la base de données.
+     *
+     * @param connexion La connexion à utiliser
      */
     public DAO(Connexion connexion) {
         // TODO Auto-generated constructor stub
@@ -31,18 +32,19 @@ public class DAO implements Serializable {
 
     /**
      *
-     * get connexion.
+     * Getter de la variable d'instance this.connexion.
      *
-     * @return connexion
+     * @return connexion La variable d'instance this.connexion
      */
     public Connexion getConnexion() {
         return this.connexion;
     }
 
     /**
-     * Setter de la variable d'instance <code>this.connexion</code>.
      *
-     * @param connexion La valeur à utiliser pour la variable d'instance <code>this.connexion</code>
+     * Setter de la variable d'instance this.connexion.
+     *
+     * @param connexion La valeur à utiliser pour la variable d'instance this.connexion
      */
     public void setConnexion(final Connexion connexion) {
         this.connexion = connexion;
