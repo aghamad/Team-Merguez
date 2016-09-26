@@ -4,11 +4,11 @@
 
 package ca.qc.collegeahuntsic.bibliotheque.service;
 
-import java.sql.SQLException;
 import ca.qc.collegeahuntsic.bibliotheque.dao.MembreDAO;
 import ca.qc.collegeahuntsic.bibliotheque.dao.ReservationDAO;
 import ca.qc.collegeahuntsic.bibliotheque.db.Connexion;
 import ca.qc.collegeahuntsic.bibliotheque.dto.MembreDTO;
+import ca.qc.collegeahuntsic.bibliotheque.exception.ConnexionException;
 import ca.qc.collegeahuntsic.bibliotheque.exception.DAOException;
 import ca.qc.collegeahuntsic.bibliotheque.exception.ServiceException;
 
@@ -20,7 +20,7 @@ import ca.qc.collegeahuntsic.bibliotheque.exception.ServiceException;
  */
 public class MembreService {
 
-    private Connexion cx;
+    private Connexion connexion;
 
     private MembreDAO membre;
 
@@ -35,8 +35,7 @@ public class MembreService {
      */
     public MembreService(MembreDAO membre,
         ReservationDAO reservation) {
-
-        this.cx = membre.getConnexion();
+        this.connexion = membre.getConnexion();
         this.membre = membre;
         this.reservation = reservation;
     }
@@ -66,16 +65,16 @@ public class MembreService {
                 nom,
                 telephone,
                 limitePret);
-            this.cx.commit();
+            this.connexion.commit();
         } catch(DAOException daoException) {
             try {
-                this.cx.rollback();
-            } catch(SQLException sqlException) {
-                throw new ServiceException(sqlException);
+                this.connexion.rollback();
+            } catch(ConnexionException connexionException) {
+                throw new ServiceException(connexionException);
             }
             throw new ServiceException(daoException);
-        } catch(SQLException sqlException2) {
-            throw new ServiceException(sqlException2);
+        } catch(ConnexionException connexionException) {
+            throw new ServiceException(connexionException);
         }
     }
 
@@ -111,16 +110,16 @@ public class MembreService {
                     + idMembre
                     + " inexistant");
             }
-            this.cx.commit();
+            this.connexion.commit();
         } catch(DAOException daoException) {
             try {
-                this.cx.rollback();
-            } catch(SQLException sqlException) {
-                throw new ServiceException(sqlException);
+                this.connexion.rollback();
+            } catch(ConnexionException connexionException) {
+                throw new ServiceException(connexionException);
             }
             throw new ServiceException(daoException);
-        } catch(SQLException sqlException2) {
-            throw new ServiceException(sqlException2);
+        } catch(ConnexionException connexionException) {
+            throw new ServiceException(connexionException);
         }
     }
 

@@ -4,11 +4,11 @@
 
 package ca.qc.collegeahuntsic.bibliotheque.service;
 
-import java.sql.SQLException;
 import ca.qc.collegeahuntsic.bibliotheque.dao.LivreDAO;
 import ca.qc.collegeahuntsic.bibliotheque.dao.ReservationDAO;
 import ca.qc.collegeahuntsic.bibliotheque.db.Connexion;
 import ca.qc.collegeahuntsic.bibliotheque.dto.LivreDTO;
+import ca.qc.collegeahuntsic.bibliotheque.exception.ConnexionException;
 import ca.qc.collegeahuntsic.bibliotheque.exception.DAOException;
 import ca.qc.collegeahuntsic.bibliotheque.exception.ServiceException;
 
@@ -24,7 +24,7 @@ public class LivreService {
 
     private ReservationDAO reservation;
 
-    private Connexion cx;
+    private Connexion connexion;
 
     /**
      *
@@ -35,7 +35,7 @@ public class LivreService {
      */
     public LivreService(LivreDAO livre,
         ReservationDAO reservation) {
-        this.cx = livre.getConnexion();
+        this.connexion = livre.getConnexion();
         this.livre = livre;
         this.reservation = reservation;
     }
@@ -64,18 +64,18 @@ public class LivreService {
                 titre,
                 auteur,
                 dateAcquisition);
-            this.cx.commit();
+            this.connexion.commit();
 
         } catch(DAOException daoException) {
             try {
-                this.cx.rollback();
-            } catch(SQLException sqlException) {
-                throw new ServiceException(sqlException);
+                this.connexion.rollback();
+            } catch(ConnexionException connexionException) {
+                throw new ServiceException(connexionException);
             }
             throw new ServiceException(daoException);
 
-        } catch(SQLException sqlException2) {
-            throw new ServiceException(sqlException2);
+        } catch(ConnexionException connexionException) {
+            throw new ServiceException(connexionException);
         }
 
     }
@@ -112,18 +112,18 @@ public class LivreService {
                     + idLivre
                     + " inexistant");
             }
-            this.cx.commit();
+            this.connexion.commit();
         } catch(DAOException daoException) {
 
             try {
-                this.cx.rollback();
-            } catch(SQLException sqlException) {
-                throw new ServiceException(sqlException);
+                this.connexion.rollback();
+            } catch(ConnexionException connexionException) {
+                throw new ServiceException(connexionException);
             }
             throw new ServiceException(daoException);
 
-        } catch(SQLException sqlException2) {
-            throw new ServiceException(sqlException2);
+        } catch(ConnexionException connexionException) {
+            throw new ServiceException(connexionException);
         }
     }
 }

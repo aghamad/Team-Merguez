@@ -5,7 +5,6 @@
 package ca.qc.collegeahuntsic.bibliotheque.service;
 
 import java.sql.Date;
-import java.sql.SQLException;
 import ca.qc.collegeahuntsic.bibliotheque.dao.LivreDAO;
 import ca.qc.collegeahuntsic.bibliotheque.dao.MembreDAO;
 import ca.qc.collegeahuntsic.bibliotheque.dao.ReservationDAO;
@@ -13,6 +12,7 @@ import ca.qc.collegeahuntsic.bibliotheque.db.Connexion;
 import ca.qc.collegeahuntsic.bibliotheque.dto.LivreDTO;
 import ca.qc.collegeahuntsic.bibliotheque.dto.MembreDTO;
 import ca.qc.collegeahuntsic.bibliotheque.dto.ReservationDTO;
+import ca.qc.collegeahuntsic.bibliotheque.exception.ConnexionException;
 import ca.qc.collegeahuntsic.bibliotheque.exception.DAOException;
 import ca.qc.collegeahuntsic.bibliotheque.exception.ServiceException;
 
@@ -30,7 +30,7 @@ public class PretService {
 
     private ReservationDAO reservation;
 
-    private Connexion cx;
+    private Connexion connexion;
 
     /**
      *
@@ -48,7 +48,7 @@ public class PretService {
             || reservation.getConnexion() != membre.getConnexion()) {
             throw new ServiceException("Les instances de livre, de membre et de reservation n'utilisent pas la meme connexion au serveur");
         }
-        this.cx = livre.getConnexion();
+        this.connexion = livre.getConnexion();
         this.livre = livre;
         this.membre = membre;
         this.reservation = reservation;
@@ -110,14 +110,14 @@ public class PretService {
             if(nb2 == 0) {
                 throw new ServiceException("Membre supprimé par une autre transaction");
             }
-            this.cx.commit();
+            this.connexion.commit();
         } catch(
-            SQLException
-            | DAOException exception) {
+            DAOException
+            | ConnexionException exception) {
             try {
-                this.cx.rollback();
-            } catch(SQLException sqlException) {
-                throw new ServiceException(sqlException);
+                this.connexion.rollback();
+            } catch(ConnexionException connexionException) {
+                throw new ServiceException(connexionException);
             }
             throw new ServiceException(exception);
         }
@@ -168,14 +168,14 @@ public class PretService {
             if(nb1 == 0) {
                 throw new ServiceException("Livre supprime par une autre transaction");
             }
-            this.cx.commit();
+            this.connexion.commit();
         } catch(
-            SQLException
-            | DAOException exception) {
+            DAOException
+            | ConnexionException exception) {
             try {
-                this.cx.rollback();
-            } catch(SQLException sqlException) {
-                throw new ServiceException(sqlException);
+                this.connexion.rollback();
+            } catch(ConnexionException connexionException) {
+                throw new ServiceException(connexionException);
             }
             throw new ServiceException(exception);
         }
@@ -219,14 +219,14 @@ public class PretService {
             if(nb2 == 0) {
                 throw new ServiceException("Livre supprim� par une autre transaction");
             }
-            this.cx.commit();
+            this.connexion.commit();
         } catch(
-            SQLException
-            | DAOException exception) {
+            DAOException
+            | ConnexionException exception) {
             try {
-                this.cx.rollback();
-            } catch(SQLException sqlException) {
-                throw new ServiceException(sqlException);
+                this.connexion.rollback();
+            } catch(ConnexionException connexionException) {
+                throw new ServiceException(connexionException);
             }
             throw new ServiceException(exception);
         }
