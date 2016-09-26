@@ -14,16 +14,19 @@ import ca.qc.collegeahuntsic.bibliotheque.dto.LivreDTO;
 import ca.qc.collegeahuntsic.bibliotheque.exception.DAOException;
 
 /**
- * DAO pour effectuer des CRUDs avec la table <code>livre</code>.
+ *
+ * DAO pour effectuer des CRUDs avec la table livre.
+ *
  * @author Team-Merguez
  */
 
 public class LivreDAO extends DAO {
 
-    private static final long serialVersionUID = 1L;
     /*
+    // stmtExiste select idlivre, titre, auteur, dateAcquisition, idMembre, datePret from livre where idlivre = ?"
     private final static String READ_REQUEST = "SELECT idLivre, titre, auteur, dateAcquisition, idMembre, datePret FROM livre "
         + "WHERE idLivre = ?";
+
 
     private final static String ADD_REQUEST = "INSERT INTO livre "
         + "VALUES(?, ?, ?, ?, NULL, NULL)";
@@ -58,47 +61,36 @@ public class LivreDAO extends DAO {
 
     private PreparedStatement stmtDelete;
 
-    private Connexion connection;
-
     /**
-      * Creation d'une instance. Des �nonc�s SQL pour chaque requ�te sont pr�compil�s.
-      *
-      * @param connection connexion
-      *
-      *@throws DAOException Exeption
-      */
-    public LivreDAO(Connexion connection) throws DAOException {
-        super(connection);
-        this.connection = super.getConnexion();
+     *
+     * Crée un DAO à partir d'une connexion à la base de données.
+     *
+     * @param connexion La connexion à utiliser
+     * @throws DAOException S'il y a une erreur avec la base de données
+     */
+    public LivreDAO(Connexion connexion) throws DAOException {
+        super(connexion);
         try {
-            this.stmtExiste = connection.getConnection()
+            this.stmtExiste = connexion.getConnection()
                 .prepareStatement("select idlivre, titre, auteur, dateAcquisition, idMembre, datePret from livre where idlivre = ?");
-            this.stmtInsert = connection.getConnection().prepareStatement("insert into livre (idLivre, titre, auteur, dateAcquisition, idMembre, datePret) "
+            this.stmtInsert = connexion.getConnection().prepareStatement("insert into livre (idLivre, titre, auteur, dateAcquisition, idMembre, datePret) "
                 + "values (?,?,?,?,null,null)");
-            this.stmtUpdate = connection.getConnection().prepareStatement("update livre set idMembre = ?, datePret = ? "
+            this.stmtUpdate = connexion.getConnection().prepareStatement("update livre set idMembre = ?, datePret = ? "
                 + "where idLivre = ?");
-            this.stmtDelete = connection.getConnection().prepareStatement("delete from livre where idlivre = ?");
+            this.stmtDelete = connexion.getConnection().prepareStatement("delete from livre where idlivre = ?");
         } catch(SQLException sqlException) {
             throw new DAOException(sqlException);
         }
     }
 
     /**
-      * Retourner la connexion associ�e.
-      */
-    @Override
-    public Connexion getConnexion() {
-
-        return this.connection;
-    }
-
-    /**
-      * Verifie si un livre existe.
-      *
-      * @return livreExiste si le livre existe
-      * @throws DAOException Exeptions
-      * @param idLivre parametre id
-      */
+     *
+     * Verifie si le livre existe.
+     *
+     * @param idLivre id du livre recherché
+     * @return boolean Si le livre existe ou n'existe pas
+     * @throws DAOException S'il y a une erreur avec la base de données
+     */
     public boolean existe(int idLivre) throws DAOException {
 
         boolean livreExiste;
@@ -118,12 +110,13 @@ public class LivreDAO extends DAO {
     }
 
     /**
-      * Lecture d'un livre.
-      *
-      * @return tupleLivre si le livre existe
-      * @throws DAOException Exeptions
-      * @param idLivre parametre id
-      */
+     *
+     * Lecture d'un livre.
+     *
+     * @param idLivre id du livre recherché
+     * @return Objet de livre LivreDTO
+     * @throws DAOException S'il y a une erreur avec la base de données
+     */
     public LivreDTO getLivre(int idLivre) throws DAOException {
         // test
         LivreDTO tupleLivre;
@@ -154,13 +147,15 @@ public class LivreDAO extends DAO {
     }
 
     /**
-      * Ajout d'un nouveau livre dans la base de donnees.
-      * @param idLivre le id d'un livre
-      * @param titre le titre
-      * @param auteur le auteur
-      * @param dateAcquisition la dateAcquisition
-      * @throws DAOException Exeptions
-      */
+     *
+     * Ajoute un nouveau livre.
+     *
+     * @param idLivre id du livre à ajouter
+     * @param titre titre du livre à ajouter
+     * @param auteur auteur du livre à ajouter
+     * @param dateAcquisition date d'acquisition du livre à ajouter
+     * @throws DAOException S'il y a une erreur avec la base de données
+     */
     public void acquerir(int idLivre,
         String titre,
         String auteur,
@@ -182,13 +177,15 @@ public class LivreDAO extends DAO {
     }
 
     /**
-      * Enregistrement de l'emprunteur d'un livre.
-      *  @param idLivre le id d'un livre
-      * @param idMembre le id d'un membre
-      * @param datePret la date du pret
-      *@throws DAOException Exeptions
-      *@return update
-      */
+     *
+     * Emprunte un livre.
+     *
+     * @param idLivre id du livre à emprunter
+     * @param idMembre id du membre qui veut emprunter le livre
+     * @param datePret date de pret du livre
+     * @return resutat de la requete update
+     * @throws DAOException S'il y a une erreur avec la base de données
+     */
     public int preter(int idLivre,
         int idMembre,
         String datePret) throws DAOException {
@@ -207,11 +204,13 @@ public class LivreDAO extends DAO {
     }
 
     /**
-      * Rendre le livre disponible (non-pr�t�).
-      * @param idLivre le id d'un livre
-      *@throws DAOException Exeptions
-      *@return update
-      */
+     *
+     * Rendre le livre disponible (non-prété).
+     *
+     * @param idLivre id du livre à rendre
+     * @return resultat de la requete update
+     * @throws DAOException S'il y a une erreur avec la base de données
+     */
     public int retourner(int idLivre) throws DAOException {
         /* Enregistrement du pret. */
         try {
@@ -228,12 +227,13 @@ public class LivreDAO extends DAO {
     }
 
     /**
-      * Suppression d'un livre.
-      *
-      *  @param idLivre le id d'un livre
-      *@throws DAOException Exeptions
-      *@return update
-      */
+     *
+     * Suppression d'un livre.
+     *
+     * @param idLivre id du livre à vendre
+     * @return resultat de ;a requete delete
+     * @throws DAOException S'il y a une erreur avec la base de données
+     */
     public int vendre(int idLivre) throws DAOException {
         /* Suppression du livre. */
         try {
