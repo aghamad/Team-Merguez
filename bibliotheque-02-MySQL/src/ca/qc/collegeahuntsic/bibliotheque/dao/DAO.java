@@ -20,7 +20,6 @@ public class DAO implements Serializable {
     private Connexion connexion;
 
     /**
-     *
      * Crée un DAO à partir d'une connexion à la base de données.
      *
      * @param connexion La connexion à utiliser
