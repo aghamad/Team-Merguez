@@ -8,9 +8,11 @@ import java.io.Serializable;
 import ca.qc.collegeahuntsic.bibliotheque.db.Connexion;
 
 /**
- * Classe de base pour tous les DAOs.
  *
- * @author Ahmad Agha
+ *la classe DAO.
+ *
+ * @author Mohamed Nassim Laleg
+ *
  */
 public class DAO implements Serializable {
 
@@ -19,9 +21,8 @@ public class DAO implements Serializable {
     private Connexion connexion;
 
     /**
-     * Crée un DAO à partir d'une connexion à la base de données.
-     *
-     * @param connexion La connexion à utiliser
+     *la connexion.
+     *@param connexion la connexion
      */
     public DAO(Connexion connexion) {
         // TODO Auto-generated constructor stub
@@ -29,18 +30,19 @@ public class DAO implements Serializable {
     }
 
     /**
-     * Getter de la variable d'instance this.connexion.
      *
-     * @return connexion La variable d'instance this.connexion
+     * get connexion.
+     *
+     * @return connexion
      */
     public Connexion getConnexion() {
         return this.connexion;
     }
 
     /**
-     * Setter de la variable d'instance this.connexion.
+     * Setter de la variable d'instance <code>this.connexion</code>.
      *
-     * @param connexion La valeur à utiliser pour la variable d'instance this.connexion
+     * @param connexion La valeur à utiliser pour la variable d'instance <code>this.connexion</code>
      */
     public void setConnexion(final Connexion connexion) {
         this.connexion = connexion;

@@ -1,130 +1,226 @@
 // Fichier LivreDAO.java
-// Auteur : Team-Merguez
+// Auteur : Team Merguez
 // Date de création : 2016-09-15
 
 package ca.qc.collegeahuntsic.bibliotheque.dao;
 
+import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Types;
 import ca.qc.collegeahuntsic.bibliotheque.db.Connexion;
 import ca.qc.collegeahuntsic.bibliotheque.dto.LivreDTO;
 import ca.qc.collegeahuntsic.bibliotheque.exception.DAOException;
-import ca.qc.collegeahuntsic.bibliotheque.exception.ServiceException;
-import ca.qc.collegeahuntsic.bibliotheque.service.LivreService;
-import ca.qc.collegeahuntsic.bibliotheque.service.ReservationService;
 
 /**
- * DAO pour effectuer des CRUDs avec la table <code>livre</code>. Acquiri et vrendre sont la parce que c les seuls methodes qui ont besion de livreservice
+ * DAO pour effectuer des CRUDs avec la table <code>livre</code>.
  * @author Team-Merguez
  */
 
 public class LivreDAO extends DAO {
 
     /**
-     * DAO pour effectuer des CRUDs avec la table livre.
-     *
-     * @author Ahmad Agha
+     * TODO Auto-generated field javadoc.
+     * * @author Livre
      */
     private static final long serialVersionUID = 1L;
 
+    private PreparedStatement stmtExiste;
+
+    private PreparedStatement stmtInsert;
+
+    private PreparedStatement stmtUpdate;
+
+    private PreparedStatement stmtDelete;
+
     private Connexion cx;
 
-    private LivreService livreService;
-
-    // faire reservationService demain faut que tu switch les deux
-    private ReservationService reservationService;
-
     /**
-     *
-     * Crée un DAO à partir d'une connexion à la base de données.
-     *
-     * @param livreService
-     * @param reservationService
-     */
-    public LivreDAO(LivreService livreService,
-        ReservationService reservationService) {
-        super(livreService.getConnexion());
+      * Creation d'une instance. Des �nonc�s SQL pour chaque requ�te sont pr�compil�s.
+      *
+      * @param cx connexion
+      *
+      *@throws DAOException Exeption
+      */
+    public LivreDAO(Connexion cx) throws DAOException {
+        super(cx);
         this.cx = super.getConnexion();
-        this.livreService = livreService;
-        this.reservationService = reservationService;
-
+        try {
+            this.stmtExiste = cx.getConnection().prepareStatement(
+                "select idlivre, titre, auteur, dateAcquisition, idMembre, datePret from livre where idlivre = ?");
+            this.stmtInsert = cx.getConnection().prepareStatement(
+                "insert into livre (idLivre, titre, auteur, dateAcquisition, idMembre, datePret) "
+                    + "values (?,?,?,?,null,null)");
+            this.stmtUpdate = cx.getConnection()
+                .prepareStatement("update livre set idMembre = ?, datePret = ? "
+                    + "where idLivre = ?");
+            this.stmtDelete = cx.getConnection()
+                .prepareStatement("delete from livre where idlivre = ?");
+        } catch(SQLException sqlException) {
+            throw new DAOException(sqlException);
+        }
     }
 
     /**
-     *
-     * TODO Auto-generated method javadoc
-     *
-     * @param idLivre
-     * @param titre
-     * @param auteur
-     * @param dateAcquisition
-     * @throws DAOException
-     * @throws Exception
-     */
+      * Retourner la connexion associ�e.
+      */
+    @Override
+    public Connexion getConnexion() {
+
+        return this.cx;
+    }
+
+    /**
+      * Verifie si un livre existe.
+      *
+      * @return livreExiste si le livre existe
+      * @throws DAOException Exeptions
+      * @param idLivre parametre id
+      */
+    public boolean existe(int idLivre) throws DAOException {
+
+        boolean livreExiste;
+        try {
+            this.stmtExiste.setInt(1,
+                idLivre);
+            livreExiste = false;
+            try(
+                ResultSet rset = this.stmtExiste.executeQuery()) {
+                livreExiste = rset.next();
+                rset.close();
+            }
+        } catch(SQLException sqlException) {
+            throw new DAOException(sqlException);
+        }
+        return livreExiste;
+    }
+
+    /**
+      * Lecture d'un livre.
+      *
+      * @return tupleLivre si le livre existe
+      * @throws DAOException Exeptions
+      * @param idLivre parametre id
+      */
+    public LivreDTO getLivre(int idLivre) throws DAOException {
+        // test
+        LivreDTO tupleLivre;
+        try {
+            this.stmtExiste.setInt(1,
+                idLivre);
+
+            tupleLivre = null;
+
+            try(
+                ResultSet rset = this.stmtExiste.executeQuery()) {
+
+                if(rset.next()) {
+                    tupleLivre = new LivreDTO();
+                    tupleLivre.setIdLivre(idLivre);
+                    tupleLivre.setTitre(rset.getString(2));
+                    tupleLivre.setAuteur(rset.getString(3));
+                    tupleLivre.setDateAcquisition(rset.getDate(4));
+                    tupleLivre.setIdMembre(rset.getInt(5));
+                    tupleLivre.setDatePret(rset.getDate(6));
+                }
+            }
+        } catch(SQLException sqlException) {
+            throw new DAOException(sqlException);
+        }
+
+        return tupleLivre;
+    }
+
+    /**
+      * Ajout d'un nouveau livre dans la base de donnees.
+      * @param idLivre le id d'un livre
+      * @param titre le titre
+      * @param auteur le auteur
+      * @param dateAcquisition la dateAcquisition
+      * @throws DAOException Exeptions
+      */
     public void acquerir(int idLivre,
         String titre,
         String auteur,
-        String dateAcquisition) throws ServiceException,
-        Exception {
+        String dateAcquisition) throws DAOException {
+        /* Ajout du livre. */
         try {
-            /* V�rifie si le livre existe d�ja */
-            if(this.livreService.existe(idLivre)) {
-                throw new ServiceException("Livre existe deja: "
-                    + idLivre);
-            }
-
-            /* Ajout du livre dans la table des livres */
-            this.livreService.acquerir(idLivre,
-                titre,
-                auteur,
-                dateAcquisition);
-            this.cx.commit();
-
-        } catch(DAOException e) {
-            this.cx.rollback();
-            throw new ServiceException(e);
+            this.stmtInsert.setInt(1,
+                idLivre);
+            this.stmtInsert.setString(2,
+                titre);
+            this.stmtInsert.setString(3,
+                auteur);
+            this.stmtInsert.setDate(4,
+                Date.valueOf(dateAcquisition));
+            this.stmtInsert.executeUpdate();
+        } catch(SQLException sqlException) {
+            throw new DAOException(sqlException);
         }
     }
 
     /**
-     *
-     * TODO Auto-generated method javadoc
-     *
-     * @param idLivre
-     * @throws DAOException
-     */
-    public void vendre(int idLivre) throws DAOException {
+      * Enregistrement de l'emprunteur d'un livre.
+      *  @param idLivre le id d'un livre
+      * @param idMembre le id d'un membre
+      * @param datePret la date du pret
+      *@throws DAOException Exeptions
+      *@return update
+      */
+    public int preter(int idLivre,
+        int idMembre,
+        String datePret) throws DAOException {
+        /* Enregistrement du pret. */
         try {
-            final LivreDTO tupleLivre = this.livreService.getLivre(idLivre);
-
-            if(tupleLivre == null) {
-                throw new DAOException("Livre inexistant: "
-                    + idLivre);
-            }
-
-            if(tupleLivre.getIdMembre() != 0) {
-                throw new DAOException("Livre "
-                    + idLivre
-                    + " prete a "
-                    + tupleLivre.getIdMembre());
-            }
-
-            if(this.reservationService.getReservationLivre(idLivre) != null) {
-                throw new DAOException("Livre "
-                    + idLivre
-                    + " r�serv� ");
-            }
-
-            /* Suppression du livre. */
-            final int nb = this.livreService.vendre(idLivre);
-            if(nb == 0) {
-                throw new ServiceException("Livre "
-                    + idLivre
-                    + " inexistant");
-            }
-            this.cx.commit();
-        } catch(ServiceException e) {
-            this.cx.rollback();
-            throw new DAOException(e);
+            this.stmtUpdate.setInt(1,
+                idMembre);
+            this.stmtUpdate.setDate(2,
+                Date.valueOf(datePret));
+            this.stmtUpdate.setInt(3,
+                idLivre);
+            return this.stmtUpdate.executeUpdate();
+        } catch(SQLException sqlException) {
+            throw new DAOException(sqlException);
         }
     }
 
+    /**
+      * Rendre le livre disponible (non-pr�t�).
+      * @param idLivre le id d'un livre
+      *@throws DAOException Exeptions
+      *@return update
+      */
+    public int retourner(int idLivre) throws DAOException {
+        /* Enregistrement du pret. */
+        try {
+            this.stmtUpdate.setNull(1,
+                Types.INTEGER);
+            this.stmtUpdate.setNull(2,
+                Types.DATE);
+            this.stmtUpdate.setInt(3,
+                idLivre);
+            return this.stmtUpdate.executeUpdate();
+        } catch(SQLException sqlException) {
+            throw new DAOException(sqlException);
+        }
+    }
+
+    /**
+      * Suppression d'un livre.
+      *
+      *  @param idLivre le id d'un livre
+      *@throws DAOException Exeptions
+      *@return update
+      */
+    public int vendre(int idLivre) throws DAOException {
+        /* Suppression du livre. */
+        try {
+            this.stmtDelete.setInt(1,
+                idLivre);
+            return this.stmtDelete.executeUpdate();
+        } catch(SQLException sqlException) {
+            throw new DAOException(sqlException);
+        }
+    }
 }

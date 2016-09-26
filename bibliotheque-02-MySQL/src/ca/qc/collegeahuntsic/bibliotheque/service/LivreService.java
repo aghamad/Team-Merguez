@@ -1,227 +1,118 @@
 // Fichier LivreService.java
-// Auteur : Team-Merguez
+// Auteur : Sasha Benjamin
 // Date de création : 2016-09-15
 
 package ca.qc.collegeahuntsic.bibliotheque.service;
 
-import java.sql.Date;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Types;
+import ca.qc.collegeahuntsic.bibliotheque.dao.LivreDAO;
+import ca.qc.collegeahuntsic.bibliotheque.dao.ReservationDAO;
 import ca.qc.collegeahuntsic.bibliotheque.db.Connexion;
 import ca.qc.collegeahuntsic.bibliotheque.dto.LivreDTO;
+import ca.qc.collegeahuntsic.bibliotheque.exception.BibliothequeException;
+import ca.qc.collegeahuntsic.bibliotheque.exception.DAOException;
 import ca.qc.collegeahuntsic.bibliotheque.exception.ServiceException;
 
 /**
- * Service de la table livre. [CRUD]
- *
- * @author Team-Merguez
- **/
-public class LivreService extends Service {
+ * Cette classe avec la Connexion acqueit et vend un livre.
+ * @author Team-Marquez
+ * */
+public class LivreService {
 
-    private PreparedStatement stmtInsert;
+    private LivreDAO livre;
 
-    private PreparedStatement stmtUpdate;
+    private ReservationDAO reservation;
 
-    private PreparedStatement stmtDelete;
-
-    private PreparedStatement stmtExiste;
-
-    private Connexion conn;
+    private Connexion cx;
 
     /**
-     *
-     * Crée le service de la table livre.
-     *
-     * @param conn La connexion à la base de données
-     * @throws ServiceException S'il y a une erreur avec la base de données
-     */
-    public LivreService(Connexion conn) throws ServiceException {
-        this.conn = conn;
-        try {
-            this.stmtExiste = conn.getConnection()
-                .prepareStatement("select idlivre, titre, auteur, dateAcquisition, idMembre, datePret from livre where idlivre = ?");
-            this.stmtInsert = conn.getConnection().prepareStatement("insert into livre (idLivre, titre, auteur, dateAcquisition, idMembre, datePret) "
-                + "values (?,?,?,?,null,null)");
-            this.stmtUpdate = conn.getConnection().prepareStatement("update livre set idMembre = ?, datePret = ? "
-                + "where idLivre = ?");
-            this.stmtDelete = conn.getConnection().prepareStatement("delete from livre where idlivre = ?");
-        } catch(SQLException sqlException) {
-            throw new ServiceException(sqlException);
-        }
-
+      * Creation d'une instance.
+      * @param livre Instance de la classe dao LivreDAO
+      * @param reservation Instance de la classe dao ReservationDAO
+      */
+    public LivreService(LivreDAO livre,
+        ReservationDAO reservation) {
+        this.cx = livre.getConnexion();
+        this.livre = livre;
+        this.reservation = reservation;
     }
 
     /**
-     *
-     * Retourner la connexion associée.
-     *
-     * @return conn La connexion associée
-     */
-    public Connexion getConnexion() {
-        return this.conn;
-    }
-
-    /**
-     *
-     * TODO Auto-generated method javadoc.
-     *
-     * @param idLivre
-     * @return
-     * @throws ServiceException
-     */
-    public boolean existe(int idLivre) throws ServiceException {
-
-        boolean livreExiste;
-        try {
-            this.stmtExiste.setInt(1,
-                idLivre);
-            livreExiste = false;
-            try(
-                ResultSet rset = this.stmtExiste.executeQuery()) {
-                livreExiste = rset.next();
-                rset.close();
-            }
-        } catch(SQLException sqlException) {
-            throw new ServiceException(sqlException);
-        }
-        return livreExiste;
-    }
-
-    /**
-     *
-     * TODO Auto-generated method javadoc
-     *
-     * @param idLivre
-     * @return
-     * @throws ServiceException
-     */
-    public LivreDTO getLivre(int idLivre) throws ServiceException {
-        // test
-        LivreDTO tupleLivre;
-        try {
-            this.stmtExiste.setInt(1,
-                idLivre);
-
-            tupleLivre = null;
-
-            try(
-                ResultSet rset = this.stmtExiste.executeQuery()) {
-
-                if(rset.next()) {
-                    tupleLivre = new LivreDTO();
-                    tupleLivre.setIdLivre(idLivre);
-                    tupleLivre.setTitre(rset.getString(2));
-                    tupleLivre.setAuteur(rset.getString(3));
-                    tupleLivre.setDateAcquisition(rset.getDate(4));
-                    tupleLivre.setIdMembre(rset.getInt(5));
-                    tupleLivre.setDatePret(rset.getDate(6));
-                }
-            }
-        } catch(SQLException sqlException) {
-            throw new ServiceException(sqlException);
-        }
-
-        return tupleLivre;
-    }
-
-    /**
-     *
-     * Acquiert un livre.
-     *
-     * @param idLivre Le id d'un livre à ajouter
-     * @param titre Le titre d'un livre à ajouter
-     * @param auteur L'auteur d'un livre à ajouter
-     * @param dateAcquisition La date d'acquisition d'un livre à ajouter
-     * @throws ServiceException Si le livre existe déjà ou s'il y a une erreur avec la base de données
-     */
+      * Ajout d'un nouveau livre dans la base de donn�es.
+      * S'il existe deja, une exception est lev�e.
+      * @param titre Le titre d'un livre
+      * @param idLivre Le id d'un livre
+      * @param auteur L'auteur d'un livre
+      * @param dateAcquisition La date d'acquisition du livre par le membre
+      * @throws ServiceException Une exception qui fournit des informations sur une erreur d'accès de base de données ou d'autres erreurs
+      * @throws BibliothequeException Une exception qui fournit des informations sur une erreur de la bibliotheque ou d'autres erreurs
+      * @throws Exception Une exception qui fournit des informations sur une erreur vague
+      * @throws SQLException Une exception qui fournit des informations sur une erreur vague
+      */
     public void acquerir(int idLivre,
         String titre,
         String auteur,
-        String dateAcquisition) throws ServiceException {
-        /* Ajout du livre. */
+        String dateAcquisition) throws ServiceException,
+        Exception {
         try {
-            this.stmtInsert.setInt(1,
-                idLivre);
-            this.stmtInsert.setString(2,
-                titre);
-            this.stmtInsert.setString(3,
-                auteur);
-            this.stmtInsert.setDate(4,
-                Date.valueOf(dateAcquisition));
-            this.stmtInsert.executeUpdate();
-        } catch(SQLException sqlException) {
-            throw new ServiceException(sqlException);
+            /* V�rifie si le livre existe d�ja */
+            if(this.livre.existe(idLivre)) {
+                throw new ServiceException("Livre existe deja: "
+                    + idLivre);
+            }
+
+            /* Ajout du livre dans la table des livres */
+            this.livre.acquerir(idLivre,
+                titre,
+                auteur,
+                dateAcquisition);
+            this.cx.commit();
+
+        } catch(DAOException e) {
+            this.cx.rollback();
+            throw new ServiceException(e);
         }
     }
 
     /**
-     *  Le livre à emprunter
-     *
-     * @param idLivre Le
-     * @param idMembre
-     * @param datePret
-     * @return
-     * @throws ServiceException
-     */
-    public int preter(int idLivre,
-        int idMembre,
-        String datePret) throws ServiceException {
-        /* Enregistrement du pret. */
+      * Vente d'un livre.
+      * @param idLivre ID du Livre
+      * @throws SQLException Une exception qui fournit des informations sur une erreur d'accès de base de données ou d'autres erreurs
+      * @throws Exception  Une exception qui fournit des informations sur une erreur vague
+      * @throws BibliothequeException Une exception qui fournit des informations sur une erreur de la bibliotheque ou d'autres erreurs
+      * @throws ServiceException Une exception de Serivce DAO
+      */
+    public void vendre(int idLivre) throws ServiceException,
+        Exception {
         try {
-            this.stmtUpdate.setInt(1,
-                idMembre);
-            this.stmtUpdate.setDate(2,
-                Date.valueOf(datePret));
-            this.stmtUpdate.setInt(3,
-                idLivre);
-            return this.stmtUpdate.executeUpdate();
-        } catch(SQLException sqlException) {
-            throw new ServiceException(sqlException);
+            final LivreDTO tupleLivre = this.livre.getLivre(idLivre);
+            if(tupleLivre == null) {
+                throw new ServiceException("Livre inexistant: "
+                    + idLivre);
+            }
+            if(tupleLivre.getIdMembre() != 0) {
+                throw new ServiceException("Livre "
+                    + idLivre
+                    + " prete a "
+                    + tupleLivre.getIdMembre());
+            }
+            if(this.reservation.getReservationLivre(idLivre) != null) {
+                throw new ServiceException("Livre "
+                    + idLivre
+                    + " r�serv� ");
+            }
+
+            /* Suppression du livre. */
+            final int nb = this.livre.vendre(idLivre);
+            if(nb == 0) {
+                throw new ServiceException("Livre "
+                    + idLivre
+                    + " inexistant");
+            }
+            this.cx.commit();
+        } catch(DAOException e) {
+            this.cx.rollback();
+            throw new ServiceException(e);
         }
     }
-
-    /**
-     *
-     * TODO Auto-generated method javadoc
-     *
-     * @param idLivre
-     * @return
-     * @throws ServiceException
-     */
-    public int retourner(int idLivre) throws ServiceException {
-        /* Enregistrement du pret. */
-        try {
-            this.stmtUpdate.setNull(1,
-                Types.INTEGER);
-            this.stmtUpdate.setNull(2,
-                Types.DATE);
-            this.stmtUpdate.setInt(3,
-                idLivre);
-            return this.stmtUpdate.executeUpdate();
-        } catch(SQLException sqlException) {
-            throw new ServiceException(sqlException);
-        }
-    }
-
-    /**
-     *
-     * TODO Auto-generated method javadoc
-     *
-     * @param idLivre
-     * @return
-     * @throws ServiceException
-     */
-    public int vendre(int idLivre) throws ServiceException {
-        /* Suppression du livre. */
-        try {
-            this.stmtDelete.setInt(1,
-                idLivre);
-            return this.stmtDelete.executeUpdate();
-        } catch(SQLException sqlException) {
-            throw new ServiceException(sqlException);
-        }
-    }
-
 }
