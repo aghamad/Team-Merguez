@@ -64,7 +64,8 @@ public final class Bibliotheque {
     public static void main(String[] argv) throws Exception {
 
         if(argv.length < 4) {
-            System.out.println("Usage: java Biblio <serveur> <bd> <user> <password> [<fichier-transactions>]");
+            System.out.println(
+                "Usage: java Biblio <serveur> <bd> <user> <password> [<fichier-transactions>]");
             System.out.println(Connexion.serveursSupportes());
             return;
         }
@@ -90,7 +91,8 @@ public final class Bibliotheque {
              */
 
             try(
-                BufferedReader reader = new BufferedReader(new InputStreamReader(sourceTransaction))) {
+                BufferedReader reader = new BufferedReader(
+                    new InputStreamReader(sourceTransaction))) {
                 traiterTransactions(reader);
             }
 
@@ -146,6 +148,7 @@ public final class Bibliotheque {
       *Décode et traite une transaction.
       *@param tokenizer - L'entrée à décoder.
       *@throws BibliothequeException - Si une erreur survient.
+      *@throws Exception lancer s'il y a une erreur de transaction
       */
     static void executerTransaction(StringTokenizer tokenizer) throws Exception {
         try {
@@ -178,19 +181,23 @@ public final class Bibliotheque {
             } else if("desinscrire".startsWith(command)) {
                 gestionBiblio.getGestionMembre().desinscrire(readInt(tokenizer) /* idMembre */);
             } else if("reserver".startsWith(command)) {
-                gestionBiblio.getGestionReservation().reserver(readInt(tokenizer) /* idReservation */,
+                gestionBiblio.getGestionReservation().reserver(
+                    readInt(tokenizer) /* idReservation */,
                     readInt(tokenizer) /* idLivre */,
                     readInt(tokenizer) /* idMembre */,
                     readDate(tokenizer) /* dateReservation */);
             } else if("prendreRes".startsWith(command)) {
-                gestionBiblio.getGestionReservation().prendreRes(readInt(tokenizer) /* idReservation */,
+                gestionBiblio.getGestionReservation().prendreRes(
+                    readInt(tokenizer) /* idReservation */,
                     readDate(tokenizer) /* dateReservation */);
             } else if("annulerRes".startsWith(command)) {
-                gestionBiblio.getGestionReservation().annulerRes(readInt(tokenizer) /* idReservation */);
+                gestionBiblio.getGestionReservation()
+                    .annulerRes(readInt(tokenizer) /* idReservation */);
             } else if("listerLivres".startsWith(command)) {
                 gestionBiblio.getGestionInterrogation().listerLivres();
             } else if("listerLivresTitre".startsWith(command)) {
-                gestionBiblio.getGestionInterrogation().listerLivresTitre(readString(tokenizer) /* mot */);
+                gestionBiblio.getGestionInterrogation()
+                    .listerLivresTitre(readString(tokenizer) /* mot */);
             } else if(!"--".startsWith(command)) {
                 System.out.println("  Transactions non reconnue.  Essayer \"aide\"");
             }
