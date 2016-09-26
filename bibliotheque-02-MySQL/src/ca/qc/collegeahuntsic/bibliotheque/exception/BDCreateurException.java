@@ -1,5 +1,5 @@
 // Fichier BDCreateurException.java
-// Auteur : Ary-Carson Bernier
+// Auteur : Team-Merguez
 // Date de création : 2016-09-12
 
 package ca.qc.collegeahuntsic.bibliotheque.exception;
@@ -7,7 +7,7 @@ package ca.qc.collegeahuntsic.bibliotheque.exception;
 /**
  * Cette classe consiste a gérer les exceptions lors de la création de la base de donnée.
  *
- * @author Ary-Carson Bernier
+ * @author Team-Merguez
  */
 public class BDCreateurException extends Exception {
 

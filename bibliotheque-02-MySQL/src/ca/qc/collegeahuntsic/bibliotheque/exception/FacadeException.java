@@ -1,5 +1,5 @@
-// Fichier FacadeException.java
-// Auteur : Ary-Carson Bernier
+// Fichier ConnexionException.java
+// Auteur : Team-Merguez
 // Date de création : 2016-09-12
 
 package ca.qc.collegeahuntsic.bibliotheque.exception;
@@ -7,7 +7,7 @@ package ca.qc.collegeahuntsic.bibliotheque.exception;
 /**
  * Cette classe consiste a gérer les exceptions relié à la facade .
  *
- * @author Ary-Carson Bernier
+ * @author Team-Merguez
  */
 public class FacadeException extends Exception {
 
