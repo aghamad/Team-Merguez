@@ -1,5 +1,5 @@
 // Fichier LivreService.java
-// Auteur : Sasha Benjamin
+// Auteur : Team-Merguez
 // Date de création : 2016-09-15
 
 package ca.qc.collegeahuntsic.bibliotheque.service;
@@ -9,14 +9,15 @@ import ca.qc.collegeahuntsic.bibliotheque.dao.LivreDAO;
 import ca.qc.collegeahuntsic.bibliotheque.dao.ReservationDAO;
 import ca.qc.collegeahuntsic.bibliotheque.db.Connexion;
 import ca.qc.collegeahuntsic.bibliotheque.dto.LivreDTO;
-import ca.qc.collegeahuntsic.bibliotheque.exception.BibliothequeException;
 import ca.qc.collegeahuntsic.bibliotheque.exception.DAOException;
 import ca.qc.collegeahuntsic.bibliotheque.exception.ServiceException;
 
 /**
- * Cette classe avec la Connexion acqueit et vend un livre.
- * @author Team-Marquez
- * */
+ *
+ * Service de la table livre.
+ *
+ * @author Team-Merguez
+ */
 public class LivreService {
 
     private LivreDAO livre;
@@ -26,10 +27,12 @@ public class LivreService {
     private Connexion cx;
 
     /**
-      * Creation d'une instance.
-      * @param livre Instance de la classe dao LivreDAO
-      * @param reservation Instance de la classe dao ReservationDAO
-      */
+     *
+     * Crée le service de la table livre.
+     *
+     * @param livre Le DAO de la table livre
+     * @param reservation Le DAO de la table reservation
+     */
     public LivreService(LivreDAO livre,
         ReservationDAO reservation) {
         this.cx = livre.getConnexion();
@@ -38,24 +41,19 @@ public class LivreService {
     }
 
     /**
-      * Ajout d'un nouveau livre dans la base de donn�es.
-      * S'il existe deja, une exception est lev�e.
-      * @param titre Le titre d'un livre
-      * @param idLivre Le id d'un livre
-      * @param auteur L'auteur d'un livre
-      * @param dateAcquisition La date d'acquisition du livre par le membre
-      * @throws ServiceException Une exception qui fournit des informations sur une erreur d'accès de base de données ou d'autres erreurs
-      * @throws BibliothequeException Une exception qui fournit des informations sur une erreur de la bibliotheque ou d'autres erreurs
-      * @throws Exception Une exception qui fournit des informations sur une erreur vague
-      * @throws SQLException Une exception qui fournit des informations sur une erreur vague
-      */
+    * Ajoute un nouveau livre.
+    *
+    * @param idLivre id d'un livre à ajouter
+    * @param titre titre d'un livre à ajouter
+    * @param auteur auteur d'un livre à ajouter
+    * @param dateAcquisition date d'acquisition d'un livre à ajouter
+    * @throws ServiceException Si le livre existe déjà ou s'il y a une erreur avec la base de données
+    */
     public void acquerir(int idLivre,
         String titre,
         String auteur,
-        String dateAcquisition) throws ServiceException,
-        Exception {
+        String dateAcquisition) throws ServiceException {
         try {
-            /* V�rifie si le livre existe d�ja */
             if(this.livre.existe(idLivre)) {
                 throw new ServiceException("Livre existe deja: "
                     + idLivre);
@@ -68,22 +66,27 @@ public class LivreService {
                 dateAcquisition);
             this.cx.commit();
 
-        } catch(DAOException e) {
-            this.cx.rollback();
-            throw new ServiceException(e);
+        } catch(DAOException daoException) {
+            try {
+                this.cx.rollback();
+            } catch(SQLException sqlException) {
+                throw new ServiceException(sqlException);
+            }
+            throw new ServiceException(daoException);
+
+        } catch(SQLException sqlException2) {
+            throw new ServiceException(sqlException2);
         }
+
     }
 
     /**
-      * Vente d'un livre.
-      * @param idLivre ID du Livre
-      * @throws SQLException Une exception qui fournit des informations sur une erreur d'accès de base de données ou d'autres erreurs
-      * @throws Exception  Une exception qui fournit des informations sur une erreur vague
-      * @throws BibliothequeException Une exception qui fournit des informations sur une erreur de la bibliotheque ou d'autres erreurs
-      * @throws ServiceException Une exception de Serivce DAO
-      */
-    public void vendre(int idLivre) throws ServiceException,
-        Exception {
+    * Vendre un livre.
+    *
+    * @param idLivre id d'un livre à vendre
+    * @throws ServiceException Si le livre existe déjà ou s'il y a une erreur avec la base de données
+    */
+    public void vendre(int idLivre) throws ServiceException {
         try {
             final LivreDTO tupleLivre = this.livre.getLivre(idLivre);
             if(tupleLivre == null) {
@@ -99,7 +102,7 @@ public class LivreService {
             if(this.reservation.getReservationLivre(idLivre) != null) {
                 throw new ServiceException("Livre "
                     + idLivre
-                    + " r�serv� ");
+                    + " réservé ");
             }
 
             /* Suppression du livre. */
@@ -110,9 +113,17 @@ public class LivreService {
                     + " inexistant");
             }
             this.cx.commit();
-        } catch(DAOException e) {
-            this.cx.rollback();
-            throw new ServiceException(e);
+        } catch(DAOException daoException) {
+
+            try {
+                this.cx.rollback();
+            } catch(SQLException sqlException) {
+                throw new ServiceException(sqlException);
+            }
+            throw new ServiceException(daoException);
+
+        } catch(SQLException sqlException2) {
+            throw new ServiceException(sqlException2);
         }
     }
 }
