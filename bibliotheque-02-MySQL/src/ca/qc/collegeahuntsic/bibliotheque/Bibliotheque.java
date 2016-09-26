@@ -17,28 +17,28 @@ import ca.qc.collegeahuntsic.bibliotheque.util.FormatDate;
 import ca.qc.collegeahuntsic.bibliotheque.util.GestionBibliotheque;
 
 /**
- * Interface du syst�me de gestion d'une biblioth�que +.
+ * Interface du système de gestion d'une bibliothèque +.
  *
- * Ce programme permet d'appeler les transactions de base d'une
- * biblioth�que.  Il g�re des livres, des membres et des
- * r�servations. Les donn�es sont conserv�es dans une base de
- * donn�es relationnelles acc�d�e avec JDBC. Pour une liste des
- * transactions trait�es, voir la m�thode afficherAide().
+ *<p>Ce programme permet d'appeler les transactions de base d'une
+ * bibliothèque.  Il gère des livres, des membres et des
+ * réservations. Les données sont conserv�es dans une base de
+ * données relationnelles accédée avec JDBC. Pour une liste des
+ * transactions traitées, voir la méthode afficherAide().
  *
- * Param�tres
+ * <p>Paramètres
  * 0- site du serveur SQL ("local", "distant" ou "postgres")
  * 1- nom de la BD
  * 2- user id pour �tablir une connexion avec le serveur SQL
  * 3- mot de passe pour le user id
  * 4- fichier de transaction [optionnel]
- *           si non sp�cifi�, les transactions sont lues au
+ *           si non spécifié, les transactions sont lues au
  *           clavier (System.in)
  *
- * Pr�-condition
- *   la base de donn�es de la biblioth�que doit exister
+ *<p>Pré-condition
+ *   la base de donn�es de la bibliothèque doit exister
  *
- * Post-condition
- *   le programme effectue les maj associ�es � chaque
+ * <p>Post-condition
+ *   le programme effectue les maj associées à chaque
  *   transaction
  * @author Team-Merguez
  */
@@ -47,20 +47,22 @@ public final class Bibliotheque {
 
     private static boolean lectureAuClavier;
 
-    /** Constructeur de la classe Biblio. **/
+    /**
+     *Constructeur privé pour empêcher toute instanciation.
+     *
+     */
+
     private Bibliotheque() {
         super();
     }
 
     /**
-     * Ouverture de la BD,
-     * traitement des transactions et
-     * fermeture de la BD.
-     * @throws Exception exeption
-     * @param argv parametre
+     *Crée une connexion sur la base de données, traite toutes les transactions et détruit la connexion.
+     *@param argv Les arguments du main.
+     *@throws Exception - Si une erreur survient.
      */
     public static void main(String[] argv) throws Exception {
-        // validation du nombre de param�tres
+
         if(argv.length < 4) {
             System.out.println("Usage: java Biblio <serveur> <bd> <user> <password> [<fichier-transactions>]");
             System.out.println(Connexion.serveursSupportes());
@@ -68,8 +70,10 @@ public final class Bibliotheque {
         }
 
         try {
-            // ouverture du fichier de transactions
-            // s'il est sp�cifi� comme argument
+            /**
+             *  ouverture du fichier de transactions
+             * s'il est spécifié comme argument
+             */
             lectureAuClavier = true;
             InputStream sourceTransaction = System.in;
             if(argv.length > 4) {
@@ -81,8 +85,10 @@ public final class Bibliotheque {
                 argv[1],
                 argv[2],
                 argv[3]);
+            /*
+             * try-with-resources Statement
+             */
 
-            //  try-with-resources Statement
             try(
                 BufferedReader reader = new BufferedReader(new InputStreamReader(sourceTransaction))) {
                 traiterTransactions(reader);
@@ -96,15 +102,18 @@ public final class Bibliotheque {
     }
 
     /**
-      * Traitement des transactions de la biblioth�que.
-      *@param reader lire
-      *@throws Exception exeption
+      *Traite le fichier de transactions.
+      *@param reader - Le flux d'entrée à lire.
+      *@throws Exception - Si une erreur survient.
       */
     static void traiterTransactions(BufferedReader reader) throws Exception {
         afficherAide();
         String transaction = lireTransaction(reader);
         while(!finTransaction(transaction)) {
-            /* d�coupage de la transaction en mots*/
+            /*
+             * découpage de la transaction en mots.
+             */
+
             final StringTokenizer tokenizer = new StringTokenizer(transaction,
                 " ");
             if(tokenizer.hasMoreTokens()) {
@@ -115,15 +124,17 @@ public final class Bibliotheque {
     }
 
     /**
-      * Lecture d'une transaction.
-      * @param reader lire
-    *@throws IOException Exeption
-    *@return transaction
+      *Lit une transaction.
+      *@param reader - Le flux d'entrée à lire
+      *@return La transaction lue.
+      *@throws IOException - Si une erreur de lecture survient.
       */
     static String lireTransaction(BufferedReader reader) throws IOException {
         System.out.print("> ");
         final String transaction = reader.readLine();
-        /* echo si lecture dans un fichier */
+        /*
+         * echo si lecture dans un fichier.
+         */
         if(!lectureAuClavier
             && transaction != null) {
             System.out.println(transaction);
@@ -132,25 +143,21 @@ public final class Bibliotheque {
     }
 
     /**
-      * D�codage et traitement d'une transaction.
-      *
-      *@throws Exception exeption
-      *@param tokenizer reader
+      *Décode et traite une transaction.
+      *@param tokenizer - L'entrée à décoder.
+      *@throws BibliothequeException - Si une erreur survient.
       */
     static void executerTransaction(StringTokenizer tokenizer) throws Exception {
         try {
             final String command = tokenizer.nextToken();
 
-            /* ******************* */
-            /*         HELP        */
-            /* ******************* */
             if("aide".startsWith(command)) {
                 afficherAide();
             } else if("acquerir".startsWith(command)) {
-                gestionBiblio.getGestionLivre().acquerir(readInt(tokenizer) /* idLivre */,
-                    readString(tokenizer) /* titre */,
-                    readString(tokenizer) /* auteur */,
-                    readDate(tokenizer) /* dateAcquisition */);
+                gestionBiblio.getGestionLivre().acquerir(readInt(tokenizer),
+                    readString(tokenizer),
+                    readString(tokenizer),
+                    readDate(tokenizer));
             } else if("vendre".startsWith(command)) {
                 gestionBiblio.getGestionLivre().vendre(readInt(tokenizer) /* idLivre */);
             } else if("preter".startsWith(command)) {
@@ -194,7 +201,9 @@ public final class Bibliotheque {
         }
     }
 
-    /** Affiche le menu des transactions accept�es par le syst�me .*/
+    /**
+     * private static void afficherAide().
+     */
     static void afficherAide() {
         System.out.println();
         System.out.println("Chaque transaction comporte un nom et une liste d'arguments");
@@ -220,13 +229,11 @@ public final class Bibliotheque {
     }
 
     /**
-     * Verifie si la fin du traitement des transactions est en atteinte.
-     *
-     * @param transaction transaction
-     * @return fichierFin Boolean
+     * Vérifie si la fin du traitement des transactions est atteinte.
+     * @param transaction - La transaction à traiter.
+     * @return true Si la fin du fichier est atteinte, false sinon.
      */
     static boolean finTransaction(String transaction) {
-        /* fin de fichier atteinte */
         boolean fichierFin = transaction == null;
 
         if(!fichierFin) {
@@ -242,13 +249,12 @@ public final class Bibliotheque {
         return fichierFin;
     }
 
-    /** lecture d'une cha�ne de caract�res de la transaction entr�e � l'�cran .
-     *
-     * @param tokenizer token
-     *  @throws BibliothequeException exeption
-     *  @return tokenizer token
-     *
-     * */
+    /**
+     *Lit une chaîne de caractères de la transaction.
+     *@param tokenizer - La transaction à décoder.
+     *@return La chaîne de caractères lue.
+     *@throws BibliothequeException - Si l'élément lu est manquant
+     */
 
     static String readString(StringTokenizer tokenizer) throws BibliothequeException {
 
@@ -260,11 +266,10 @@ public final class Bibliotheque {
     }
 
     /**
-      * lecture d'un int java de la transaction entr�e � l'�cran.
-      *
-      * @param tokenizer token
-     *  @throws BibliothequeException exeption
-     *  @return tokenizer token
+      *Lit un integer de la transaction.
+      *@param tokenizer - La transaction à décoder.
+      *@return Le integer lu.
+      *@throws BibliothequeException - Si l'élément lu est manquant ou n'est pas un integer.
       */
     static int readInt(StringTokenizer tokenizer) throws BibliothequeException {
 
@@ -287,11 +292,11 @@ public final class Bibliotheque {
     }
 
     /**
-      * lecture d'un long java de la transaction entr�e � l'�cran.
+      *Lit un long de la transaction.Lit un long de la transaction.
       *
-      *  @param tokenizer token
-     *  @throws BibliothequeException exeption
-     *  @return tokenizer token
+      *@param tokenizer - La transaction à décoder.
+      *@return Le long lu.
+      *@throws BibliothequeException - Si l'élément lu est manquant ou n'est pas un long.
       */
     static long readLong(StringTokenizer tokenizer) throws BibliothequeException {
 
@@ -314,11 +319,10 @@ public final class Bibliotheque {
     }
 
     /**
-      * lecture d'une date en format YYYY-MM-DD.
-      *
-      *  @param tokenizer token
-     *  @throws BibliothequeException exeption
-     *  @return tokenizer token
+      * Lit une date au format YYYY-MM-DD de la transaction.
+      *@param tokenizer - La transaction à décoder.
+      *@return La date lue.
+      *@throws BibliothequeException - Si l'élément lu est manquant ou n'est pas une date correctement formatée.
       */
     static String readDate(StringTokenizer tokenizer) throws BibliothequeException {
 
