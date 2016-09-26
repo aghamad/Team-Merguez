@@ -7,6 +7,7 @@ package ca.qc.collegeahuntsic.bibliotheque.util;
 import java.sql.SQLException;
 import java.sql.Statement;
 import ca.qc.collegeahuntsic.bibliotheque.db.Connexion;
+import ca.qc.collegeahuntsic.bibliotheque.exception.ConnexionException;
 import ca.qc.collegeahuntsic.bibliotheque.exception.DAOException;
 
 /**
@@ -25,6 +26,7 @@ import ca.qc.collegeahuntsic.bibliotheque.exception.DAOException;
  */
 final class BDCreateur {
     /**
+     * TODO Auto-generated field javadoc.
      *
      * Constructeur de classe de type private
      *
@@ -45,6 +47,9 @@ final class BDCreateur {
      * @param args Les arguments du main
      * @throws DAOException S'il y a une erreur avec la connexion ou s'il y a une erreur avec la base de données
      */
+    @SuppressWarnings("resource")
+
+    // TO FIX
     public static void main(String[] args) throws DAOException {
 
         if(args.length < 3) {
@@ -53,11 +58,22 @@ final class BDCreateur {
         }
 
         try {
-            final Connexion cx = new Connexion(args[0],
-                args[1],
-                args[2],
-                args[3]);
-
+            Connexion cx = null;
+            try {
+                cx = new Connexion(args[0],
+                    args[1],
+                    args[2],
+                    args[3]);
+            } catch(ConnexionException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            try {
+                cx.fermer();
+            } catch(ConnexionException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
             try(
                 Statement stmt = cx.getConnection().createStatement()) {
 
@@ -105,10 +121,10 @@ final class BDCreateur {
                 stmt.close();
             }
 
-            cx.fermer();
         } catch(SQLException sqlException) {
             throw new DAOException(sqlException);
         }
+
     }
 
 }

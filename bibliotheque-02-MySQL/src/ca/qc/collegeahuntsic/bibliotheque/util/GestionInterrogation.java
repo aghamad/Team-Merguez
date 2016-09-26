@@ -8,6 +8,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import ca.qc.collegeahuntsic.bibliotheque.db.Connexion;
+import ca.qc.collegeahuntsic.bibliotheque.exception.ConnexionException;
 
 /**
  * Gestion des transactions d'interrogation dans une bibliothéque.
@@ -45,12 +46,14 @@ public class GestionInterrogation {
     public GestionInterrogation(Connexion connection) throws SQLException {
 
         this.connection = connection;
-        this.stmtLivresTitreMot = connection.getConnection().prepareStatement("select t1.idLivre, t1.titre, t1.auteur, t1.idmembre, t1.datePret + 14 "
-            + "from livre t1 "
-            + "where lower(titre) like ?");
+        this.stmtLivresTitreMot = connection.getConnection().prepareStatement(
+            "select t1.idLivre, t1.titre, t1.auteur, t1.idmembre, t1.datePret + 14 "
+                + "from livre t1 "
+                + "where lower(titre) like ?");
 
-        this.stmtListeTousLivres = connection.getConnection().prepareStatement("select t1.idLivre, t1.titre, t1.auteur, t1.idmembre, t1.datePret "
-            + "from livre t1");
+        this.stmtListeTousLivres = connection.getConnection()
+            .prepareStatement("select t1.idLivre, t1.titre, t1.auteur, t1.idmembre, t1.datePret "
+                + "from livre t1");
     }
 
     /**
@@ -86,7 +89,12 @@ public class GestionInterrogation {
                 System.out.println();
             }
 
-            this.connection.commit();
+            try {
+                this.connection.commit();
+            } catch(ConnexionException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
 
         }
 
@@ -119,7 +127,12 @@ public class GestionInterrogation {
                 System.out.println();
             }
 
-            this.connection.commit();
+            try {
+                this.connection.commit();
+            } catch(ConnexionException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
         }
     }
 }

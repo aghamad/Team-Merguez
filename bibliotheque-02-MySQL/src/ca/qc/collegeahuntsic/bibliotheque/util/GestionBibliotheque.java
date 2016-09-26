@@ -10,35 +10,39 @@ import ca.qc.collegeahuntsic.bibliotheque.dao.MembreDAO;
 import ca.qc.collegeahuntsic.bibliotheque.dao.ReservationDAO;
 import ca.qc.collegeahuntsic.bibliotheque.db.Connexion;
 import ca.qc.collegeahuntsic.bibliotheque.exception.BibliothequeException;
+import ca.qc.collegeahuntsic.bibliotheque.exception.ConnexionException;
 import ca.qc.collegeahuntsic.bibliotheque.exception.DAOException;
+import ca.qc.collegeahuntsic.bibliotheque.exception.ServiceException;
 import ca.qc.collegeahuntsic.bibliotheque.service.LivreService;
 import ca.qc.collegeahuntsic.bibliotheque.service.MembreService;
 import ca.qc.collegeahuntsic.bibliotheque.service.PretService;
 import ca.qc.collegeahuntsic.bibliotheque.service.ReservationService;
 
 /**
- * Syst�me de gestion d'une biblioth�que
+ * Syst?me de gestion d'une biblioth?que
  *
  *<pre>
- * Ce programme permet de g�rer les transaction de base d'une
- * biblioth�que.  Il g�re des livres, des membres et des
- * r�servations. Les donn�es sont conserv�es dans une base de
- * donn�es relationnelles acc�d�e avec JDBC.
+ * Ce programme permet de g?rer les transaction de base d'une
+ * biblioth?que.  Il g?re des livres, des membres et des
+ * r?servations. Les donn?es sont conserv?es dans une base de
+ * donn?es relationnelles acc?d?e avec JDBC.
  *
- * Pr�-condition
- *   la base de donn�es de la biblioth�que doit exister
+ * Pr?-condition
+ *   la base de donn?es de la biblioth?que doit exister
  *
  * Post-condition
- *   le programme effectue les maj associ�es � chaque
+ *   le programme effectue les maj associ?es ? chaque
  *   transaction
  * </pre>
- * @author Team-Merguez
- *
  */
 
+/**
+ * Classe GestionBibliotheque.
+ * @author Sasha Benjamin
+ */
 public class GestionBibliotheque {
 
-    private Connexion connection;
+    private Connexion conn;
 
     private LivreDAO livre;
 
@@ -65,7 +69,7 @@ public class GestionBibliotheque {
      * @param user Nom d'utilisateur sur le serveur SQL
      * @param password Mot de passe sur le serveur SQL
      * @throws BibliothequeException S'il y a une erreur avec la base de données
-     * @throws DAOException
+     * @throws DAOException lance une exception si une erreur survient via la librairie DAO
      */
 
     public GestionBibliotheque(String serveur,
@@ -75,36 +79,53 @@ public class GestionBibliotheque {
         DAOException {
         // allocation des objets pour le traitement des transactions
         try {
-            this.connection = new Connexion(serveur,
-                bd,
-                user,
-                password);
-            this.livre = new LivreDAO(this.connection);
-            this.membre = new MembreDAO(this.connection);
-            this.reservation = new ReservationDAO(this.connection);
+            try {
+                this.conn = new Connexion(serveur,
+                    bd,
+                    user,
+                    password);
+            } catch(ConnexionException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            this.livre = new LivreDAO(this.conn);
+            this.membre = new MembreDAO(this.conn);
+            this.reservation = new ReservationDAO(this.conn);
             this.gestionLivre = new LivreService(this.livre,
                 this.reservation);
             this.gestionMembre = new MembreService(this.membre,
                 this.reservation);
-            this.gestionPret = new PretService(this.livre,
-                this.membre,
-                this.reservation);
-            this.gestionReservation = new ReservationService(this.livre,
-                this.membre,
-                this.reservation);
-            this.gestionInterrogation = new GestionInterrogation(this.connection);
+            try {
+                this.gestionPret = new PretService(this.livre,
+                    this.membre,
+                    this.reservation);
+            } catch(ServiceException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            try {
+                this.gestionReservation = new ReservationService(this.livre,
+                    this.membre,
+                    this.reservation);
+            } catch(ServiceException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            this.gestionInterrogation = new GestionInterrogation(this.conn);
         } catch(SQLException sqlException) {
             throw new DAOException(sqlException);
         }
     }
 
-    /** Set de connection.
-     * @param connection nom de la variable connection.
+    /** Set de conn.
+     * @param conn nom de la variable conn.
      */
-    public void setconnection(Connexion connection) {
-        this.connection = connection;
-    }
 
+    /*
+       public void setconn(Connexion conn) {
+        this.conn = conn;
+       }
+       */
     /** Get de Livre.
      * @return this.livre retourne la valeur de this.livre.
      */
@@ -220,15 +241,20 @@ public class GestionBibliotheque {
     /**
       * Ouvre une connexion avec la BD relationnelle et
       * alloue les gestionnaires de transactions et de tables.
-    
+
       */
     /**
-     * Ferme la connection.
+     * Ferme la conn.
      * @throws SQLException est l'exception lancer.
-
+    
      */
     public void fermer() throws SQLException {
         // fermeture de la connexion
-        this.connection.fermer();
+        try {
+            this.conn.fermer();
+        } catch(ConnexionException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
 }
