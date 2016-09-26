@@ -1,5 +1,5 @@
 // Fichier CreerBD.java
-// Auteur : Sasha Benjamin
+// Auteur : Team-Merguez
 // Date de création : 2016-09-15
 
 package ca.qc.collegeahuntsic.bibliotheque.util;
@@ -10,24 +10,20 @@ import ca.qc.collegeahuntsic.bibliotheque.db.Connexion;
 import ca.qc.collegeahuntsic.bibliotheque.exception.DAOException;
 
 /**
- *<pre>
+ *Permet de créer la BD utilisé par Bibliotheque.java.
  *
- *Permet de cr�er la BD utilis�e par Biblio.java.
- *
- *Param�tres:0- serveur SQL
+ *Paramètres:0- serveur SQL
  *           1- bd nom de la BD
- *           2- user id pour �tablir une connexion avec le serveur SQL
+ *           2- user id pour établir une connexion avec le serveur SQL
  *           3- mot de passe pour le user id
- *</pre>
  */
-
 /**
- * TODO Auto-generated field javadoc.
  *
- * @author Sasha Benjamin
+ * Constructeur privé pour empêcher toute instanciation.
+ *
+ * @author Team-Merguez
  */
-
-final class CreerBD {
+final class BDCreateur {
     /**
      * TODO Auto-generated field javadoc.
      *
@@ -35,18 +31,20 @@ final class CreerBD {
      *
      */
 
-    private CreerBD() {
+    private BDCreateur() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
     /**
-     * TODO Auto-generated field javadoc.
      *
-     * Main
-     * @throws DAOException est le nom de l'exception qui est lancer.
-     * @throws Exception est le nom de l'exception qui est lancer.
-     * @param args tableau de string.
+     * Crée la base de données nécessaire à l'application bibliothèque.
+     *
+     *0 - Type de serveur SQL de la BD
+      1 - Nom du schéma de la base de données
+      2 - Nom d'utilisateur sur le serveur SQL
+      3 - Mot de passe sur le serveur SQL
+     * @param args Les arguments du main
+     * @throws DAOException S'il y a une erreur avec la connexion ou s'il y a une erreur avec la base de données
      */
     public static void main(String[] args) throws DAOException {
 

@@ -41,7 +41,7 @@ import ca.qc.collegeahuntsic.bibliotheque.service.ReservationService;
  */
 public class GestionBibliotheque {
 
-    private Connexion cx;
+    private Connexion connection;
 
     private LivreDAO livre;
 
@@ -59,13 +59,16 @@ public class GestionBibliotheque {
 
     private GestionInterrogation gestionInterrogation;
 
-    /** Constructeur de classe.
-     * @throws DAOException est le nom de l'exception qui est lancer.
-     * @throws BibliothequeException est le nom de l'exception qui est lancer.
-      * @param serveur SQL
-      * @param bd nom de la bade de donn�es
-      * @param user user id pour �tablir une connexion avec le serveur SQL
-      * @param password mot de passe pour le user id
+    /**
+     *
+     * Crée les services nécessaires à l'application bibliothèque.
+     *
+     * @param serveur SQL de la BD
+     * @param bd le nom de la BD
+     * @param user Nom d'utilisateur sur le serveur SQL
+     * @param password Mot de passe sur le serveur SQL
+     * @throws BibliothequeException S'il y a une erreur avec la base de données
+     * @throws DAOException
      */
 
     public GestionBibliotheque(String serveur,
@@ -75,13 +78,13 @@ public class GestionBibliotheque {
         DAOException {
         // allocation des objets pour le traitement des transactions
         try {
-            this.cx = new Connexion(serveur,
+            this.connection = new Connexion(serveur,
                 bd,
                 user,
                 password);
-            this.livre = new LivreDAO(this.cx);
-            this.membre = new MembreDAO(this.cx);
-            this.reservation = new ReservationDAO(this.cx);
+            this.livre = new LivreDAO(this.connection);
+            this.membre = new MembreDAO(this.connection);
+            this.reservation = new ReservationDAO(this.connection);
             this.gestionLivre = new LivreService(this.livre,
                 this.reservation);
             this.gestionMembre = new MembreService(this.membre,
@@ -92,17 +95,17 @@ public class GestionBibliotheque {
             this.gestionReservation = new ReservationService(this.livre,
                 this.membre,
                 this.reservation);
-            this.gestionInterrogation = new GestionInterrogation(this.cx);
+            this.gestionInterrogation = new GestionInterrogation(this.connection);
         } catch(SQLException sqlException) {
             throw new DAOException(sqlException);
         }
     }
 
     /** Set de connection.
-     * @param cx nom de la variable connection.
+     * @param connection nom de la variable connection.
      */
-    public void setCx(Connexion cx) {
-        this.cx = cx;
+    public void setconnection(Connexion connection) {
+        this.connection = connection;
     }
 
     /** Get de Livre.
@@ -220,15 +223,15 @@ public class GestionBibliotheque {
     /**
       * Ouvre une connexion avec la BD relationnelle et
       * alloue les gestionnaires de transactions et de tables.
-    
+
       */
     /**
      * Ferme la connection.
      * @throws SQLException est l'exception lancer.
-
+    
      */
     public void fermer() throws SQLException {
         // fermeture de la connexion
-        this.cx.fermer();
+        this.connection.fermer();
     }
 }

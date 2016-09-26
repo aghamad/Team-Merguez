@@ -1,5 +1,5 @@
 // Fichier FormatDate.java
-// Auteur : Sasha Benjamin
+// Auteur : Team-Merguez
 // Date de création : 2016-09-15
 
 package ca.qc.collegeahuntsic.bibliotheque.util;
@@ -12,19 +12,14 @@ import java.util.Date;
  * Permet de valider le format d'une date en YYYY-MM-DD et de la convertir en un
  * objet Date.
  *
+ *@author Team-Merguez
  */
 
-/**
- * TODO Auto-generated field javadoc.
- *
- * @author Sasha Benjamin
- */
 public final class FormatDate {
 
     /**
-     * TODO Auto-generated field javadoc.
+     * variable private static.
      *
-     *variable private static
      */
 
     private static SimpleDateFormat formatAMJ;
@@ -34,13 +29,11 @@ public final class FormatDate {
     }
 
     /**
-     * TODO Auto-generated field javadoc.
+     * Constructeur de la classe.
      *
-     *Constructeur de la classe
-     */
+    */
     private FormatDate() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
     /**

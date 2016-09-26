@@ -1,5 +1,5 @@
 // Fichier GestionInterrogation.java
-// Auteur : Sasha Benjamin
+// Auteur : Team-Merguez
 // Date de création : 2016-09-15
 
 package ca.qc.collegeahuntsic.bibliotheque.util;
@@ -10,53 +10,47 @@ import java.sql.SQLException;
 import ca.qc.collegeahuntsic.bibliotheque.db.Connexion;
 
 /**
- * Gestion des transactions d'interrogation dans une biblioth�que.
+ * Gestion des transactions d'interrogation dans une bibliothéque.
  *
  * <pre>
  *
  *   Ce programme permet de faire diverses interrogations
- *   sur l'�tat de la biblioth�que.
+ *   sur l'état de la bibliothéque.
  *
- *   Pr�-condition
- *     la base de donn�es de la biblioth�que doit exister
+ *   Pré-condition
+ *     la base de données de la bibliothéque doit exister
  *
  *   Post-condition
- *     le programme effectue les maj associ�es � chaque
+ *     le programme effectue les maj associées à chaque
  *     transaction
  *
- *
+ *@author Team-Merguez
  * </pre>
  */
-/**
- * TODO Auto-generated field javadoc.
- *
- * @author Sasha Benjamin
- */
+
 public class GestionInterrogation {
 
     private PreparedStatement stmtLivresTitreMot;
 
     private PreparedStatement stmtListeTousLivres;
 
-    private Connexion cx;
+    private Connexion connection;
 
     /**
      * Creation d'une instance.
-     * @param cx est le nom donner a la connection.
+     * @param connection est le nom donner a la connection.
      * @throws SQLException est le nom de l'exception qui est lancer.
      *
      */
-    public GestionInterrogation(Connexion cx) throws SQLException {
+    public GestionInterrogation(Connexion connection) throws SQLException {
 
-        this.cx = cx;
-        this.stmtLivresTitreMot = cx.getConnection().prepareStatement(
-            "select t1.idLivre, t1.titre, t1.auteur, t1.idmembre, t1.datePret + 14 "
-                + "from livre t1 "
-                + "where lower(titre) like ?");
+        this.connection = connection;
+        this.stmtLivresTitreMot = connection.getConnection().prepareStatement("select t1.idLivre, t1.titre, t1.auteur, t1.idmembre, t1.datePret + 14 "
+            + "from livre t1 "
+            + "where lower(titre) like ?");
 
-        this.stmtListeTousLivres = cx.getConnection()
-            .prepareStatement("select t1.idLivre, t1.titre, t1.auteur, t1.idmembre, t1.datePret "
-                + "from livre t1");
+        this.stmtListeTousLivres = connection.getConnection().prepareStatement("select t1.idLivre, t1.titre, t1.auteur, t1.idmembre, t1.datePret "
+            + "from livre t1");
     }
 
     /**
@@ -92,7 +86,7 @@ public class GestionInterrogation {
                 System.out.println();
             }
 
-            this.cx.commit();
+            this.connection.commit();
 
         }
 
@@ -125,7 +119,7 @@ public class GestionInterrogation {
                 System.out.println();
             }
 
-            this.cx.commit();
+            this.connection.commit();
         }
     }
 }

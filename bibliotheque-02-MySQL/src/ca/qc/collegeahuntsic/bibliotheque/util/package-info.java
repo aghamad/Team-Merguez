@@ -1,11 +1,11 @@
 // Fichier package-info.java
-// Auteur : Sasha Benjamin
+// Auteur : Team-Merguez
 // Date de création : 2016-09-15
 
 /**
- * TODO Auto-generated class javadoc.
- *  package-info de la librairie Util
- * @author Sasha Benjamin
+ *  package-info de la librairie Util.
+ *
+ * @author Team-Merguez
  */
 
 package ca.qc.collegeahuntsic.bibliotheque.util;
