@@ -182,7 +182,6 @@ public class PretService {
     }
 
     /**
-     *
      * Retourner un livre prêté.
      *
      * @param idLivre id du livre à prêté
@@ -193,7 +192,7 @@ public class PretService {
     public void retourner(int idLivre,
         String dateRetour) throws ServiceException {
         try {
-            /* Verifier si le livre est prété */
+            /* Verifier si le livre est prété  */
             final LivreDTO tupleLivre = this.livre.getLivre(idLivre);
             if(tupleLivre == null) {
                 throw new ServiceException("Livre inexistant: "
