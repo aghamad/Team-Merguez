@@ -34,15 +34,12 @@ import ca.qc.collegeahuntsic.bibliotheque.service.ReservationService;
  *   le programme effectue les maj associées à chaque
  *   transaction
  * </pre>
+ * @author Team-Merguez
  */
 
-/**
- * Classe GestionBibliotheque.
- * @author Sasha Benjamin
- */
 public class GestionBibliotheque {
 
-    private Connexion conn;
+    private Connexion connection;
 
     private LivreDAO livre;
 
@@ -80,16 +77,16 @@ public class GestionBibliotheque {
         // allocation des objets pour le traitement des transactions
         try {
             try {
-                this.conn = new Connexion(serveur,
+                this.connection = new Connexion(serveur,
                     bd,
                     user,
                     password);
-            } catch(ConnexionException e) {
-                e.printStackTrace();
+            } catch(ConnexionException connectionExeption) {
+                throw new BibliothequeException(connectionExeption);
             }
-            this.livre = new LivreDAO(this.conn);
-            this.membre = new MembreDAO(this.conn);
-            this.reservation = new ReservationDAO(this.conn);
+            this.livre = new LivreDAO(this.connection);
+            this.membre = new MembreDAO(this.connection);
+            this.reservation = new ReservationDAO(this.connection);
             this.gestionLivre = new LivreService(this.livre,
                 this.reservation);
             this.gestionMembre = new MembreService(this.membre,
@@ -98,19 +95,19 @@ public class GestionBibliotheque {
                 this.gestionPret = new PretService(this.livre,
                     this.membre,
                     this.reservation);
-            } catch(ServiceException e) {
+            } catch(ServiceException connectionExeption) {
 
-                e.printStackTrace();
+                throw new BibliothequeException(connectionExeption);
             }
             try {
                 this.gestionReservation = new ReservationService(this.livre,
                     this.membre,
                     this.reservation);
-            } catch(ServiceException e) {
+            } catch(ServiceException connectionExeption) {
 
-                e.printStackTrace();
+                throw new BibliothequeException(connectionExeption);
             }
-            this.gestionInterrogation = new GestionInterrogation(this.conn);
+            this.gestionInterrogation = new GestionInterrogation(this.connection);
         } catch(SQLException sqlException) {
             throw new DAOException(sqlException);
         }
@@ -240,20 +237,20 @@ public class GestionBibliotheque {
     /**
       * Ouvre une connexion avec la BD relationnelle et
       * alloue les gestionnaires de transactions et de tables.
-
+    
       */
     /**
      * Ferme la conn.
-     * @throws SQLException est l'exception lancer.
-    
+     * @throws BibliothequeException est l'exception lancer.
+
      */
-    public void fermer() throws SQLException {
+    public void fermer() throws BibliothequeException {
         // fermeture de la connexion
         try {
-            this.conn.fermer();
-        } catch(ConnexionException e) {
+            this.connection.fermer();
+        } catch(ConnexionException connectionExeption) {
             // TODO Auto-generated catch block
-            e.printStackTrace();
+            throw new BibliothequeException(connectionExeption);
         }
     }
 }
