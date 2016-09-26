@@ -13,6 +13,8 @@ import java.sql.Date;
 
 public class LivreDTO extends DTO {
 
+    private static final long serialVersionUID = 1L;
+
     private int idLivre;
 
     private String titre;
@@ -28,7 +30,7 @@ public class LivreDTO extends DTO {
     /**
      * variable d'instance this.idLivre this.titre this.auteur this.dateAcquisition this.idMembre this.datePret.
      * @param idLivre id du livre
-     * 
+     *
      * @param titre titre du livre
      * @param auteur auteur du livre
      * @param dateAcquisition  la date de l'aquisition

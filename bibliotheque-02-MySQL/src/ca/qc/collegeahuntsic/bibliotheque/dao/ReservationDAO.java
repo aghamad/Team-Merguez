@@ -21,18 +21,20 @@ public class ReservationDAO extends DAO {
     /*
      * private static final String ADD_REQUEST = "INSERT INTO reservation "
         + "VALUES (?, ?, ?, CURRENT_TIMESTAMP)";
-    
+
     private static final String READ_REQUEST = "SELECT idReservation, idMembre, idLivre, dateReservation "
         + "FROM reservation "
         + "WHERE idReservation = ?";
-    
+
     private static final String UPDATE_REQUEST = "UPDATE reservation "
         + "SET idMembre = ?, idLivre = ?, dateReservation = ? "
         + "WHERE idReservation = ?";
-    
+
     private static final String DELETE_REQUEST = "DELETE FROM reservation "
         + "WHERE idReservation = ?";
      */
+
+    private static final long serialVersionUID = 1L;
 
     private PreparedStatement stmtExiste;
 

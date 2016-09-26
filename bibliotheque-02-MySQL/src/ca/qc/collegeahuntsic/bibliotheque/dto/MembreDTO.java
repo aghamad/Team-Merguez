@@ -11,6 +11,8 @@ package ca.qc.collegeahuntsic.bibliotheque.dto;
 
 public class MembreDTO extends DTO {
 
+    private static final long serialVersionUID = 1L;
+
     private int idMembre;
 
     private String nom;
@@ -101,7 +103,6 @@ public class MembreDTO extends DTO {
      *  Getter de la variable d'instance <code>this.limitePret</code>.
      *  @return La variable d'instance <code>this.limitePret</code>
      *  */
-
 
     public int getLimitePret() {
         return this.limitePret;

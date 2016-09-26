@@ -23,27 +23,29 @@ public class MembreDAO extends DAO {
     /*
      * private static final String READ_REQUEST = "SELECT * FROM membre "
         + "WHERE idMembre = ?";
-
+    
     private static final String ADD_REQUEST = "INSERT INTO membre "
         + "VALUES (?,?,?,?,?)";
-
+    
     private static final String UPDATE_REQUEST = "UPDATE membre "
         + "SET nom = ?, telephone = ?, limitePret = ?, nbPret = ?"
         + "WHERE idMembre = ?";
-
+    
     private static final String EMPRUNT_REQUEST = "UPDATE membre "
         + "SET nom = ?, telephone = ?, limitePret = ?, nbPret = nbPret + 1 "
         + "WHERE idMembre = ?";
-
+    
     private static final String RETOUR_REQUEST = "UPDATE membre "
         + "SET nom = ?, telephone = ?, limitePret = ?, nbPret = nbPret - 1 "
         + "WHERE idMembre = ?";
-
+    
     private static final String DELETE_REQUEST = "DELETE FROM membre "
         + "WHERE idMembre = ?";
-
-
+    
+    
      * */
+
+    private static final long serialVersionUID = 1L;
 
     private PreparedStatement stmtExiste;
 
