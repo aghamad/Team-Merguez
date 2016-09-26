@@ -1,22 +1,23 @@
 // Fichier MembreService.java
-// Auteur : Sasha Benjamin
+// Auteur : Team-Merguez
 // Date de création : 2016-09-15
 
 package ca.qc.collegeahuntsic.bibliotheque.service;
 
-//import java.sql.SQLException;
+import java.sql.SQLException;
 import ca.qc.collegeahuntsic.bibliotheque.dao.MembreDAO;
 import ca.qc.collegeahuntsic.bibliotheque.dao.ReservationDAO;
 import ca.qc.collegeahuntsic.bibliotheque.db.Connexion;
 import ca.qc.collegeahuntsic.bibliotheque.dto.MembreDTO;
 import ca.qc.collegeahuntsic.bibliotheque.exception.DAOException;
-//import ca.qc.collegeahuntsic.bibliotheque.exception.BibliothequeException;
 import ca.qc.collegeahuntsic.bibliotheque.exception.ServiceException;
 
 /**
- * Cette classe avec la Connexion inscrit et deinscrit un membre.
- * @author Team-Marquez
- * */
+ *
+ * Service de la table membre.
+ *
+ * @author Team-Merguez
+ */
 public class MembreService {
 
     private Connexion cx;
@@ -26,10 +27,12 @@ public class MembreService {
     private ReservationDAO reservation;
 
     /**
-      * Creation d'une instance.
-      * @param membre Instance de la classe dao MembreDAO
-      * @param reservation Instance de la classe dao ReservationDAO
-      */
+     *
+     * Crée le service de la table livre.
+     *
+     * @param membre Le DAO de la table membre
+     * @param reservation Le DAO de la table reservation
+     */
     public MembreService(MembreDAO membre,
         ReservationDAO reservation) {
 
@@ -39,22 +42,20 @@ public class MembreService {
     }
 
     /**
-      * Ajout d'un nouveau membre dans la base de donnees.
-      * S'il existe deja, une exception est levee.
-      * @param idMembre Le id d'un membre
-      * @param nom Le nom d'un membre
-      * @param telephone Le numero de telephone d'un membre
-      * @param limitePret La limit de pret d'un membre
-      * @throws ServiceException Une exception qui fournit des informations sur une erreur d'accès de base de données ou d'autres erreurs
-      * @throws Exception Une exception qui fournit des informations sur une erreur vague
-      */
+     *
+     * Inscrit un membre.
+     *
+     * @param idMembre id du membre à inscrire
+     * @param nom nom du membre à inscrire
+     * @param telephone telephone du membre à inscrire
+     * @param limitePret limitPret du membre à inscrire
+     * @throws ServiceException Si le membre existe déjà ou s'il y a une erreur avec la base de données
+     */
     public void inscrire(int idMembre,
         String nom,
         long telephone,
-        int limitePret) throws ServiceException,
-        Exception {
+        int limitePret) throws ServiceException {
         try {
-            /* V�rifie si le membre existe d�ja */
             if(this.membre.existe(idMembre)) {
                 throw new ServiceException("Membre existe deja: "
                     + idMembre);
@@ -66,24 +67,27 @@ public class MembreService {
                 telephone,
                 limitePret);
             this.cx.commit();
-        } catch(DAOException e) {
-            this.cx.rollback();
-            throw e;
+        } catch(DAOException daoException) {
+            try {
+                this.cx.rollback();
+            } catch(SQLException sqlException) {
+                throw new ServiceException(sqlException);
+            }
+            throw new ServiceException(daoException);
+        } catch(SQLException sqlException2) {
+            throw new ServiceException(sqlException2);
         }
     }
 
     /**
-      * Suppression d'un membre de la base de donnees.
-      * @param idMembre Le id d'un membre
-
-      * @throws ServiceException Une exception qui fournit des informations sur une erreur d'accès de base de données ou d'autres erreurs
-      
-      * @throws Exception Une exception qui fournit des informations sur une erreur vague
-      */
-    public void desinscrire(int idMembre) throws ServiceException,
-        Exception {
+     *
+     * Désincrit un membre.
+     *
+     * @param idMembre id du membre à désinscrire
+     * @throws ServiceException Si le membre existe déjà ou s'il y a une erreur avec la base de données
+     */
+    public void desinscrire(int idMembre) throws ServiceException {
         try {
-            /* V�rifie si le membre existe et son nombre de pret en cours */
             final MembreDTO tupleMembre = this.membre.getMembre(idMembre);
             if(tupleMembre == null) {
                 throw new ServiceException("Membre inexistant: "
@@ -97,7 +101,7 @@ public class MembreService {
             if(this.reservation.getReservationMembre(idMembre) != null) {
                 throw new ServiceException("Membre "
                     + idMembre
-                    + " a des r�servations");
+                    + " a des réservations");
             }
 
             /* Suppression du membre */
@@ -108,9 +112,15 @@ public class MembreService {
                     + " inexistant");
             }
             this.cx.commit();
-        } catch(DAOException e) {
-            this.cx.rollback();
-            throw e;
+        } catch(DAOException daoException) {
+            try {
+                this.cx.rollback();
+            } catch(SQLException sqlException) {
+                throw new ServiceException(sqlException);
+            }
+            throw new ServiceException(daoException);
+        } catch(SQLException sqlException2) {
+            throw new ServiceException(sqlException2);
         }
     }
 

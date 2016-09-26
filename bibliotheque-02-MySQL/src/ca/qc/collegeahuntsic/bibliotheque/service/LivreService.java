@@ -15,6 +15,7 @@ import ca.qc.collegeahuntsic.bibliotheque.exception.ServiceException;
 /**
  *
  * Service de la table livre.
+ *
  * @author Team-Merguez
  */
 public class LivreService {
@@ -28,6 +29,7 @@ public class LivreService {
     /**
      *
      * Crée le service de la table livre.
+     *
      * @param livre Le DAO de la table livre
      * @param reservation Le DAO de la table reservation
      */
@@ -39,7 +41,6 @@ public class LivreService {
     }
 
     /**
-    *
     * Ajoute un nouveau livre.
     *
     * @param idLivre id d'un livre à ajouter
@@ -80,7 +81,6 @@ public class LivreService {
     }
 
     /**
-    *
     * Vendre un livre.
     *
     * @param idLivre id d'un livre à vendre
