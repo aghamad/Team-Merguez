@@ -1,5 +1,5 @@
 // Fichier ReservationDAO.java
-// Auteur : Team Merguez
+// Auteur : Team-Merguez
 // Date de création : 2016-09-15
 
 package ca.qc.collegeahuntsic.bibliotheque.dao;
@@ -12,17 +12,11 @@ import ca.qc.collegeahuntsic.bibliotheque.dto.ReservationDTO;
 import ca.qc.collegeahuntsic.bibliotheque.exception.DAOException;
 
 /**
- * Permet d'effectuer les acc�s � la table reservation.
- *
- *
- * Cette classe g�re tous les acc�s � la table reservation.
+ * DAO pour effectuer des CRUDs avec la table reservation.
  *
  * @author Team-Merguez
  */
-
 public class ReservationDAO extends DAO {
-
-    private static final long serialVersionUID = 1L;
 
     /*
      * private static final String ADD_REQUEST = "INSERT INTO reservation "
@@ -50,50 +44,39 @@ public class ReservationDAO extends DAO {
 
     private PreparedStatement stmtDelete;
 
-    private Connexion cx;
-
     /**
-      * Creation d'une instance.
-      *
-      * @param cx connexion
-      *
-      *@throws DAOException Exeption
-      */
-    public ReservationDAO(Connexion cx) throws DAOException {
-        super(cx);
-        this.cx = super.getConnexion();
+     *
+     * Crée un DAO à partir d'une connexion à la base de données.
+     *
+     * @param connexion La connexion à utiliser
+     * @throws DAOException S'il y a une erreur avec la base de données
+     */
+    public ReservationDAO(Connexion connexion) throws DAOException {
+        super(connexion);
         try {
-            this.stmtExiste = cx.getConnection().prepareStatement("select idReservation, idLivre, idMembre, dateReservation "
+            this.stmtExiste = connexion.getConnection().prepareStatement("select idReservation, idLivre, idMembre, dateReservation "
                 + "from reservation where idReservation = ?");
-            this.stmtExisteLivre = cx.getConnection().prepareStatement("select idReservation, idLivre, idMembre, dateReservation "
+            this.stmtExisteLivre = connexion.getConnection().prepareStatement("select idReservation, idLivre, idMembre, dateReservation "
                 + "from reservation where idLivre = ? "
                 + "order by dateReservation");
-            this.stmtExisteMembre = cx.getConnection().prepareStatement("select idReservation, idLivre, idMembre, dateReservation "
+            this.stmtExisteMembre = connexion.getConnection().prepareStatement("select idReservation, idLivre, idMembre, dateReservation "
                 + "from reservation where idMembre = ? ");
-            this.stmtInsert = cx.getConnection().prepareStatement("insert into reservation (idReservation, idlivre, idMembre, dateReservation) "
+            this.stmtInsert = connexion.getConnection().prepareStatement("insert into reservation (idReservation, idlivre, idMembre, dateReservation) "
                 + "values (?,?,?,str_to_date(?,'%Y-%m-%d'))");
-            this.stmtDelete = cx.getConnection().prepareStatement("delete from reservation where idReservation = ?");
+            this.stmtDelete = connexion.getConnection().prepareStatement("delete from reservation where idReservation = ?");
         } catch(SQLException sqlException) {
             throw new DAOException(sqlException);
         }
     }
 
     /**
-      * Retourner la connexion associ�e.
-      */
-    @Override
-    public Connexion getConnexion() {
-
-        return this.cx;
-    }
-
-    /**
-      * Verifie si une reservation existe.
-      *
-      * @return ReservationExiste si le Reservation existe
-      * @throws DAOException Exeptions
-      * @param idReservation parametre id
-      */
+     *
+     * Verifie si une reservation existe.
+     *
+     * @param idReservation id de la reservation
+     * @return boolean si la reservation existe ou pas
+     * @throws DAOException S'il y a une erreur avec la base de données
+     */
     public boolean existe(int idReservation) throws DAOException {
 
         boolean reservationExiste;
@@ -113,12 +96,13 @@ public class ReservationDAO extends DAO {
     }
 
     /**
-      * Lecture d'une reservation.
-      *
-      * @return tupleReservation si le reservation existe
-      * @throws DAOException Exeptions
-      * @param idReservation parametre id
-      */
+     *
+     * Lecture d'une reservation.
+     *
+     * @param idReservation id de la reservation
+     * @return Objet de reservation ReservationDTO
+     * @throws DAOException S'il y a une erreur avec la base de données
+     */
     public ReservationDTO getReservation(int idReservation) throws DAOException {
 
         ReservationDTO tupleReservation;
@@ -146,12 +130,13 @@ public class ReservationDAO extends DAO {
     }
 
     /**
-      * Lecture de la premi�re reservation d'un livre.
-      *
-      * @return tupleReservation si le livre a reserver existe
-      * @throws DAOException Exeptions
-      * @param idLivre parametre id
-      */
+     *
+     * Lecture de la première reservation d'un livre.
+     *
+     * @param idLivre id du livre
+     * @return Objet de reservation ReservationDTO
+     * @throws DAOException S'il y a une erreur avec la base de données
+     */
     public ReservationDTO getReservationLivre(int idLivre) throws DAOException {
 
         ReservationDTO tupleReservation;
@@ -179,12 +164,13 @@ public class ReservationDAO extends DAO {
     }
 
     /**
-      * Lecture de la premi�re reservation d'un livre.
-      *
-      * @return tupleReservation si le membre qui veut reserver existe
-      * @throws DAOException Exeptions
-      * @param idMembre parametre id
-      */
+     *
+     * Lecture de la première reservation d'un livre.
+     *
+     * @param idMembre id du membre
+     * @return Objet de reservation ReservationDTO
+     * @throws DAOException S'il y a une erreur avec la base de données
+     */
     public ReservationDTO getReservationMembre(int idMembre) throws DAOException {
 
         ReservationDTO tupleReservation;
@@ -213,15 +199,15 @@ public class ReservationDAO extends DAO {
     }
 
     /**
-      * R�servation d'un livre.
-      *
-      *  @param idReservation le id d'une reservation
-      * @param idLivre le id d'un livre
-      * @param idMembre le id d'un membre
-      * @param dateReservation la date de la reservation
-      *@throws DAOException Exeptions
-      *
-      */
+     *
+     * Réservation d'un livre.
+     *
+     * @param idReservation id de la réservation
+     * @param idLivre id du livre à reserver
+     * @param idMembre id du memebre qui reserve
+     * @param dateReservation date de reservation du livre
+     * @throws DAOException S'il y a une erreur avec la base de données
+     */
     public void reserver(int idReservation,
         int idLivre,
         int idMembre,
@@ -242,12 +228,13 @@ public class ReservationDAO extends DAO {
     }
 
     /**
-      * Suppression d'une reservation.
-      *
-      * @param idReservation la id de la reservation
-      *@throws DAOException Exeptions
-      *@return delete
-      */
+     *
+     * Suppression d'une reservation.
+     *
+     * @param idReservation id de la reservation à supprimer
+     * @return resultat de la requete delete
+     * @throws DAOException S'il y a une erreur avec la base de données
+     */
     public int annulerRes(int idReservation) throws DAOException {
         try {
             this.stmtDelete.setInt(1,
