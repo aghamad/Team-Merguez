@@ -28,12 +28,12 @@ public class LivreDTO {
     /**
      * variable d'instance this.idLivre this.titre this.auteur this.dateAcquisition this.idMembre this.datePret.
      * @param idLivre ghfjgh
-     * 
-     * @param titre 
-     * @param auteur 
-     * @param dateAcquisition 
-     * @param idMembre 
-     * @param datePret 
+     *
+     * @param titre
+     * @param auteur
+     * @param dateAcquisition
+     * @param idMembre
+     * @param datePret
      */
     public LivreDTO(int idLivre,
         String titre,
@@ -55,7 +55,7 @@ public class LivreDTO {
     *
     */
     public LivreDTO() {
-        // TODO Auto-generated constructor stub
+
     }
 
     /**

@@ -46,7 +46,7 @@ public class MembreDTO {
      * Ceci est le  constructeur vide.
      */
     public MembreDTO() {
-        // TODO Auto-generated constructor stub
+
     }
 
     /**

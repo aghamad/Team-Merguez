@@ -20,36 +20,32 @@ import ca.qc.collegeahuntsic.bibliotheque.exception.DAOException;
 
 public class LivreDAO extends DAO {
 
-    /**
-     * TODO Auto-generated field javadoc.
-     * * @author Livre
-     */
     private static final long serialVersionUID = 1L;
     /*
     private final static String READ_REQUEST = "SELECT idLivre, titre, auteur, dateAcquisition, idMembre, datePret FROM livre "
         + "WHERE idLivre = ?";
-    
+
     private final static String ADD_REQUEST = "INSERT INTO livre "
         + "VALUES(?, ?, ?, ?, NULL, NULL)";
-    
+
     private final static String UPDATE_REQUEST = "UPDATE livre "
         + "SET idMembre = ?, datePret = ?,"
         + "titre = ?, auteur = ?,"
         + "dateAcquisition = ?"
         + "WHERE idLivre = ?";
-    
+
     private final static String EMPRUNT_REQUEST = "UPDATE livre "
         + "SET idMembre = ?, datePret = CURRENT_TIMESTAMP, "
         + "titre = ?, auteur = ?, "
         + "dateAcquisition = ? "
         + "WHERE idLivre = ?";
-    
+
     private final static String RETOUR_REQUEST = "UPDATE livre "
         + "SET idMembre = null, datePret = null, "
         + "titre = ?, auteur = ?, "
         + "dateAcquisition = ? "
         + "WHERE idLivre = ?";
-    
+
     private final static String DELETE_REQUEST = "DELETE FROM livre "
         + "WHERE idlivre = ?";
     */

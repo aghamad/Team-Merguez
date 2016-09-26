@@ -2,7 +2,7 @@
 // Auteur : Ahmad Agha
 // Date de création : 2016-09-12
 /**
- * TODO Auto-generated class javadoc.
+ * package-info de la librairie DAO.
  *
  * @author Ahmad Agha
  */

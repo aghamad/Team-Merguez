@@ -2,7 +2,7 @@
 // Auteur : Ary-Carson Bernier
 // Date de création : 2016-09-19
 /**
- * TODO Auto-generated class javadoc.
+ * package-info de la librairie Facade.
  *
  * @author Ary-Carson Bernier
  */

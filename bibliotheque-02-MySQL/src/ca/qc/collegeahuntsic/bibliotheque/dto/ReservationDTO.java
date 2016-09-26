@@ -22,7 +22,7 @@ public class ReservationDTO {
     private Date dateReservation;
 
     /**para pour idReservation.
-     * @param idReservation 
+     * @param idReservation idReservation
      * @param idLivre para idLivre
      * @param idMembre para IdMembre
      * @param dateReservation para dateReservation
@@ -42,7 +42,7 @@ public class ReservationDTO {
      * Ceci est le  constructeur vide.
      */
     public ReservationDTO() {
-        // TODO Auto-generated constructor stub
+
     }
 
     /**

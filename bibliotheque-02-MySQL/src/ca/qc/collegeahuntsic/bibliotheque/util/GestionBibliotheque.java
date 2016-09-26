@@ -32,13 +32,10 @@ import ca.qc.collegeahuntsic.bibliotheque.service.ReservationService;
  *   le programme effectue les maj associ�es � chaque
  *   transaction
  * </pre>
+ * @author Team-Merguez
+ *
  */
 
-/**
- * TODO Auto-generated field javadoc.
- *
- * @author Sasha Benjamin
- */
 public class GestionBibliotheque {
 
     private Connexion connection;
@@ -223,12 +220,12 @@ public class GestionBibliotheque {
     /**
       * Ouvre une connexion avec la BD relationnelle et
       * alloue les gestionnaires de transactions et de tables.
-
+    
       */
     /**
      * Ferme la connection.
      * @throws SQLException est l'exception lancer.
-    
+
      */
     public void fermer() throws SQLException {
         // fermeture de la connexion
