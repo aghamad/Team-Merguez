@@ -27,13 +27,13 @@ public class LivreDTO extends DTO {
 
     /**
      * variable d'instance this.idLivre this.titre this.auteur this.dateAcquisition this.idMembre this.datePret.
-     * @param idLivre 
+     * @param idLivre id du livre
      * 
-     * @param titre 
-     * @param auteur 
-     * @param dateAcquisition 
-     * @param idMembre 
-     * @param datePret 
+     * @param titre titre du livre
+     * @param auteur auteur du livre
+     * @param dateAcquisition  la date de l'aquisition
+     * @param idMembre id du membre
+     * @param datePret la date de pret
      */
     public LivreDTO(int idLivre,
         String titre,
@@ -59,96 +59,96 @@ public class LivreDTO extends DTO {
     }
 
     /**
-    *  Getter de la variable d'instance this.idLivre.
-    *  @return idLivre La variable d'instance this.idLivre
+    *  Getter de la variable d'instance <code>this.idLivre</code>.
+    *  @return idLivre La variable d'instance <code>this.idLivre</code>
     *  */
     public int getIdLivre() {
         return this.idLivre;
     }
 
     /**
-    *  Setter de la variable d'instance this.idLivre.
-    *  @param idLivre - La valeur à utiliser pour la variable d'instance this.idLivre
+    *  Setter de la variable d'instance <code>this.idLivre</code>.
+    *  @param idLivre - La valeur à utiliser pour la variable d'instance <code>this.idLivre</code>
     *  */
     public void setIdLivre(int idLivre) {
         this.idLivre = idLivre;
     }
 
     /**
-    *  Getter de la variable d'instance this.titre.
-    *  @return titre -La variable d'instance this.titre
+    *  Getter de la variable d'instance <code>this.titre</code>.
+    *  @return titre -La variable d'instance <code>this.titre</code>
     *  */
     public String getTitre() {
         return this.titre;
     }
 
     /**
-    *  Setter de la variable d'instance this.titre.
-    *  @param titre - La valeur à utiliser pour la variable d'instance this.titre
+    *  Setter de la variable d'instance <code>this.titre</code>.
+    *  @param titre - La valeur à utiliser pour la variable d'instance <code>this.titre</code>
     *  */
     public void setTitre(String titre) {
         this.titre = titre;
     }
 
     /**
-    *  Getter de la variable d'instance this.auteur.
-    *  @return auteur - La variable d'instance this.auteur
+    *  Getter de la variable d'instance <code>this.auteur</code>.
+    *  @return auteur - La variable d'instance <code>this.auteur</code>
     *  */
     public String getAuteur() {
         return this.auteur;
     }
 
     /**
-    *  Setter de la variable d'instance this.auteur.
-    *  @param auteur - La valeur à utiliser pour la variable d'instance this.auteur
+    *  Setter de la variable d'instance <code>this.auteur</code>.
+    *  @param auteur - La valeur à utiliser pour la variable d'instance <code>this.auteur</code>
     *  */
     public void setAuteur(String auteur) {
         this.auteur = auteur;
     }
 
     /**
-    *  Getter de la variable d'instance this.dateAcquisition.
-    *  @return dataAcquisition - La variable d'instance this.dateAcquisition.
+    *  Getter de la variable d'instance <code>this.dateAcquisition</code>.
+    *  @return dataAcquisition - La variable d'instance <code>this.dateAcquisition</code>.
     *  */
     public Date getDateAcquisition() {
         return this.dateAcquisition;
     }
 
     /**
-    *  Setter de la variable d'instance this.dateAcquisition.
-    *  @param dateAcquisition  - La valeur à utiliser pour la variable d'instance this.dateAcquisition
+    *  Setter de la variable d'instance <code>this.dateAcquisition</code>.
+    *  @param dateAcquisition  - La valeur à utiliser pour la variable d'instance <code>this.dateAcquisition</code>
     *  */
     public void setDateAcquisition(Date dateAcquisition) {
         this.dateAcquisition = dateAcquisition;
     }
 
     /**
-    *  Getter de la variable d'instance this.idMembre.
-    *  @return idMembre - La variable d'instance this.idMembre
+    *  Getter de la variable d'instance <code>this.idMembre</code>.
+    *  @return idMembre - La variable d'instance <code>this.idMembre</code>
     *  */
     public int getIdMembre() {
         return this.idMembre;
     }
 
     /**
-    *  Setter de la variable d'instance this.idMembre.
-    *  @param idMembre - La valeur à utiliser pour la variable d'instance this.idMembre
+    *  Setter de la variable d'instance <code>this.idMembre</code>.
+    *  @param idMembre - La valeur à utiliser pour la variable d'instance <code>this.idMembre</code>
     *  */
     public void setIdMembre(int idMembre) {
         this.idMembre = idMembre;
     }
 
     /**
-    *  Getter de la variable d'instance this.datePret.
-    *  @return datePret - La variable d'instance this.datePret
+    *  Getter de la variable d'instance <code>this.datePret</code>.
+    *  @return datePret - La variable d'instance <code>this.datePret</code>
     *  */
     public Date getDatePret() {
         return this.datePret;
     }
 
     /**
-    *  Setter de la variable d'instance this.datePret.
-    *  @param datePret - La valeur à utiliser pour la variable d'instance this.datePret
+    *  Setter de la variable d'instance <code>this.datePret</code>.
+    *  @param datePret - La valeur à utiliser pour la variable d'instance <code>this.datePret</code>
     *  */
     public void setDatePret(Date datePret) {
         this.datePret = datePret;

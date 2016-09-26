@@ -50,56 +50,56 @@ public class MembreDTO {
     }
 
     /**
-     *  Getter de la variable d'instance this.idMembre.
-     *  @return idMembre La variable d'instance this.idMembre
+     *  Getter de la variable d'instance <code>this.idMembre</code>.
+     *  @return idMembre La variable d'instance <code>this.idMembre</code>
      **/
     public int getIdMembre() {
         return this.idMembre;
     }
 
     /**
-     *  Setter de la variable d'instance this.idMembre.
-     *  @param idMembre - La valeur à utiliser pour la variable d'instance this.idMembre
+     *  Setter de la variable d'instance <code>this.idMembre</code>.
+     *  @param idMembre - La valeur à utiliser pour la variable d'instance <code>this.idMembre</code>
      *  */
     public void setIdMembre(int idMembre) {
         this.idMembre = idMembre;
     }
 
     /**
-     *  Getter de la variable d'instance this.nom.
-     *  @return nom La variable d'instance this.nom
+     *  Getter de la variable d'instance <code>this.nom</code>.
+     *  @return nom La variable d'instance <code>this.nom</code>
      *  */
     public String getNom() {
         return this.nom;
     }
 
     /**
-     *  Setter de la variable d'instance this.nom.
-     *  @param nom - La valeur à utiliser pour la variable d'instance this.nom
+     *  Setter de la variable d'instance <code>this.nom</code>.
+     *  @param nom - La valeur à utiliser pour la variable d'instance <code>this.nom</code>
      *  */
     public void setNom(String nom) {
         this.nom = nom;
     }
 
     /**
-     *  Getter de la variable d'instance this.telephone.
-     *  @return telephone La variable d'instance this.telephone
+     *  Getter de la variable d'instance <code>this.telephone</code>.
+     *  @return telephone La variable d'instance <code>this.telephone</code>
      *  */
     public long getTelephone() {
         return this.telephone;
     }
 
     /**
-     *  Setter de la variable d'instance this.telephone.
-     *  @param telephone - La valeur à utiliser pour la variable d'instance this.telephone
+     *  Setter de la variable d'instance <code>this.telephone</code>.
+     *  @param telephone - La valeur à utiliser pour la variable d'instance <code>this.telephone</code>
      *  */
     public void setTelephone(long telephone) {
         this.telephone = telephone;
     }
 
     /**
-     *  Getter de la variable d'instance this.limitePret.
-     *  @return La variable d'instance this.limitePret
+     *  Getter de la variable d'instance <code>this.limitePret</code>.
+     *  @return La variable d'instance <code>this.limitePret</code>
      *  */
 
 
@@ -108,16 +108,16 @@ public class MembreDTO {
     }
 
     /**
-     *  Setter de la variable d'instance this.limitePret.
-     *  @param limitePret - La valeur à utiliser pour la variable d'instance this.limitePret
+     *  Setter de la variable d'instance <code>this.limitePret</code>.
+     *  @param limitePret - La valeur à utiliser pour la variable d'instance <code>this.limitePret</code>
      *  */
     public void setLimitePret(int limitePret) {
         this.limitePret = limitePret;
     }
 
     /**
-     *  Getter de la variable d'instance this.nbPret.
-     *  @return getNbPret La variable d'instance this.nbPret
+     *  Getter de la variable d'instance <code>this.nbPret</code>.
+     *  @return getNbPret La variable d'instance<code> this.nbPret</code>
      *  */
 
     public int getNbPret() {
@@ -125,8 +125,8 @@ public class MembreDTO {
     }
 
     /**
-     *  Setter de la variable d'instance this.nbPret.
-     *  @param nbPret - La valeur à utiliser pour la variable d'instance this.nbPret
+     *  Setter de la variable d'instance <code>this.nbPret</code>.
+     *  @param nbPret - La valeur à utiliser pour la variable d'instance <code>this.nbPret</code>
      *  */
     public void setNbPret(int nbPret) {
         this.nbPret = nbPret;
