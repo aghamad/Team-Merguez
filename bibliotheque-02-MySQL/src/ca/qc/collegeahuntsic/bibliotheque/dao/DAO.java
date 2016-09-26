@@ -25,7 +25,6 @@ public class DAO implements Serializable {
      * @param connexion La connexion à utiliser
      */
     public DAO(Connexion connexion) {
-        // TODO Auto-generated constructor stub
         setConnexion(connexion);
     }
 

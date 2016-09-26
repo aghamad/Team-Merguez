@@ -21,6 +21,31 @@ public class MembreDAO extends DAO {
 
     private static final long serialVersionUID = 1L;
 
+    /*
+     * private static final String READ_REQUEST = "SELECT * FROM membre "
+        + "WHERE idMembre = ?";
+    
+    private static final String ADD_REQUEST = "INSERT INTO membre "
+        + "VALUES (?,?,?,?,?)";
+    
+    private static final String UPDATE_REQUEST = "UPDATE membre "
+        + "SET nom = ?, telephone = ?, limitePret = ?, nbPret = ?"
+        + "WHERE idMembre = ?";
+    
+    private static final String EMPRUNT_REQUEST = "UPDATE membre "
+        + "SET nom = ?, telephone = ?, limitePret = ?, nbPret = nbPret + 1 "
+        + "WHERE idMembre = ?";
+    
+    private static final String RETOUR_REQUEST = "UPDATE membre "
+        + "SET nom = ?, telephone = ?, limitePret = ?, nbPret = nbPret - 1 "
+        + "WHERE idMembre = ?";
+    
+    private static final String DELETE_REQUEST = "DELETE FROM membre "
+        + "WHERE idMembre = ?";
+    
+    
+     * */
+
     private PreparedStatement stmtExiste;
 
     private PreparedStatement stmtInsert;
@@ -44,17 +69,12 @@ public class MembreDAO extends DAO {
         this.cx = super.getConnexion();
 
         try {
-            this.stmtExiste = cx.getConnection().prepareStatement(
-                "select idMembre, nom, telephone, limitePret, nbpret from membre where idmembre = ?");
-            this.stmtInsert = cx.getConnection().prepareStatement(
-                "insert into membre (idmembre, nom, telephone, limitepret, nbpret) "
-                    + "values (?,?,?,?,0)");
-            this.stmtUpdateIncrNbPret = cx.getConnection()
-                .prepareStatement("update membre set nbpret = nbPret + 1 where idMembre = ?");
-            this.stmtUpdateDecNbPret = cx.getConnection()
-                .prepareStatement("update membre set nbpret = nbPret - 1 where idMembre = ?");
-            this.stmtDelete = cx.getConnection()
-                .prepareStatement("delete from membre where idmembre = ?");
+            this.stmtExiste = cx.getConnection().prepareStatement("select idMembre, nom, telephone, limitePret, nbpret from membre where idmembre = ?");
+            this.stmtInsert = cx.getConnection().prepareStatement("insert into membre (idmembre, nom, telephone, limitepret, nbpret) "
+                + "values (?,?,?,?,0)");
+            this.stmtUpdateIncrNbPret = cx.getConnection().prepareStatement("update membre set nbpret = nbPret + 1 where idMembre = ?");
+            this.stmtUpdateDecNbPret = cx.getConnection().prepareStatement("update membre set nbpret = nbPret - 1 where idMembre = ?");
+            this.stmtDelete = cx.getConnection().prepareStatement("delete from membre where idmembre = ?");
         } catch(SQLException sqlException) {
             throw new DAOException(sqlException);
         }

@@ -27,6 +27,22 @@ public class ReservationDAO extends DAO {
      */
     private static final long serialVersionUID = 1L;
 
+    /*
+     * private static final String ADD_REQUEST = "INSERT INTO reservation "
+        + "VALUES (?, ?, ?, CURRENT_TIMESTAMP)";
+
+    private static final String READ_REQUEST = "SELECT idReservation, idMembre, idLivre, dateReservation "
+        + "FROM reservation "
+        + "WHERE idReservation = ?";
+
+    private static final String UPDATE_REQUEST = "UPDATE reservation "
+        + "SET idMembre = ?, idLivre = ?, dateReservation = ? "
+        + "WHERE idReservation = ?";
+
+    private static final String DELETE_REQUEST = "DELETE FROM reservation "
+        + "WHERE idReservation = ?";
+     */
+
     private PreparedStatement stmtExiste;
 
     private PreparedStatement stmtExisteLivre;
@@ -50,21 +66,16 @@ public class ReservationDAO extends DAO {
         super(cx);
         this.cx = super.getConnexion();
         try {
-            this.stmtExiste = cx.getConnection()
-                .prepareStatement("select idReservation, idLivre, idMembre, dateReservation "
-                    + "from reservation where idReservation = ?");
-            this.stmtExisteLivre = cx.getConnection()
-                .prepareStatement("select idReservation, idLivre, idMembre, dateReservation "
-                    + "from reservation where idLivre = ? "
-                    + "order by dateReservation");
-            this.stmtExisteMembre = cx.getConnection()
-                .prepareStatement("select idReservation, idLivre, idMembre, dateReservation "
-                    + "from reservation where idMembre = ? ");
-            this.stmtInsert = cx.getConnection().prepareStatement(
-                "insert into reservation (idReservation, idlivre, idMembre, dateReservation) "
-                    + "values (?,?,?,str_to_date(?,'%Y-%m-%d'))");
-            this.stmtDelete = cx.getConnection()
-                .prepareStatement("delete from reservation where idReservation = ?");
+            this.stmtExiste = cx.getConnection().prepareStatement("select idReservation, idLivre, idMembre, dateReservation "
+                + "from reservation where idReservation = ?");
+            this.stmtExisteLivre = cx.getConnection().prepareStatement("select idReservation, idLivre, idMembre, dateReservation "
+                + "from reservation where idLivre = ? "
+                + "order by dateReservation");
+            this.stmtExisteMembre = cx.getConnection().prepareStatement("select idReservation, idLivre, idMembre, dateReservation "
+                + "from reservation where idMembre = ? ");
+            this.stmtInsert = cx.getConnection().prepareStatement("insert into reservation (idReservation, idlivre, idMembre, dateReservation) "
+                + "values (?,?,?,str_to_date(?,'%Y-%m-%d'))");
+            this.stmtDelete = cx.getConnection().prepareStatement("delete from reservation where idReservation = ?");
         } catch(SQLException sqlException) {
             throw new DAOException(sqlException);
         }

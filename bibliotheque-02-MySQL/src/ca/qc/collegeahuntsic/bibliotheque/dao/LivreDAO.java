@@ -25,22 +25,35 @@ public class LivreDAO extends DAO {
      * * @author Livre
      */
     private static final long serialVersionUID = 1L;
-
     /*
-     * private static final String ADD_REQUEST = "INSERT INTO reservation "
-        + "VALUES (?, ?, ?, CURRENT_TIMESTAMP)";
+    private final static String READ_REQUEST = "SELECT idLivre, titre, auteur, dateAcquisition, idMembre, datePret FROM livre "
+        + "WHERE idLivre = ?";
     
-    private static final String READ_REQUEST = "SELECT idReservation, idMembre, idLivre, dateReservation "
-        + "FROM reservation "
-        + "WHERE idReservation = ?";
+    private final static String ADD_REQUEST = "INSERT INTO livre "
+        + "VALUES(?, ?, ?, ?, NULL, NULL)";
     
-    private static final String UPDATE_REQUEST = "UPDATE reservation "
-        + "SET idMembre = ?, idLivre = ?, dateReservation = ? "
-        + "WHERE idReservation = ?";
+    private final static String UPDATE_REQUEST = "UPDATE livre "
+        + "SET idMembre = ?, datePret = ?,"
+        + "titre = ?, auteur = ?,"
+        + "dateAcquisition = ?"
+        + "WHERE idLivre = ?";
     
-    private static final String DELETE_REQUEST = "DELETE FROM reservation "
-        + "WHERE idReservation = ?";
-     */
+    private final static String EMPRUNT_REQUEST = "UPDATE livre "
+        + "SET idMembre = ?, datePret = CURRENT_TIMESTAMP, "
+        + "titre = ?, auteur = ?, "
+        + "dateAcquisition = ? "
+        + "WHERE idLivre = ?";
+    
+    private final static String RETOUR_REQUEST = "UPDATE livre "
+        + "SET idMembre = null, datePret = null, "
+        + "titre = ?, auteur = ?, "
+        + "dateAcquisition = ? "
+        + "WHERE idLivre = ?";
+    
+    private final static String DELETE_REQUEST = "DELETE FROM livre "
+        + "WHERE idlivre = ?";
+    */
+
     private PreparedStatement stmtExiste;
 
     private PreparedStatement stmtInsert;
