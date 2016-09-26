@@ -63,13 +63,11 @@ final class BDCreateur {
                     args[2],
                     args[3]);
             } catch(ConnexionException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
             try {
                 cx.fermer();
             } catch(ConnexionException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
             try(

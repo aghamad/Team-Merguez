@@ -85,7 +85,6 @@ public class GestionBibliotheque {
                     user,
                     password);
             } catch(ConnexionException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
             }
             this.livre = new LivreDAO(this.conn);
@@ -100,7 +99,7 @@ public class GestionBibliotheque {
                     this.membre,
                     this.reservation);
             } catch(ServiceException e) {
-                // TODO Auto-generated catch block
+
                 e.printStackTrace();
             }
             try {
@@ -108,7 +107,7 @@ public class GestionBibliotheque {
                     this.membre,
                     this.reservation);
             } catch(ServiceException e) {
-                // TODO Auto-generated catch block
+
                 e.printStackTrace();
             }
             this.gestionInterrogation = new GestionInterrogation(this.conn);
@@ -241,12 +240,12 @@ public class GestionBibliotheque {
     /**
       * Ouvre une connexion avec la BD relationnelle et
       * alloue les gestionnaires de transactions et de tables.
-    
+
       */
     /**
      * Ferme la conn.
      * @throws SQLException est l'exception lancer.
-
+    
      */
     public void fermer() throws SQLException {
         // fermeture de la connexion

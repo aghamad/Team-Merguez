@@ -92,7 +92,7 @@ public class GestionInterrogation {
             try {
                 this.connection.commit();
             } catch(ConnexionException e) {
-                // TODO Auto-generated catch block
+
                 e.printStackTrace();
             }
 
@@ -130,7 +130,7 @@ public class GestionInterrogation {
             try {
                 this.connection.commit();
             } catch(ConnexionException e) {
-                // TODO Auto-generated catch block
+
                 e.printStackTrace();
             }
         }
