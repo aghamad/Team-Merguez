@@ -19,19 +19,19 @@ import ca.qc.collegeahuntsic.bibliotheque.service.PretService;
 import ca.qc.collegeahuntsic.bibliotheque.service.ReservationService;
 
 /**
- * Syst?me de gestion d'une biblioth?que
+ * Système de gestion d'une bibliothèque
  *
  *<pre>
- * Ce programme permet de g?rer les transaction de base d'une
- * biblioth?que.  Il g?re des livres, des membres et des
- * r?servations. Les donn?es sont conserv?es dans une base de
- * donn?es relationnelles acc?d?e avec JDBC.
+ * Ce programme permet de gérer les transaction de base d'une
+ * bibliothèque.  Il gère des livres, des membres et des
+ * réservations. Les données sont conservées dans une base de
+ * données relationnelles accédée avec JDBC.
  *
- * Pr?-condition
- *   la base de donn?es de la biblioth?que doit exister
+ * Pré-condition
+ *   la base de données de la bibliothéque doit exister
  *
  * Post-condition
- *   le programme effectue les maj associ?es ? chaque
+ *   le programme effectue les maj associées à chaque
  *   transaction
  * </pre>
  */
@@ -241,12 +241,12 @@ public class GestionBibliotheque {
     /**
       * Ouvre une connexion avec la BD relationnelle et
       * alloue les gestionnaires de transactions et de tables.
-
+    
       */
     /**
      * Ferme la conn.
      * @throws SQLException est l'exception lancer.
-    
+
      */
     public void fermer() throws SQLException {
         // fermeture de la connexion

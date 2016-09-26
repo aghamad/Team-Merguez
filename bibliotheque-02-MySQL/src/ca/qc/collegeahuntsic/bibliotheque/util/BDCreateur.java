@@ -26,9 +26,7 @@ import ca.qc.collegeahuntsic.bibliotheque.exception.DAOException;
  */
 final class BDCreateur {
     /**
-     * TODO Auto-generated field javadoc.
-     *
-     * Constructeur de classe de type private
+     * Constructeur de classe de type private.
      *
      */
 
