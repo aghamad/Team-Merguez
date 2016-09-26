@@ -7,7 +7,7 @@ package ca.qc.collegeahuntsic.bibliotheque.dto;
 import java.sql.Date;
 
 /**
- * Permet de repr�senter un tuple de la table membre.
+ * DTO de la table reservation.
  * @author Team-merguez
  */
 
@@ -39,72 +39,72 @@ public class ReservationDTO {
     }
 
     /**
-     * Ceci est le  constructeur vide.
+     * Constructeur par défaut.
      */
     public ReservationDTO() {
 
     }
 
     /**
-    *  elle set l'id Reservation de pret.
-    *  @return idReservation
+    *  Getter de la variable d'instance this.idReservation.
+    *  @return idReservation La variable d'instance this.idReservation
     *  */
     public int getIdReservation() {
         return this.idReservation;
     }
 
     /**
-    *  elle set l'id Reservation de pret.
-    *  @param idReservation Le id d'un Reservation
+    *  Setter de la variable d'instance this.idReservation.
+    *  @param idReservation - La valeur à utiliser pour la variable d'instance this.idReservation
     *  */
     public void setIdReservation(int idReservation) {
         this.idReservation = idReservation;
     }
 
     /**
-    *  elle set l'id Livre de pret.
-    *  @return idLivre
+    *  Getter de la variable d'instance this.idLivre.
+    *  @return idLivre La variable d'instance this.idLivre
     *  */
     public int getIdLivre() {
         return this.idLivre;
     }
 
     /**
-    *  elle set l'id Livre de pret.
-    *  @param idLivre Le id d'un livre
+    *  Setter de la variable d'instance this.idLivre.
+    *  @param idLivre - La valeur à utiliser pour la variable d'instance this.idLivre
     *  */
     public void setIdLivre(int idLivre) {
         this.idLivre = idLivre;
     }
 
     /**
-    *  elle set l'id Membre de pret.
-    *  @return idMembre
+    *  Getter de la variable d'instance this.idMembre.
+    *  @return idMembre La variable d'instance this.idMembre
     *  */
     public int getIdMembre() {
         return this.idMembre;
     }
 
     /**
-    *  elle set l'id Membre de pret.
-    *  @param idMembre Le id d'un membre
+    *  Setter de la variable d'instance this.idMembre.
+    *  @param idMembre - La valeur à utiliser pour la variable d'instance this.idMembre
     *  */
     public void setIdMembre(int idMembre) {
         this.idMembre = idMembre;
     }
 
     /**
-    *  elle set la dateReservation de pret.
-    *  @return dateReservation
+    *  Getter de la variable d'instance this.dateReservation.
+    *  @return dateReservation La variable d'instance this.dateReservation
     *  */
     public Date getDateReservation() {
         return this.dateReservation;
     }
 
     /**
-    *  elle set la dateReservation de pret.
-    *  @param dateReservation La Date de reservation
-    *  */
+     *  Setter de la variable d'instance this.dateReservation.
+     *  @param dateReservation - La valeur à utiliser pour la variable d'instance this.dateReservation
+     *  */
     public void setDateReservation(Date dateReservation) {
         this.dateReservation = dateReservation;
     }

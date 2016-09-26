@@ -7,11 +7,11 @@ package ca.qc.collegeahuntsic.bibliotheque.dto;
 import java.sql.Date;
 
 /**
- * Permet de représenter un tuple de la table livre.
+ * DTO de la table livre.
  * @author Team-Merguez
 */
 
-public class LivreDTO {
+public class LivreDTO extends DTO {
 
     private int idLivre;
 
@@ -27,13 +27,13 @@ public class LivreDTO {
 
     /**
      * variable d'instance this.idLivre this.titre this.auteur this.dateAcquisition this.idMembre this.datePret.
-     * @param idLivre ghfjgh
-     *
-     * @param titre
-     * @param auteur
-     * @param dateAcquisition
-     * @param idMembre
-     * @param datePret
+     * @param idLivre 
+     * 
+     * @param titre 
+     * @param auteur 
+     * @param dateAcquisition 
+     * @param idMembre 
+     * @param datePret 
      */
     public LivreDTO(int idLivre,
         String titre,

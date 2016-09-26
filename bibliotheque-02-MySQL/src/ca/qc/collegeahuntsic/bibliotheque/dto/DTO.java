@@ -22,7 +22,7 @@ public class DTO implements Serializable {
      */
     public DTO() {
         super();
-        // Auto-generated constructor stub
+        
     }
 
 }

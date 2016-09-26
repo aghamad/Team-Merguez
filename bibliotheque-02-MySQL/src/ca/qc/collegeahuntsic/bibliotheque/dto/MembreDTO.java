@@ -50,73 +50,74 @@ public class MembreDTO {
     }
 
     /**
-     *  elle get l'id Membre de pret.
-     *  @return idMembre
+     *  Getter de la variable d'instance this.idMembre.
+     *  @return idMembre La variable d'instance this.idMembre
      **/
     public int getIdMembre() {
         return this.idMembre;
     }
 
     /**
-     *  elle set l'id membre de pret.
-     *  @param idMembre Le id d'un membre
+     *  Setter de la variable d'instance this.idMembre.
+     *  @param idMembre - La valeur à utiliser pour la variable d'instance this.idMembre
      *  */
     public void setIdMembre(int idMembre) {
         this.idMembre = idMembre;
     }
 
     /**
-     *  elle get le nom de pret.
-     *  @return nom
+     *  Getter de la variable d'instance this.nom.
+     *  @return nom La variable d'instance this.nom
      *  */
     public String getNom() {
         return this.nom;
     }
 
     /**
-     *  elle set le nom de pret.
-     *  @param nom le nom d'un membre
+     *  Setter de la variable d'instance this.nom.
+     *  @param nom - La valeur à utiliser pour la variable d'instance this.nom
      *  */
     public void setNom(String nom) {
         this.nom = nom;
     }
 
     /**
-     *  elle get le telephone de pret.
-     *  @return telephone
+     *  Getter de la variable d'instance this.telephone.
+     *  @return telephone La variable d'instance this.telephone
      *  */
     public long getTelephone() {
         return this.telephone;
     }
 
     /**
-     *  elle set le nombre de pret.
-     *  @param telephone Numero de telephone
+     *  Setter de la variable d'instance this.telephone.
+     *  @param telephone - La valeur à utiliser pour la variable d'instance this.telephone
      *  */
     public void setTelephone(long telephone) {
         this.telephone = telephone;
     }
 
     /**
-     *  elle get le nombre de pret.
-     *  @return limitePret
+     *  Getter de la variable d'instance this.limitePret.
+     *  @return La variable d'instance this.limitePret
      *  */
+
 
     public int getLimitePret() {
         return this.limitePret;
     }
 
     /**
-     *  elle set le nombre de pret.
-     *  @param limitePret La limite de pret
+     *  Setter de la variable d'instance this.limitePret.
+     *  @param limitePret - La valeur à utiliser pour la variable d'instance this.limitePret
      *  */
     public void setLimitePret(int limitePret) {
         this.limitePret = limitePret;
     }
 
     /**
-     *  elle get le nombre de pret.
-     *  @return getNbPret
+     *  Getter de la variable d'instance this.nbPret.
+     *  @return getNbPret La variable d'instance this.nbPret
      *  */
 
     public int getNbPret() {
@@ -124,8 +125,8 @@ public class MembreDTO {
     }
 
     /**
-     *  elle set le nombre de pret.
-     *  @param nbPret Le nombre de pret
+     *  Setter de la variable d'instance this.nbPret.
+     *  @param nbPret - La valeur à utiliser pour la variable d'instance this.nbPret
      *  */
     public void setNbPret(int nbPret) {
         this.nbPret = nbPret;
