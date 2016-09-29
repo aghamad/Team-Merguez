@@ -245,7 +245,7 @@ public class MembreDAO extends DAO {
     public void update(MembreDTO membreDTO) throws DAOException {
         /* Update d'un livre. */
         try(
-            PreparedStatement preparedStatement = getConnexion().getConnection().prepareStatement(MembreDAO.UPDATE_REQUEST)) {
+            PreparedStatement preparedStatement = getConnection().prepareStatement(MembreDAO.UPDATE_REQUEST)) {
             preparedStatement.setInt(1,
                 membreDTO.getIdMembre());
             preparedStatement.setString(2,
@@ -310,7 +310,7 @@ public class MembreDAO extends DAO {
     public void delete(MembreDTO membreDTO) throws DAOException {
         // Cette methode est exactement comme la methode deinscrire
         try(
-            PreparedStatement preparedStatement = getConnexion().getConnection().prepareStatement(MembreDAO.DELETE_REQUEST)) {
+            PreparedStatement preparedStatement = getConnection().prepareStatement(MembreDAO.DELETE_REQUEST)) {
             preparedStatement.setInt(1,
                 membreDTO.getIdMembre());
             preparedStatement.execute();

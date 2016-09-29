@@ -253,7 +253,7 @@ public class ReservationDAO extends DAO {
      */
     public void add(ReservationDTO reservationDTO) throws DAOException {
         try(
-            PreparedStatement statementAdd = getConnexion().getConnection().prepareStatement(ReservationDAO.ADD_REQUEST)) {
+            PreparedStatement statementAdd = getConnection().prepareStatement(ReservationDAO.ADD_REQUEST)) {
             statementAdd.setInt(1,
                 reservationDTO.getIdReservation());
             statementAdd.setInt(2,
@@ -278,7 +278,7 @@ public class ReservationDAO extends DAO {
     public void update(ReservationDTO reservationDTO) throws DAOException {
         /* Update d'une reservation. */
         try(
-            PreparedStatement statementUpdate = getConnexion().getConnection().prepareStatement(ReservationDAO.UPDATE_REQUEST)) {
+            PreparedStatement statementUpdate = getConnection().prepareStatement(ReservationDAO.UPDATE_REQUEST)) {
             statementUpdate.setInt(1,
                 reservationDTO.getIdReservation());
             statementUpdate.setInt(2,
@@ -339,7 +339,7 @@ public class ReservationDAO extends DAO {
     public void delete(ReservationDTO reservationDTO) throws DAOException {
         // Cette methode est exactement comme la methode deinscrire
         try(
-            PreparedStatement statementDelete = getConnexion().getConnection().prepareStatement(ReservationDAO.DELETE_REQUEST)) {
+            PreparedStatement statementDelete = getConnection().prepareStatement(ReservationDAO.DELETE_REQUEST)) {
             statementDelete.setInt(1,
                 reservationDTO.getIdReservation());
             statementDelete.execute();
