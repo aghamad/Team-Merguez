@@ -69,7 +69,7 @@ public class ReservationDAO extends DAO {
 
         boolean reservationExiste;
         try(
-            PreparedStatement StatementExist = this.getConnexion().getConnection().prepareStatement(ReservationDAO.READ_REQUEST)) {
+            PreparedStatement StatementExist = getConnection().prepareStatement(ReservationDAO.READ_REQUEST)) {
             StatementExist.setInt(1,
                 idReservation);
             reservationExiste = false;
@@ -97,7 +97,7 @@ public class ReservationDAO extends DAO {
         ReservationDTO tupleReservation = null;
 
         try(
-            PreparedStatement StatementExist = this.getConnexion().getConnection().prepareStatement(ReservationDAO.READ_REQUEST)) {
+            PreparedStatement StatementExist = getConnection().prepareStatement(ReservationDAO.READ_REQUEST)) {
             StatementExist.setInt(1,
                 idReservation);
 
@@ -131,7 +131,7 @@ public class ReservationDAO extends DAO {
 
         ReservationDTO tupleReservation;
         try(
-            PreparedStatement StatementLivreExist = this.getConnexion().getConnection().prepareStatement(ReservationDAO.FIND_BY_LIVRE)) {
+            PreparedStatement StatementLivreExist = getConnection().prepareStatement(ReservationDAO.FIND_BY_LIVRE)) {
             StatementLivreExist.setInt(1,
                 idLivre);
 
@@ -166,7 +166,7 @@ public class ReservationDAO extends DAO {
 
         ReservationDTO tupleReservation;
         try(
-            PreparedStatement statementMembreExist = this.getConnexion().getConnection().prepareStatement(ReservationDAO.FIND_BY_MEMBRE)) {
+            PreparedStatement statementMembreExist = getConnection().prepareStatement(ReservationDAO.FIND_BY_MEMBRE)) {
             statementMembreExist.setInt(1,
                 idMembre);
 
@@ -205,7 +205,7 @@ public class ReservationDAO extends DAO {
         int idMembre,
         String dateReservation) throws DAOException {
         try(
-            PreparedStatement statementInsert = this.getConnexion().getConnection().prepareStatement(ReservationDAO.ADD_REQUEST)) {
+            PreparedStatement statementInsert = getConnection().prepareStatement(ReservationDAO.ADD_REQUEST)) {
             statementInsert.setInt(1,
                 idReservation);
             statementInsert.setInt(2,
@@ -230,7 +230,7 @@ public class ReservationDAO extends DAO {
      */
     public int annulerRes(int idReservation) throws DAOException {
         try(
-            PreparedStatement statementDelete = this.getConnexion().getConnection().prepareStatement(ReservationDAO.DELETE_REQUEST)) {
+            PreparedStatement statementDelete = getConnection().prepareStatement(ReservationDAO.DELETE_REQUEST)) {
             statementDelete.setInt(1,
                 idReservation);
             return statementDelete.executeUpdate();
@@ -308,7 +308,7 @@ public class ReservationDAO extends DAO {
         ReservationDTO reservationDTO = null;
 
         try(
-            PreparedStatement statementExist = this.getConnexion().getConnection().prepareStatement(ReservationDAO.READ_REQUEST)) {
+            PreparedStatement statementExist = getConnection().prepareStatement(ReservationDAO.READ_REQUEST)) {
 
             statementExist.setInt(1,
                 idReservation);
