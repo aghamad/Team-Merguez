@@ -108,7 +108,7 @@ public class ReservationDAO extends DAO {
                     tupleReservation.setIdReservation(rset.getInt(1));
                     tupleReservation.setIdLivre(rset.getInt(2));
                     tupleReservation.setIdMembre(rset.getInt(3));
-                    tupleReservation.setDateReservation(rset.getDate(4));
+                    tupleReservation.setDateReservation(rset.getTimestamp(4));
 
                 }
             }
@@ -138,13 +138,13 @@ public class ReservationDAO extends DAO {
             tupleReservation = null;
 
             try(
-                ResultSet rset = StatementLivreExist.executeQuery()) {
-                if(rset.next()) {
+                ResultSet resetSet = StatementLivreExist.executeQuery()) {
+                if(resetSet.next()) {
                     tupleReservation = new ReservationDTO();
-                    tupleReservation.setIdReservation(rset.getInt(1));
-                    tupleReservation.setIdLivre(rset.getInt(2));
-                    tupleReservation.setIdMembre(rset.getInt(3));
-                    tupleReservation.setDateReservation(rset.getDate(4));
+                    tupleReservation.setIdReservation(resetSet.getInt(1));
+                    tupleReservation.setIdLivre(resetSet.getInt(2));
+                    tupleReservation.setIdMembre(resetSet.getInt(3));
+                    tupleReservation.setDateReservation(resetSet.getTimestamp(4));
 
                 }
             }
@@ -179,7 +179,7 @@ public class ReservationDAO extends DAO {
                     tupleReservation.setIdReservation(rset.getInt(1));
                     tupleReservation.setIdLivre(rset.getInt(2));
                     tupleReservation.setIdMembre(rset.getInt(3));
-                    tupleReservation.setDateReservation(rset.getDate(4));
+                    tupleReservation.setDateReservation(rset.getTimestamp(4));
                     return tupleReservation;
                 }
             }
@@ -260,7 +260,7 @@ public class ReservationDAO extends DAO {
                 reservationDTO.getIdLivre());
             statementAdd.setInt(3,
                 reservationDTO.getIdMembre());
-            statementAdd.setDate(4,
+            statementAdd.setTimestamp(4,
                 reservationDTO.getDateReservation());
             statementAdd.execute();
         } catch(SQLException e) {
@@ -285,7 +285,7 @@ public class ReservationDAO extends DAO {
                 reservationDTO.getIdMembre());
             statementUpdate.setInt(3,
                 reservationDTO.getIdLivre());
-            statementUpdate.setDate(4,
+            statementUpdate.setTimestamp(4,
                 reservationDTO.getDateReservation());
             statementUpdate.setInt(5,
                 reservationDTO.getIdReservation());
@@ -320,7 +320,7 @@ public class ReservationDAO extends DAO {
                     reservationDTO.setIdReservation(resultSet.getInt(1));
                     reservationDTO.setIdMembre(resultSet.getInt(2));
                     reservationDTO.setIdLivre(resultSet.getInt(3));
-                    reservationDTO.setDateReservation(resultSet.getDate(3));
+                    reservationDTO.setDateReservation(resultSet.getTimestamp(4));
                 }
             }
         } catch(SQLException sqlException) {

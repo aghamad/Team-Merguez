@@ -4,7 +4,7 @@
 
 package ca.qc.collegeahuntsic.bibliotheque.dto;
 
-import java.sql.Date;
+import java.sql.Timestamp;
 
 /**
  * DTO de la table reservation.
@@ -21,7 +21,7 @@ public class ReservationDTO extends DTO {
 
     private int idMembre;
 
-    private Date dateReservation;
+    private Timestamp dateReservation;
 
     /**para pour idReservation.
      * @param idReservation idReservation
@@ -32,7 +32,7 @@ public class ReservationDTO extends DTO {
     public ReservationDTO(int idReservation,
         int idLivre,
         int idMembre,
-        Date dateReservation) {
+        Timestamp dateReservation) {
         super();
         this.idReservation = idReservation;
         this.idLivre = idLivre;
@@ -99,7 +99,7 @@ public class ReservationDTO extends DTO {
     *  Getter de la variable d'instance <code>this.dateReservation</code>.
     *  @return dateReservation La variable d'instance <code>this.dateReservation</code>
     *  */
-    public Date getDateReservation() {
+    public Timestamp getDateReservation() {
         return this.dateReservation;
     }
 
@@ -107,7 +107,7 @@ public class ReservationDTO extends DTO {
      *  Setter de la variable d'instance <code>this.dateReservation</code>.
      *  @param dateReservation - La valeur à utiliser pour la variable d'instance <code>this.dateReservation</code>
      *  */
-    public void setDateReservation(Date dateReservation) {
+    public void setDateReservation(Timestamp dateReservation) {
         this.dateReservation = dateReservation;
     }
 
