@@ -74,7 +74,8 @@ public class LivreDAO extends DAO {
     public boolean existe(int idLivre) throws DAOException {
 
         try(
-            PreparedStatement statementExist = getConnection().prepareStatement(LivreDAO.READ_REQUEST)) {
+            PreparedStatement statementExist = getConnection()
+                .prepareStatement(LivreDAO.READ_REQUEST)) {
 
             boolean livreExiste;
             statementExist.setInt(1,
@@ -105,7 +106,8 @@ public class LivreDAO extends DAO {
         LivreDTO tupleLivre = null;
 
         try(
-            PreparedStatement statementExist = getConnection().prepareStatement(LivreDAO.READ_REQUEST)) {
+            PreparedStatement statementExist = getConnection()
+                .prepareStatement(LivreDAO.READ_REQUEST)) {
 
             statementExist.setInt(1,
                 idLivre);
@@ -117,7 +119,7 @@ public class LivreDAO extends DAO {
                     tupleLivre.setIdLivre(idLivre);
                     tupleLivre.setTitre(resultSet.getString(2));
                     tupleLivre.setAuteur(resultSet.getString(3));
-                    tupleLivre.setDateAcquisition(resultSet.getDate(4));
+                    tupleLivre.setDateAcquisition(resultSet.getTimestamp(4));
                     tupleLivre.setIdMembre(resultSet.getInt(5));
                     tupleLivre.setDatePret(resultSet.getDate(6));
                 }
@@ -145,7 +147,8 @@ public class LivreDAO extends DAO {
         String dateAcquisition) throws DAOException {
         /* Ajout du livre. */
         try(
-            PreparedStatement statementInsert = getConnection().prepareStatement(LivreDAO.ADD_REQUEST)) {
+            PreparedStatement statementInsert = getConnection()
+                .prepareStatement(LivreDAO.ADD_REQUEST)) {
             statementInsert.setInt(1,
                 idLivre);
             statementInsert.setString(2,
@@ -175,7 +178,8 @@ public class LivreDAO extends DAO {
         String datePret) throws DAOException {
         /* Enregistrement du pret. */
         try(
-            PreparedStatement statementUpdate = getConnection().prepareStatement(LivreDAO.EMPRUNT_REQUEST)) {
+            PreparedStatement statementUpdate = getConnection()
+                .prepareStatement(LivreDAO.EMPRUNT_REQUEST)) {
             statementUpdate.setInt(1,
                 idMembre);
             statementUpdate.setDate(2,
@@ -200,7 +204,8 @@ public class LivreDAO extends DAO {
     public int retourner(int idLivre) throws DAOException {
         /* Enregistrement du pret. */
         try(
-            PreparedStatement statementUpdate = getConnection().prepareStatement(LivreDAO.RETOUR_REQUEST)) {
+            PreparedStatement statementUpdate = getConnection()
+                .prepareStatement(LivreDAO.RETOUR_REQUEST)) {
             statementUpdate.setNull(1,
                 Types.INTEGER);
             statementUpdate.setNull(2,
@@ -225,7 +230,8 @@ public class LivreDAO extends DAO {
     public int vendre(int idLivre) throws DAOException {
         /* Suppression du livre. */
         try(
-            PreparedStatement statementDelete = getConnection().prepareStatement(LivreDAO.DELETE_REQUEST)) {
+            PreparedStatement statementDelete = getConnection()
+                .prepareStatement(LivreDAO.DELETE_REQUEST)) {
             statementDelete.setInt(1,
                 idLivre);
             return statementDelete.executeUpdate();
@@ -249,16 +255,17 @@ public class LivreDAO extends DAO {
     public void add(LivreDTO livreDTO) throws DAOException {
         /* Ajout du livre. */
         try(
-            PreparedStatement statementInsert = getConnection().prepareStatement(LivreDAO.ADD_REQUEST)) {
+            PreparedStatement statementInsert = getConnection()
+                .prepareStatement(LivreDAO.ADD_REQUEST)) {
             statementInsert.setInt(1,
                 livreDTO.getIdLivre());
             statementInsert.setString(2,
                 livreDTO.getTitre());
             statementInsert.setString(3,
                 livreDTO.getAuteur());
-            statementInsert.setDate(4,
+            statementInsert.setTimestamp(4,
                 livreDTO.getDateAcquisition());
-            statementInsert.setDate(4,
+            statementInsert.setTimestamp(4,
                 livreDTO.getDateAcquisition());
             statementInsert.setInt(5,
                 livreDTO.getIdMembre());
@@ -281,7 +288,8 @@ public class LivreDAO extends DAO {
     public void update(LivreDTO livreDTO) throws DAOException {
         /* Update d'un livre. */
         try(
-            PreparedStatement statementUpdate = getConnection().prepareStatement(LivreDAO.UPDATE_REQUEST)) {
+            PreparedStatement statementUpdate = getConnection()
+                .prepareStatement(LivreDAO.UPDATE_REQUEST)) {
 
             statementUpdate.setInt(1,
                 livreDTO.getIdMembre());
@@ -291,7 +299,7 @@ public class LivreDAO extends DAO {
                 livreDTO.getTitre());
             statementUpdate.setString(4,
                 livreDTO.getAuteur());
-            statementUpdate.setDate(5,
+            statementUpdate.setTimestamp(5,
                 livreDTO.getDateAcquisition());
             statementUpdate.setInt(6,
                 livreDTO.getIdLivre());
@@ -315,7 +323,8 @@ public class LivreDAO extends DAO {
         LivreDTO livreDTO = null;
 
         try(
-            PreparedStatement statementExist = getConnection().prepareStatement(LivreDAO.READ_REQUEST)) {
+            PreparedStatement statementExist = getConnection()
+                .prepareStatement(LivreDAO.READ_REQUEST)) {
 
             statementExist.setInt(1,
                 idLivre);
@@ -327,7 +336,7 @@ public class LivreDAO extends DAO {
                     livreDTO.setIdLivre(resultSet.getInt(1));
                     livreDTO.setTitre(resultSet.getString(2));
                     livreDTO.setAuteur(resultSet.getString(3));
-                    livreDTO.setDateAcquisition(resultSet.getDate(4));
+                    livreDTO.setDateAcquisition(resultSet.getTimestamp(4));
                     livreDTO.setIdMembre(resultSet.getInt(5));
                     livreDTO.setDatePret(resultSet.getDate(6));
                 }
@@ -349,7 +358,8 @@ public class LivreDAO extends DAO {
     public void delete(LivreDTO livreDTO) throws DAOException {
         // Cette methode est exactement comme la methode vendre()
         try(
-            PreparedStatement statementDelete = getConnection().prepareStatement(LivreDAO.DELETE_REQUEST)) {
+            PreparedStatement statementDelete = getConnection()
+                .prepareStatement(LivreDAO.DELETE_REQUEST)) {
             statementDelete.setInt(1,
                 livreDTO.getIdLivre());
         } catch(SQLException sqlException) {
