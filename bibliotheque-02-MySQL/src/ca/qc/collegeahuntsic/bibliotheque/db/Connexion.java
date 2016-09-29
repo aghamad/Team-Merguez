@@ -32,7 +32,7 @@ import ca.qc.collegeahuntsic.bibliotheque.exception.ConnexionException;
  */
 public class Connexion implements AutoCloseable {
 
-    private Connection conn;
+    private Connection connexion;
 
     /**
      * Crée une connexion en mode autocommit false.
@@ -52,21 +52,21 @@ public class Connexion implements AutoCloseable {
             if("local".equals(serveur)) {
                 d = (Driver) Class.forName("com.mysql.jdbc.Driver").newInstance();
                 DriverManager.registerDriver(d);
-                this.conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/"
+                this.connexion = DriverManager.getConnection("jdbc:mysql://localhost:3306/"
                     + bd,
                     user,
                     pass);
             } else if("distant".equals(serveur)) {
                 d = (Driver) Class.forName("oracle.jdbc.driver.OracleDriver").newInstance();
                 DriverManager.registerDriver(d);
-                this.conn = DriverManager.getConnection("jdbc:oracle:thin:@collegeahuntsic.info:1521:"
+                this.connexion = DriverManager.getConnection("jdbc:oracle:thin:@collegeahuntsic.info:1521:"
                     + bd,
                     user,
                     pass);
             } else if("postgres".equals(serveur)) {
                 d = (Driver) Class.forName("org.postgresql.Driver").newInstance();
                 DriverManager.registerDriver(d);
-                this.conn = DriverManager.getConnection("jdbc:postgresql:"
+                this.connexion = DriverManager.getConnection("jdbc:postgresql:"
                     + bd,
                     user,
                     pass);
@@ -75,30 +75,30 @@ public class Connexion implements AutoCloseable {
             //     // access
             //        d = (Driver) Class.forName("org.postgresql.Driver").newInstance();
             //        DriverManager.registerDriver(new sun.jdbc.odbc.JdbcOdbcDriver());
-            //        conn = DriverManager.getConnection(
+            //        connexion= DriverManager.getConnection(
             //            "jdbc:odbc:" + bd,
             //            "", "");
             //        }
 
             // mettre en mode de commit manuel
-            this.conn.setAutoCommit(false);
+            this.connexion.setAutoCommit(false);
 
             // mettre en mode sérialisable si possible
             // (plus haut niveau d'integrité l'accés concurrent aux données)
-            final DatabaseMetaData dbmd = this.conn.getMetaData();
+            final DatabaseMetaData dbmd = this.connexion.getMetaData();
             if(dbmd.supportsTransactionIsolationLevel(Connection.TRANSACTION_SERIALIZABLE)) {
-                this.conn.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
+                this.connexion.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
                 System.out.println("Ouverture de la connexion en mode sérialisable :\n"
                     + "Estampille "
                     + System.currentTimeMillis()
                     + " "
-                    + this.conn);
+                    + this.connexion);
             } else {
                 System.out.println("Ouverture de la connexion en mode read committed (default) :\n"
                     + "Heure "
                     + System.currentTimeMillis()
                     + " "
-                    + this.conn);
+                    + this.connexion);
             }
         } catch(
             SQLException
@@ -116,11 +116,11 @@ public class Connexion implements AutoCloseable {
      */
     public void fermer() throws ConnexionException {
         try {
-            this.conn.rollback();
-            this.conn.close();
+            this.connexion.rollback();
+            this.connexion.close();
             System.out.println("Connexion fermée"
                 + " "
-                + this.conn);
+                + this.connexion);
         } catch(SQLException sqlException) {
             throw new ConnexionException(sqlException);
         }
@@ -134,7 +134,7 @@ public class Connexion implements AutoCloseable {
      */
     public void commit() throws ConnexionException {
         try {
-            this.conn.commit();
+            this.connexion.commit();
         } catch(SQLException sqlException) {
             throw new ConnexionException(sqlException);
         }
@@ -148,7 +148,7 @@ public class Connexion implements AutoCloseable {
      */
     public void rollback() throws ConnexionException {
         try {
-            this.conn.rollback();
+            this.connexion.rollback();
         } catch(SQLException sqlException) {
             throw new ConnexionException(sqlException);
         }
@@ -161,7 +161,7 @@ public class Connexion implements AutoCloseable {
      * @return La variable d'instance this.connection
      */
     public Connection getConnection() {
-        return this.conn;
+        return this.connexion;
     }
 
     /**
