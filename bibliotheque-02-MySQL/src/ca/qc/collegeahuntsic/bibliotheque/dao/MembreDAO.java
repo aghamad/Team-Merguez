@@ -26,6 +26,8 @@ public class MembreDAO extends DAO {
     private static final String ADD_REQUEST = "INSERT INTO membre "
         + "VALUES (?,?,?,?,?)";
 
+    private static final String UPDATE_REQUEST = "UPDATE membre SET idMembre = ?, nom = ?, telephone = ?, limitePret = ?, nbPret = ? WHERE idMembre = ?";
+
     private static final String EMPRUNT_REQUEST = "UPDATE membre "
         + "SET nom = ?, telephone = ?, limitePret = ?, nbPret = nbPret + 1 "
         + "WHERE idMembre = ?";
@@ -48,7 +50,6 @@ public class MembreDAO extends DAO {
      */
     public MembreDAO(Connexion connexion) throws DAOException {
         super(connexion);
-
     }
 
     /**
@@ -201,4 +202,121 @@ public class MembreDAO extends DAO {
             throw new DAOException(sqlException);
         }
     }
+
+    /*
+     * Methodes CRUD add/read/update/delete
+     *
+     */
+
+    /**
+     *
+     * Methode CRUD Add pour ajouter un nouveau membre.
+     *
+     * @param membreDTO Une instance MembreDTO du membre a ajouter
+     * @throws DAOException S'il y a une erreur avec la base de données
+     */
+    public void add(MembreDTO membreDTO) throws DAOException {
+        /* Ajout d'un membre. */
+        try(
+            PreparedStatement statementInsert = this.getConnexion().getConnection().prepareStatement(MembreDAO.ADD_REQUEST)) {
+            statementInsert.setInt(1,
+                membreDTO.getIdMembre());
+            statementInsert.setString(2,
+                membreDTO.getNom());
+            statementInsert.setLong(3,
+                membreDTO.getTelephone());
+            statementInsert.setInt(4,
+                membreDTO.getLimitePret());
+            statementInsert.setInt(5,
+                membreDTO.getNbPret());
+            statementInsert.executeUpdate();
+        } catch(SQLException sqlException) {
+            throw new DAOException(sqlException);
+        }
+    }
+
+    /**
+    *
+    * Method CRUD Update pour modifier les informations d'un membre.
+    *
+    * @param membreDTO Une instance MembreDTO du membre a modifier
+    * @throws DAOException S'il y a une erreur avec la base de données
+    */
+    public void update(MembreDTO membreDTO) throws DAOException {
+        /* Update d'un livre. */
+        try(
+            PreparedStatement preparedStatement = getConnexion().getConnection().prepareStatement(MembreDAO.UPDATE_REQUEST)) {
+            preparedStatement.setInt(1,
+                membreDTO.getIdMembre());
+            preparedStatement.setString(2,
+                membreDTO.getNom());
+            preparedStatement.setLong(3,
+                membreDTO.getTelephone());
+            preparedStatement.setInt(4,
+                membreDTO.getLimitePret());
+            preparedStatement.setInt(5,
+                membreDTO.getNbPret());
+            preparedStatement.setInt(6,
+                membreDTO.getIdMembre());
+
+            preparedStatement.execute();
+        } catch(SQLException e) {
+            throw new DAOException(e);
+        }
+    }
+
+    /**
+    *
+    * Methode CRUD Read pour lire les informations d'un membre.
+    *
+    * @param idMembre id du membre recherché
+    * @return Une instance MembreDTO du membre a lire
+    * @throws DAOException S'il y a une erreur avec la base de données
+    */
+    public MembreDTO read(int idMembre) throws DAOException {
+        // Cette methode est exactement comme la methode getMembre()
+        MembreDTO membreDTO = null;
+
+        try(
+            PreparedStatement statementExist = this.getConnexion().getConnection().prepareStatement(MembreDAO.READ_REQUEST)) {
+
+            statementExist.setInt(1,
+                idMembre);
+
+            try(
+                ResultSet resultSet = statementExist.executeQuery()) {
+                if(resultSet.next()) {
+                    membreDTO = new MembreDTO();
+                    membreDTO.setIdMembre(idMembre);
+                    membreDTO.setNom(resultSet.getString(2));
+                    membreDTO.setTelephone(resultSet.getLong(3));
+                    membreDTO.setLimitePret(resultSet.getInt(4));
+                    membreDTO.setNbPret(resultSet.getInt(5));
+                }
+            }
+        } catch(SQLException sqlException) {
+            throw new DAOException(sqlException);
+        }
+
+        return membreDTO;
+    }
+
+    /**
+     * Method CRUD pour supprimer un membre.
+     *
+     * @param membreDTO Le membre à supprimer
+     * @throws DAOException S'il y a une erreur avec la base de données
+     */
+    public void delete(MembreDTO membreDTO) throws DAOException {
+        // Cette methode est exactement comme la methode deinscrire
+        try(
+            PreparedStatement preparedStatement = getConnexion().getConnection().prepareStatement(MembreDAO.DELETE_REQUEST)) {
+            preparedStatement.setInt(1,
+                membreDTO.getIdMembre());
+            preparedStatement.execute();
+        } catch(SQLException sqlException) {
+            throw new DAOException(sqlException);
+        }
+    }
+
 }

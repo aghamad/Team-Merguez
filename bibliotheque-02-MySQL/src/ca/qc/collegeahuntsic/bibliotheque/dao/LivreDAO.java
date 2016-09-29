@@ -40,19 +40,17 @@ public class LivreDAO extends DAO {
     private static final String DELETE_REQUEST = "DELETE FROM livre "
         + "WHERE idlivre = ?";
 
-    
-    private final static String EMPRUNT_REQUEST = "UPDATE livre "
+    private static final String EMPRUNT_REQUEST = "UPDATE livre "
         + "SET idMembre = ?, datePret = CURRENT_TIMESTAMP, "
         + "titre = ?, auteur = ?, "
         + "dateAcquisition = ? "
         + "WHERE idLivre = ?";
 
-    private final static String RETOUR_REQUEST = "UPDATE livre "
+    private static final String RETOUR_REQUEST = "UPDATE livre "
         + "SET idMembre = null, datePret = null, "
         + "titre = ?, auteur = ?, "
         + "dateAcquisition = ? "
         + "WHERE idLivre = ?";
-    
 
     /**
      *
@@ -314,7 +312,7 @@ public class LivreDAO extends DAO {
     */
     public LivreDTO read(int idLivre) throws DAOException {
         // Cette methode est exactement comme la methode getLivre()
-        LivreDTO tupleLivre = null;
+        LivreDTO livreDTO = null;
 
         try(
             PreparedStatement statementExist = this.getConnexion().getConnection().prepareStatement(LivreDAO.READ_REQUEST)) {
@@ -325,20 +323,20 @@ public class LivreDAO extends DAO {
             try(
                 ResultSet resultSet = statementExist.executeQuery()) {
                 if(resultSet.next()) {
-                    tupleLivre = new LivreDTO();
-                    tupleLivre.setIdLivre(idLivre);
-                    tupleLivre.setTitre(resultSet.getString(2));
-                    tupleLivre.setAuteur(resultSet.getString(3));
-                    tupleLivre.setDateAcquisition(resultSet.getDate(4));
-                    tupleLivre.setIdMembre(resultSet.getInt(5));
-                    tupleLivre.setDatePret(resultSet.getDate(6));
+                    livreDTO = new LivreDTO();
+                    livreDTO.setIdLivre(idLivre);
+                    livreDTO.setTitre(resultSet.getString(2));
+                    livreDTO.setAuteur(resultSet.getString(3));
+                    livreDTO.setDateAcquisition(resultSet.getDate(4));
+                    livreDTO.setIdMembre(resultSet.getInt(5));
+                    livreDTO.setDatePret(resultSet.getDate(6));
                 }
             }
         } catch(SQLException sqlException) {
             throw new DAOException(sqlException);
         }
 
-        return tupleLivre;
+        return livreDTO;
     }
 
     /**
