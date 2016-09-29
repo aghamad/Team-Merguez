@@ -9,6 +9,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import ca.qc.collegeahuntsic.bibliotheque.db.Connexion;
@@ -253,7 +254,7 @@ public class LivreDAO extends DAO {
      * @throws DAOException S'il y a une erreur avec la base de données
      */
     public List<LivreDTO> findByTitre(String titre) throws DAOException {
-        final List<LivreDTO> livres = Collections.EMPTY_LIST;
+        List<LivreDTO> livres = Collections.EMPTY_LIST;
 
         try(
             PreparedStatement findByTitreStatement = getConnection().prepareStatement(LivreDAO.FIND_BY_TITRE)) {
@@ -267,13 +268,16 @@ public class LivreDAO extends DAO {
                 ResultSet resultSet = findByTitreStatement.executeQuery()) {
                 LivreDTO livreDTO = null;
                 if(resultSet.next()) {
-                    livreDTO = new LivreDTO();
-                    livreDTO.setIdLivre(resultSet.getInt(1));
-                    livreDTO.setTitre(resultSet.getString(2));
-                    livreDTO.setAuteur(resultSet.getString(3));
-                    livreDTO.setDateAcquisition(resultSet.getTimestamp(4));
-                    livreDTO.setIdMembre(resultSet.getInt(5));
-                    livreDTO.setDatePret(resultSet.getDate(6));
+                    livres = new ArrayList<>();
+                    do {
+                        livreDTO = new LivreDTO();
+                        livreDTO.setIdLivre(resultSet.getInt(1));
+                        livreDTO.setTitre(resultSet.getString(2));
+                        livreDTO.setAuteur(resultSet.getString(3));
+                        livreDTO.setDateAcquisition(resultSet.getTimestamp(4));
+                        livreDTO.setIdMembre(resultSet.getInt(5));
+                        livreDTO.setDatePret(resultSet.getDate(6));
+                    } while(resultSet.next());
                 }
                 livres.add(livreDTO);
             }
@@ -293,7 +297,7 @@ public class LivreDAO extends DAO {
     * @throws DAOException S'il y a une erreur avec la base de données
     */
     public List<LivreDTO> findByMembre(int idMembre) throws DAOException {
-        final List<LivreDTO> livres = Collections.EMPTY_LIST;
+        List<LivreDTO> livres = Collections.EMPTY_LIST;
 
         try(
             PreparedStatement findByMembreStatement = getConnection().prepareStatement(LivreDAO.FIND_BY_MEMBRE)) {
@@ -305,13 +309,16 @@ public class LivreDAO extends DAO {
                 ResultSet resultSet = findByMembreStatement.executeQuery()) {
                 LivreDTO livreDTO = null;
                 if(resultSet.next()) {
-                    livreDTO = new LivreDTO();
-                    livreDTO.setIdLivre(resultSet.getInt(1));
-                    livreDTO.setTitre(resultSet.getString(2));
-                    livreDTO.setAuteur(resultSet.getString(3));
-                    livreDTO.setDateAcquisition(resultSet.getTimestamp(4));
-                    livreDTO.setIdMembre(resultSet.getInt(5));
-                    livreDTO.setDatePret(resultSet.getDate(6));
+                    livres = new ArrayList<>();
+                    do {
+                        livreDTO = new LivreDTO();
+                        livreDTO.setIdLivre(resultSet.getInt(1));
+                        livreDTO.setTitre(resultSet.getString(2));
+                        livreDTO.setAuteur(resultSet.getString(3));
+                        livreDTO.setDateAcquisition(resultSet.getTimestamp(4));
+                        livreDTO.setIdMembre(resultSet.getInt(5));
+                        livreDTO.setDatePret(resultSet.getDate(6));
+                    } while(resultSet.next());
                 }
                 livres.add(livreDTO);
             }
