@@ -328,7 +328,7 @@ public class MembreDAO extends DAO {
 
     /**
      *
-     * Emprend d'un livre par un membre.
+     * Emprend d'un livre par un membre / Increment son nombre de pret.
      *
      * @param membreDTO Le livre que le membre à emprunter
      * @throws DAOException S'il y a une erreur avec la base de données
@@ -354,9 +354,9 @@ public class MembreDAO extends DAO {
 
     /**
      *
-     * Retourne un membre.
+     * Retourne d'un livre par un membre / Decrement son nombre de pret.
      *
-     * @param membreDTO Le membre à retourner
+     * @param membreDTO Le membre à retourn
      * @throws DAOException S'il y a une erreur avec la base de données
      */
     public void retourner(MembreDTO membreDTO) throws DAOException {
