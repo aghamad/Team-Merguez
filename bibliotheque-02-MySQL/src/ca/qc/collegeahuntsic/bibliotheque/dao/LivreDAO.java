@@ -21,6 +21,7 @@ import ca.qc.collegeahuntsic.bibliotheque.exception.DAOException;
  */
 
 public class LivreDAO extends DAO {
+    private static final long serialVersionUID = 1L;
 
     // stmtExiste select idlivre, titre, auteur, dateAcquisition, idMembre, datePret from livre where idlivre = ?"
 
@@ -45,17 +46,13 @@ public class LivreDAO extends DAO {
         + "titre = ?, auteur = ?, "
         + "dateAcquisition = ? "
         + "WHERE idLivre = ?";
-
+    
     private final static String RETOUR_REQUEST = "UPDATE livre "
         + "SET idMembre = null, datePret = null, "
         + "titre = ?, auteur = ?, "
         + "dateAcquisition = ? "
         + "WHERE idLivre = ?";
     */
-
-    private static final long serialVersionUID = 1L;
-
-    private PreparedStatement stmtUpdate;
 
     /**
      *
@@ -91,7 +88,6 @@ public class LivreDAO extends DAO {
                 ResultSet resultSet = statementExist.executeQuery()) {
                 livreExiste = resultSet.next();
             }
-
             return livreExiste;
         } catch(SQLException sqlException) {
             throw new DAOException(sqlException);
@@ -213,7 +209,7 @@ public class LivreDAO extends DAO {
                 Types.DATE);
             statementUpdate.setInt(3,
                 idLivre);
-            return this.stmtUpdate.executeUpdate();
+            return statementUpdate.executeUpdate();
         } catch(SQLException sqlException) {
             throw new DAOException(sqlException);
         }
