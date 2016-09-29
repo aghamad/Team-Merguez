@@ -90,7 +90,7 @@ public class PretService {
                     + " atteinte");
             }
 
-            /* Vérifie s'il existe une r�servation pour le livre */
+            /* Vérifie s'il existe une réservation pour le livre */
             final ReservationDTO tupleReservation = this.reservationDAO.getReservationLivre(idLivre);
             if(tupleReservation != null) {
                 throw new ServiceException("Livre réservé par : "
@@ -152,7 +152,7 @@ public class PretService {
                 throw new ServiceException("Date de renouvellement inferieure à la date de pret");
             }
 
-            /* V�rifie s'il existe une réservation pour le livre */
+            /* Vérifie s'il existe une réservation pour le livre */
             final ReservationDTO tupleReservation = this.reservationDAO.getReservationLivre(idLivre);
             if(tupleReservation != null) {
                 throw new ServiceException("Livre réservé par : "
@@ -201,23 +201,23 @@ public class PretService {
             if(tupleLivre.getIdMembre() == 0) {
                 throw new ServiceException("Livre "
                     + idLivre
-                    + " n'est pas pr�t� ");
+                    + " n'est pas prété ");
             }
 
             /* Verifier si date retour >= datePret */
             if(Date.valueOf(dateRetour).before(tupleLivre.getDatePret())) {
-                throw new ServiceException("Date de retour inferieure � la date de pret");
+                throw new ServiceException("Date de retour inferieure à la date de pret");
             }
 
             /* Retour du pret. */
             final int nb1 = this.livreDAO.retourner(idLivre);
             if(nb1 == 0) {
-                throw new ServiceException("Livre supprim� par une autre transaction");
+                throw new ServiceException("Livre supprimé par une autre transaction");
             }
 
             final int nb2 = this.membreDAO.retourner(tupleLivre.getIdMembre());
             if(nb2 == 0) {
-                throw new ServiceException("Livre supprim� par une autre transaction");
+                throw new ServiceException("Livre supprimé par une autre transaction");
             }
             this.connexion.commit();
         } catch(

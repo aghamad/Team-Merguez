@@ -97,7 +97,7 @@ public class ReservationService extends Service {
 
             /* Verifier si date reservation >= datePret */
             if(Date.valueOf(dateReservation).before(tupleLivre.getDatePret())) {
-                throw new ServiceException("Date de reservation inferieure � la date de pret");
+                throw new ServiceException("Date de reservation inferieure à la date de pret");
             }
 
             /* Vérifier que la réservation n'existe pas */
@@ -146,7 +146,7 @@ public class ReservationService extends Service {
             /* Vérifie que c'est la première réservation pour le livre */
             final ReservationDTO tupleReservationPremiere = this.reservationDAO.getReservationLivre(tupleReservation.getIdLivre());
             if(tupleReservation.getIdReservation() != tupleReservationPremiere.getIdReservation()) {
-                throw new ServiceException("La r�servation n'est pas la première de la liste "
+                throw new ServiceException("La réservation n'est pas la première de la liste "
                     + "pour ce livre; la premiere est "
                     + tupleReservationPremiere.getIdReservation());
             }

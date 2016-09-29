@@ -335,7 +335,7 @@ public final class Bibliotheque {
         try {
             FormatDate.convertirDate(token);
         } catch(ParseException e) {
-            throw new BibliothequeException("Date en format YYYY-MM-DD attendue � la place  de \""
+            throw new BibliothequeException("Date en format YYYY-MM-DD attendue à la place  de \""
                 + token
                 + "\"");
         }
