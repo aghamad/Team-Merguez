@@ -13,20 +13,17 @@ import ca.qc.collegeahuntsic.bibliotheque.exception.ConnexionException;
 /**
  * Gestion des transactions d'interrogation dans une bibliothéque.
  *
- * <pre>
  *
- *   Ce programme permet de faire diverses interrogations
- *   sur l'état de la bibliothéque.
+ * Ce programme permet de faire diverses interrogations
+ * sur l'état de la bibliothéque.
  *
- *   Pré-condition
- *     la base de données de la bibliothéque doit exister
+ * Pré-condition
+ * la base de données de la bibliothéque doit exister
  *
- *   Post-condition
- *     le programme effectue les maj associées à chaque
- *     transaction
+ * Post-condition
+ * le programme effectue les maj associées à chaque transaction
  *
  *@author Team-Merguez
- * </pre>
  */
 
 public class GestionInterrogation {
@@ -35,17 +32,17 @@ public class GestionInterrogation {
 
     private PreparedStatement stmtListeTousLivres;
 
-    private Connexion connection;
+    private Connexion connexion;
 
     /**
      * Creation d'une instance.
+     *
      * @param connection est le nom donner a la connection.
-     * @throws SQLException est le nom de l'exception qui est lancer.
+     * @throws SQLException Une exception qui fournit des informations sur une erreur d'accès de base de données ou d'autres erreurs.
      *
      */
     public GestionInterrogation(Connexion connection) throws SQLException {
-
-        this.connection = connection;
+        this.connexion = connection;
         this.stmtLivresTitreMot = connection.getConnection().prepareStatement("select t1.idLivre, t1.titre, t1.auteur, t1.idmembre, t1.datePret + 14 "
             + "from livre t1 "
             + "where lower(titre) like ?");
@@ -56,10 +53,13 @@ public class GestionInterrogation {
 
     /**
      * Affiche les livres contenu un mot dans le titre.
-     * @throws SQLException est le nom de l'exception qui est lancer.
-     * @param mot est le nom de la variable 'String'.
+     *
+     * @param mot String mot qui liste des livres
+     * @throws SQLException Une exception qui fournit des informations sur une erreur d'accès de base de données ou d'autres erreurs.
+     * @throws ConnexionException Exception en case d'erreur dans la Connexion
      */
-    public void listerLivresTitre(String mot) throws SQLException {
+    public void listerLivresTitre(String mot) throws SQLException,
+        ConnexionException {
 
         this.stmtLivresTitreMot.setString(1,
             "%"
@@ -88,21 +88,21 @@ public class GestionInterrogation {
             }
 
             try {
-                this.connection.commit();
-            } catch(ConnexionException connectionExeption) {
-
-                throw new SQLException(connectionExeption);
+                this.connexion.commit();
+            } catch(ConnexionException connexionException) {
+                throw new ConnexionException(connexionException);
             }
 
         }
-
     }
 
     /**
      * Affiche tous les livres de la BD.
-     * @throws SQLException est le nom de l'exception qui est lancer.
+     * @throws SQLException Une exception qui fournit des informations sur une erreur d'accès de base de données ou d'autres erreurs.
+     * @throws ConnexionException Exception en case d'erreur dans la Connexion
      */
-    public void listerLivres() throws SQLException {
+    public void listerLivres() throws SQLException,
+        ConnexionException {
 
         try(
             ResultSet rset = this.stmtListeTousLivres.executeQuery()) {
@@ -122,14 +122,14 @@ public class GestionInterrogation {
                         + " "
                         + rset.getDate("datePret"));
                 }
+
                 System.out.println();
             }
 
             try {
-                this.connection.commit();
+                this.connexion.commit();
             } catch(ConnexionException connectionExeption) {
-
-                throw new SQLException(connectionExeption);
+                throw new ConnexionException(connectionExeption);
             }
         }
     }

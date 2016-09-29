@@ -9,10 +9,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
- * Permet de valider le format d'une date en YYYY-MM-DD et de la convertir en un
- * objet Date.
+ * Utilitaire de création d'un Timestamp dans un format défini.
  *
- *@author Team-Merguez
+ * @author Team-Merguez
  */
 
 public final class FormatDate {
@@ -21,7 +20,6 @@ public final class FormatDate {
      * variable private static.
      *
      */
-
     private static SimpleDateFormat formatAMJ;
     static {
         formatAMJ = new SimpleDateFormat("yyyy-MM-dd");
@@ -29,9 +27,10 @@ public final class FormatDate {
     }
 
     /**
-     * Constructeur de la classe.
      *
-    */
+     * Constructeur privé pour empêcher toute instanciation.
+     *
+     */
     private FormatDate() {
         super();
     }
