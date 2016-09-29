@@ -105,10 +105,10 @@ public class ReservationDTO extends DTO {
 
     /**
      *  Setter de la variable d'instance <code>this.dateReservation</code>.
-     *  @param dateReservation - La valeur à utiliser pour la variable d'instance <code>this.dateReservation</code>
+     *  @param timestamp - La valeur à utiliser pour la variable d'instance <code>this.dateReservation</code>
      *  */
-    public void setDateReservation(Timestamp dateReservation) {
-        this.dateReservation = dateReservation;
+    public void setDateReservation(Timestamp timestamp) {
+        this.dateReservation = timestamp;
     }
 
 }
