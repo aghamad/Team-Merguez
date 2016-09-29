@@ -13,7 +13,6 @@ import java.util.Collections;
 import java.util.List;
 import ca.qc.collegeahuntsic.bibliotheque.db.Connexion;
 import ca.qc.collegeahuntsic.bibliotheque.dto.LivreDTO;
-import ca.qc.collegeahuntsic.bibliotheque.dto.MembreDTO;
 import ca.qc.collegeahuntsic.bibliotheque.exception.DAOException;
 
 /**
@@ -250,7 +249,7 @@ public class LivreDAO extends DAO {
      * Find les livres avec l'aide d'un titre.
      *
      * @param titre titre du livre
-     * @return Liste de livres
+     * @return Liste de livres au meme titre
      * @throws DAOException S'il y a une erreur avec la base de données
      */
     public List<LivreDTO> findByTitre(String titre) throws DAOException {
@@ -287,38 +286,40 @@ public class LivreDAO extends DAO {
 
     /**
     *
-    * Find le membre avec l'aide d'un id.
+    * Find les livre d'un membre avec l'aide du idMembre.
     *
     * @param idMembre id d'un membre
-    * @return Liste de livres
+    * @return Liste de livres d'un membre
     * @throws DAOException S'il y a une erreur avec la base de données
     */
-    public MembreDTO findByMembre(int idMembre) throws DAOException {
-        MembreDTO membreDTO = null;
+    public List<LivreDTO> findByMembre(int idMembre) throws DAOException {
+        final List<LivreDTO> livres = Collections.EMPTY_LIST;
 
         try(
-            PreparedStatement findByTitreStatement = getConnection().prepareStatement(LivreDAO.FIND_BY_MEMBRE)) {
+            PreparedStatement findByMembreStatement = getConnection().prepareStatement(LivreDAO.FIND_BY_MEMBRE)) {
 
-            findByTitreStatement.setInt(1,
+            findByMembreStatement.setInt(1,
                 idMembre);
 
             try(
-                ResultSet resultSet = findByTitreStatement.executeQuery()) {
+                ResultSet resultSet = findByMembreStatement.executeQuery()) {
+                LivreDTO livreDTO = null;
                 if(resultSet.next()) {
-                    membreDTO = new MembreDTO();
-                    membreDTO.setIdMembre(resultSet.getInt(1));
-                    membreDTO.setNom(resultSet.getString(2));
-                    membreDTO.setTelephone(resultSet.getLong(3));
-                    membreDTO.setLimitePret(resultSet.getInt(4));
-                    membreDTO.setNbPret(resultSet.getInt(5));
+                    livreDTO = new LivreDTO();
+                    livreDTO.setIdLivre(resultSet.getInt(1));
+                    livreDTO.setTitre(resultSet.getString(2));
+                    livreDTO.setAuteur(resultSet.getString(3));
+                    livreDTO.setDateAcquisition(resultSet.getTimestamp(4));
+                    livreDTO.setIdMembre(resultSet.getInt(5));
+                    livreDTO.setDatePret(resultSet.getDate(6));
                 }
-
+                livres.add(livreDTO);
             }
         } catch(SQLException sqlException) {
             throw new DAOException(sqlException);
         }
 
-        return membreDTO;
+        return livres;
     }
 
     /*
