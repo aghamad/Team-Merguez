@@ -225,7 +225,7 @@ public class ReservationDAO extends DAO {
      * Suppression d'une reservation.
      *
      * @param idReservation id de la reservation à supprimer
-     * @return resultat de la requete delete
+     * @return resultat de la requete delete.
      * @throws DAOException S'il y a une erreur avec la base de données
      */
     public int annulerRes(int idReservation) throws DAOException {
