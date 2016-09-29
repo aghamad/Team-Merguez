@@ -18,7 +18,7 @@ import ca.qc.collegeahuntsic.bibliotheque.exception.ConnexionException;
  * La méthode serveursSupportes() indique les serveurs supportés.
  *
  * Pré-condition
- * le driver JDBC approprié doit �tre accessible.
+ * le driver JDBC approprié doit être accessible.
  *
  * Post-condition
  * la connexion est ouverte en mode autocommit false et sérialisable,
@@ -88,7 +88,7 @@ public class Connexion implements AutoCloseable {
             final DatabaseMetaData dbmd = this.conn.getMetaData();
             if(dbmd.supportsTransactionIsolationLevel(Connection.TRANSACTION_SERIALIZABLE)) {
                 this.conn.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
-                System.out.println("Ouverture de la connexion en mode s�rialisable :\n"
+                System.out.println("Ouverture de la connexion en mode sérialisable :\n"
                     + "Estampille "
                     + System.currentTimeMillis()
                     + " "
@@ -174,10 +174,10 @@ public class Connexion implements AutoCloseable {
      * @return String La liste des serveurs supportés par ce gestionnaire de connexion
      */
     public static String serveursSupportes() {
-        return "local : MySQL install� localement\n"
-            + "distant : Oracle install� au D�partement d'Informatique du Coll�ge Ahuntsic\n"
-            + "postgres : Postgres install� localement\n"
-            + "access : Microsoft Access install� localement et inscrit dans ODBC";
+        return "local : MySQL installé localement\n"
+            + "distant : Oracle installé au Département d'Informatique du Collège Ahuntsic\n"
+            + "postgres : Postgres installé localement\n"
+            + "access : Microsoft Access installé localement et inscrit dans ODBC";
     }
 
     /**

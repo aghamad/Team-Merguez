@@ -324,7 +324,7 @@ public class LivreDAO extends DAO {
                 ResultSet resultSet = statementExist.executeQuery()) {
                 if(resultSet.next()) {
                     livreDTO = new LivreDTO();
-                    livreDTO.setIdLivre(idLivre);
+                    livreDTO.setIdLivre(resultSet.getInt(1));
                     livreDTO.setTitre(resultSet.getString(2));
                     livreDTO.setAuteur(resultSet.getString(3));
                     livreDTO.setDateAcquisition(resultSet.getDate(4));
