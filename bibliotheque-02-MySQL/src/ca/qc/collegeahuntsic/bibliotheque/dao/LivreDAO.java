@@ -40,6 +40,14 @@ public class LivreDAO extends DAO {
     private static final String DELETE_REQUEST = "DELETE FROM livre "
         + "WHERE idlivre = ?";
 
+    /* private static final String FIND_BY_TITRE = "SELECT idLivre, titre, auteur, dateAcquisition, idMembre"
+         + "FROM LIVRE" +
+        "WHERE LOWER(titre)  LIKE LOWER(?)";
+    
+    private static final String FIND_BY_MEMBRE = "SELECT idLivre, titre, auteur, dateAcquisition, idMembre"
+      + "FROM LIVRE" +
+       "WHERE idMembre = ?";
+    */
     private static final String EMPRUNT_REQUEST = "UPDATE livre "
         + "SET idMembre = ?, datePret = CURRENT_TIMESTAMP, "
         + "titre = ?, auteur = ?, "
@@ -74,8 +82,7 @@ public class LivreDAO extends DAO {
     public boolean existe(int idLivre) throws DAOException {
 
         try(
-            PreparedStatement statementExist = getConnection()
-                .prepareStatement(LivreDAO.READ_REQUEST)) {
+            PreparedStatement statementExist = getConnection().prepareStatement(LivreDAO.READ_REQUEST)) {
 
             boolean livreExiste;
             statementExist.setInt(1,
@@ -106,8 +113,7 @@ public class LivreDAO extends DAO {
         LivreDTO tupleLivre = null;
 
         try(
-            PreparedStatement statementExist = getConnection()
-                .prepareStatement(LivreDAO.READ_REQUEST)) {
+            PreparedStatement statementExist = getConnection().prepareStatement(LivreDAO.READ_REQUEST)) {
 
             statementExist.setInt(1,
                 idLivre);
@@ -147,8 +153,7 @@ public class LivreDAO extends DAO {
         String dateAcquisition) throws DAOException {
         /* Ajout du livre. */
         try(
-            PreparedStatement statementInsert = getConnection()
-                .prepareStatement(LivreDAO.ADD_REQUEST)) {
+            PreparedStatement statementInsert = getConnection().prepareStatement(LivreDAO.ADD_REQUEST)) {
             statementInsert.setInt(1,
                 idLivre);
             statementInsert.setString(2,
@@ -178,8 +183,7 @@ public class LivreDAO extends DAO {
         String datePret) throws DAOException {
         /* Enregistrement du pret. */
         try(
-            PreparedStatement statementUpdate = getConnection()
-                .prepareStatement(LivreDAO.EMPRUNT_REQUEST)) {
+            PreparedStatement statementUpdate = getConnection().prepareStatement(LivreDAO.EMPRUNT_REQUEST)) {
             statementUpdate.setInt(1,
                 idMembre);
             statementUpdate.setDate(2,
@@ -204,8 +208,7 @@ public class LivreDAO extends DAO {
     public int retourner(int idLivre) throws DAOException {
         /* Enregistrement du pret. */
         try(
-            PreparedStatement statementUpdate = getConnection()
-                .prepareStatement(LivreDAO.RETOUR_REQUEST)) {
+            PreparedStatement statementUpdate = getConnection().prepareStatement(LivreDAO.RETOUR_REQUEST)) {
             statementUpdate.setNull(1,
                 Types.INTEGER);
             statementUpdate.setNull(2,
@@ -230,8 +233,7 @@ public class LivreDAO extends DAO {
     public int vendre(int idLivre) throws DAOException {
         /* Suppression du livre. */
         try(
-            PreparedStatement statementDelete = getConnection()
-                .prepareStatement(LivreDAO.DELETE_REQUEST)) {
+            PreparedStatement statementDelete = getConnection().prepareStatement(LivreDAO.DELETE_REQUEST)) {
             statementDelete.setInt(1,
                 idLivre);
             return statementDelete.executeUpdate();
@@ -255,8 +257,7 @@ public class LivreDAO extends DAO {
     public void add(LivreDTO livreDTO) throws DAOException {
         /* Ajout du livre. */
         try(
-            PreparedStatement statementInsert = getConnection()
-                .prepareStatement(LivreDAO.ADD_REQUEST)) {
+            PreparedStatement statementInsert = getConnection().prepareStatement(LivreDAO.ADD_REQUEST)) {
             statementInsert.setInt(1,
                 livreDTO.getIdLivre());
             statementInsert.setString(2,
@@ -288,8 +289,7 @@ public class LivreDAO extends DAO {
     public void update(LivreDTO livreDTO) throws DAOException {
         /* Update d'un livre. */
         try(
-            PreparedStatement statementUpdate = getConnection()
-                .prepareStatement(LivreDAO.UPDATE_REQUEST)) {
+            PreparedStatement statementUpdate = getConnection().prepareStatement(LivreDAO.UPDATE_REQUEST)) {
 
             statementUpdate.setInt(1,
                 livreDTO.getIdMembre());
@@ -323,8 +323,7 @@ public class LivreDAO extends DAO {
         LivreDTO livreDTO = null;
 
         try(
-            PreparedStatement statementExist = getConnection()
-                .prepareStatement(LivreDAO.READ_REQUEST)) {
+            PreparedStatement statementExist = getConnection().prepareStatement(LivreDAO.READ_REQUEST)) {
 
             statementExist.setInt(1,
                 idLivre);
@@ -358,8 +357,7 @@ public class LivreDAO extends DAO {
     public void delete(LivreDTO livreDTO) throws DAOException {
         // Cette methode est exactement comme la methode vendre()
         try(
-            PreparedStatement statementDelete = getConnection()
-                .prepareStatement(LivreDAO.DELETE_REQUEST)) {
+            PreparedStatement statementDelete = getConnection().prepareStatement(LivreDAO.DELETE_REQUEST)) {
             statementDelete.setInt(1,
                 livreDTO.getIdLivre());
         } catch(SQLException sqlException) {
