@@ -26,17 +26,13 @@ public class MembreDAO extends DAO {
     private static final String ADD_REQUEST = "INSERT INTO membre "
         + "VALUES (?,?,?,?,?)";
 
-    private static final String UPDATE_REQUEST = "UPDATE membre "
-        + "SET nom = ?, telephone = ?, limitePret = ?, nbPret = ?"
+    private static final String EMPRUNT_REQUEST = "UPDATE membre "
+        + "SET nom = ?, telephone = ?, limitePret = ?, nbPret = nbPret + 1 "
         + "WHERE idMembre = ?";
 
-    // private static final String EMPRUNT_REQUEST = "UPDATE membre "
-    //  + "SET nom = ?, telephone = ?, limitePret = ?, nbPret = nbPret + 1 "
-    //  + "WHERE idMembre = ?";
-
-    // private static final String RETOUR_REQUEST = "UPDATE membre "
-    //   + "SET nom = ?, telephone = ?, limitePret = ?, nbPret = nbPret - 1 "
-    //  + "WHERE idMembre = ?";
+    private static final String RETOUR_REQUEST = "UPDATE membre "
+        + "SET nom = ?, telephone = ?, limitePret = ?, nbPret = nbPret - 1 "
+        + "WHERE idMembre = ?";
 
     private static final String DELETE_REQUEST = "DELETE FROM membre "
         + "WHERE idMembre = ?";
@@ -159,7 +155,7 @@ public class MembreDAO extends DAO {
      */
     public int preter(int idMembre) throws DAOException {
         try(
-            PreparedStatement statementUpdate = this.getConnexion().getConnection().prepareStatement(MembreDAO.UPDATE_REQUEST)) {
+            PreparedStatement statementUpdate = this.getConnexion().getConnection().prepareStatement(MembreDAO.EMPRUNT_REQUEST)) {
             statementUpdate.setInt(1,
                 idMembre);
             return statementUpdate.executeUpdate();
@@ -178,7 +174,7 @@ public class MembreDAO extends DAO {
      */
     public int retourner(int idMembre) throws DAOException {
         try(
-            PreparedStatement statementUpdate = this.getConnexion().getConnection().prepareStatement(MembreDAO.UPDATE_REQUEST)) {
+            PreparedStatement statementUpdate = this.getConnexion().getConnection().prepareStatement(MembreDAO.RETOUR_REQUEST)) {
             statementUpdate.setInt(1,
                 idMembre);
             return statementUpdate.executeUpdate();
