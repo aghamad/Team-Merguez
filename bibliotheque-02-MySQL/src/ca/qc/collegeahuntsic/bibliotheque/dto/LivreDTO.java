@@ -4,7 +4,6 @@
 
 package ca.qc.collegeahuntsic.bibliotheque.dto;
 
-import java.sql.Date;
 import java.sql.Timestamp;
 
 /**
@@ -26,7 +25,7 @@ public class LivreDTO extends DTO {
 
     private int idMembre;
 
-    private Date datePret;
+    private Timestamp datePret;
 
     /**
      * variable d'instance this.idLivre this.titre this.auteur this.dateAcquisition this.idMembre this.datePret.
@@ -43,7 +42,7 @@ public class LivreDTO extends DTO {
         String auteur,
         Timestamp dateAcquisition,
         int idMembre,
-        Date datePret) {
+        Timestamp datePret) {
         super();
         this.idLivre = idLivre;
         this.titre = titre;
@@ -145,7 +144,7 @@ public class LivreDTO extends DTO {
     *  Getter de la variable d'instance <code>this.datePret</code>.
     *  @return datePret - La variable d'instance <code>this.datePret</code>
     *  */
-    public Date getDatePret() {
+    public Timestamp getDatePret() {
         return this.datePret;
     }
 
@@ -153,7 +152,7 @@ public class LivreDTO extends DTO {
     *  Setter de la variable d'instance <code>this.datePret</code>.
     *  @param datePret - La valeur à utiliser pour la variable d'instance <code>this.datePret</code>
     *  */
-    public void setDatePret(Date datePret) {
+    public void setDatePret(Timestamp datePret) {
         this.datePret = datePret;
     }
 
