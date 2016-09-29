@@ -317,7 +317,7 @@ public class ReservationDAO extends DAO {
                 ResultSet resultSet = statementExist.executeQuery()) {
                 if(resultSet.next()) {
                     reservationDTO = new ReservationDTO();
-                    reservationDTO.setIdReservation(idReservation);
+                    reservationDTO.setIdReservation(resultSet.getInt(1));
                     reservationDTO.setIdMembre(resultSet.getInt(2));
                     reservationDTO.setIdLivre(resultSet.getInt(3));
                     reservationDTO.setDateReservation(resultSet.getDate(3));

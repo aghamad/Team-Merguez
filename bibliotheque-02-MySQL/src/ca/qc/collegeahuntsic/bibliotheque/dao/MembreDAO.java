@@ -287,7 +287,7 @@ public class MembreDAO extends DAO {
                 ResultSet resultSet = statementExist.executeQuery()) {
                 if(resultSet.next()) {
                     membreDTO = new MembreDTO();
-                    membreDTO.setIdMembre(idMembre);
+                    membreDTO.setIdMembre(resultSet.getInt(1));
                     membreDTO.setNom(resultSet.getString(2));
                     membreDTO.setTelephone(resultSet.getLong(3));
                     membreDTO.setLimitePret(resultSet.getInt(4));
