@@ -25,6 +25,7 @@ public class DAO implements Serializable {
      * @param connexion La connexion à utiliser
      */
     public DAO(Connexion connexion) {
+        super();
         setConnexion(connexion);
     }
 
