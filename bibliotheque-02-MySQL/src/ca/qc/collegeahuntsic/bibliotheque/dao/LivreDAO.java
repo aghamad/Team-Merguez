@@ -22,46 +22,40 @@ import ca.qc.collegeahuntsic.bibliotheque.exception.DAOException;
 
 public class LivreDAO extends DAO {
 
-    /*
     // stmtExiste select idlivre, titre, auteur, dateAcquisition, idMembre, datePret from livre where idlivre = ?"
-    private final static String READ_REQUEST = "SELECT idLivre, titre, auteur, dateAcquisition, idMembre, datePret FROM livre "
+
+    private static final String READ_REQUEST = "SELECT idLivre, titre, auteur, dateAcquisition, idMembre, datePret FROM livre "
         + "WHERE idLivre = ?";
-    
-    
-    private final static String ADD_REQUEST = "INSERT INTO livre "
+
+    private static final String ADD_REQUEST = "INSERT INTO livre "
         + "VALUES(?, ?, ?, ?, NULL, NULL)";
-    
-    private final static String UPDATE_REQUEST = "UPDATE livre "
+
+    private static final String UPDATE_REQUEST = "UPDATE livre "
         + "SET idMembre = ?, datePret = ?,"
         + "titre = ?, auteur = ?,"
         + "dateAcquisition = ?"
         + "WHERE idLivre = ?";
-    
+
+    private static final String DELETE_REQUEST = "DELETE FROM livre "
+        + "WHERE idlivre = ?";
+
+    /*
     private final static String EMPRUNT_REQUEST = "UPDATE livre "
         + "SET idMembre = ?, datePret = CURRENT_TIMESTAMP, "
         + "titre = ?, auteur = ?, "
         + "dateAcquisition = ? "
         + "WHERE idLivre = ?";
-    
+
     private final static String RETOUR_REQUEST = "UPDATE livre "
         + "SET idMembre = null, datePret = null, "
         + "titre = ?, auteur = ?, "
         + "dateAcquisition = ? "
         + "WHERE idLivre = ?";
-    
-    private final static String DELETE_REQUEST = "DELETE FROM livre "
-        + "WHERE idlivre = ?";
     */
 
     private static final long serialVersionUID = 1L;
 
-    private PreparedStatement stmtExiste;
-
-    private PreparedStatement stmtInsert;
-
     private PreparedStatement stmtUpdate;
-
-    private PreparedStatement stmtDelete;
 
     /**
      *
@@ -72,17 +66,6 @@ public class LivreDAO extends DAO {
      */
     public LivreDAO(Connexion connexion) throws DAOException {
         super(connexion);
-        try {
-            this.stmtExiste = connexion.getConnection()
-                .prepareStatement("select idlivre, titre, auteur, dateAcquisition, idMembre, datePret from livre where idlivre = ?");
-            this.stmtInsert = connexion.getConnection().prepareStatement("insert into livre (idLivre, titre, auteur, dateAcquisition, idMembre, datePret) "
-                + "values (?,?,?,?,null,null)");
-            this.stmtUpdate = connexion.getConnection().prepareStatement("update livre set idMembre = ?, datePret = ? "
-                + "where idLivre = ?");
-            this.stmtDelete = connexion.getConnection().prepareStatement("delete from livre where idlivre = ?");
-        } catch(SQLException sqlException) {
-            throw new DAOException(sqlException);
-        }
     }
 
     /**
@@ -95,20 +78,24 @@ public class LivreDAO extends DAO {
      */
     public boolean existe(int idLivre) throws DAOException {
 
-        boolean livreExiste;
-        try {
-            this.stmtExiste.setInt(1,
+        try(
+            PreparedStatement statementExist = this.getConnexion().getConnection().prepareStatement(LivreDAO.READ_REQUEST)) {
+
+            boolean livreExiste;
+            statementExist.setInt(1,
                 idLivre);
+
             livreExiste = false;
+
             try(
-                ResultSet rset = this.stmtExiste.executeQuery()) {
-                livreExiste = rset.next();
-                rset.close();
+                ResultSet resultSet = statementExist.executeQuery()) {
+                livreExiste = resultSet.next();
             }
+
+            return livreExiste;
         } catch(SQLException sqlException) {
             throw new DAOException(sqlException);
         }
-        return livreExiste;
     }
 
     /**
@@ -120,25 +107,25 @@ public class LivreDAO extends DAO {
      * @throws DAOException S'il y a une erreur avec la base de données
      */
     public LivreDTO getLivre(int idLivre) throws DAOException {
-        // test
-        LivreDTO tupleLivre;
-        try {
-            this.stmtExiste.setInt(1,
+
+        LivreDTO tupleLivre = null;
+
+        try(
+            PreparedStatement statementExist = this.getConnexion().getConnection().prepareStatement(LivreDAO.READ_REQUEST)) {
+
+            statementExist.setInt(1,
                 idLivre);
 
-            tupleLivre = null;
-
             try(
-                ResultSet rset = this.stmtExiste.executeQuery()) {
-
-                if(rset.next()) {
+                ResultSet resultSet = statementExist.executeQuery()) {
+                if(resultSet.next()) {
                     tupleLivre = new LivreDTO();
                     tupleLivre.setIdLivre(idLivre);
-                    tupleLivre.setTitre(rset.getString(2));
-                    tupleLivre.setAuteur(rset.getString(3));
-                    tupleLivre.setDateAcquisition(rset.getDate(4));
-                    tupleLivre.setIdMembre(rset.getInt(5));
-                    tupleLivre.setDatePret(rset.getDate(6));
+                    tupleLivre.setTitre(resultSet.getString(2));
+                    tupleLivre.setAuteur(resultSet.getString(3));
+                    tupleLivre.setDateAcquisition(resultSet.getDate(4));
+                    tupleLivre.setIdMembre(resultSet.getInt(5));
+                    tupleLivre.setDatePret(resultSet.getDate(6));
                 }
             }
         } catch(SQLException sqlException) {
@@ -163,16 +150,17 @@ public class LivreDAO extends DAO {
         String auteur,
         String dateAcquisition) throws DAOException {
         /* Ajout du livre. */
-        try {
-            this.stmtInsert.setInt(1,
+        try(
+            PreparedStatement statementInsert = this.getConnexion().getConnection().prepareStatement(LivreDAO.ADD_REQUEST)) {
+            statementInsert.setInt(1,
                 idLivre);
-            this.stmtInsert.setString(2,
+            statementInsert.setString(2,
                 titre);
-            this.stmtInsert.setString(3,
+            statementInsert.setString(3,
                 auteur);
-            this.stmtInsert.setDate(4,
+            statementInsert.setDate(4,
                 Date.valueOf(dateAcquisition));
-            this.stmtInsert.executeUpdate();
+            statementInsert.executeUpdate();
         } catch(SQLException sqlException) {
             throw new DAOException(sqlException);
         }
@@ -192,17 +180,19 @@ public class LivreDAO extends DAO {
         int idMembre,
         String datePret) throws DAOException {
         /* Enregistrement du pret. */
-        try {
-            this.stmtUpdate.setInt(1,
+        try(
+            PreparedStatement statementUpdate = this.getConnexion().getConnection().prepareStatement(LivreDAO.UPDATE_REQUEST)) {
+            statementUpdate.setInt(1,
                 idMembre);
-            this.stmtUpdate.setDate(2,
+            statementUpdate.setDate(2,
                 Date.valueOf(datePret));
-            this.stmtUpdate.setInt(3,
+            statementUpdate.setInt(3,
                 idLivre);
-            return this.stmtUpdate.executeUpdate();
+            return statementUpdate.executeUpdate();
         } catch(SQLException sqlException) {
             throw new DAOException(sqlException);
         }
+
     }
 
     /**
@@ -215,17 +205,19 @@ public class LivreDAO extends DAO {
      */
     public int retourner(int idLivre) throws DAOException {
         /* Enregistrement du pret. */
-        try {
-            this.stmtUpdate.setNull(1,
+        try(
+            PreparedStatement statementUpdate = this.getConnexion().getConnection().prepareStatement(LivreDAO.UPDATE_REQUEST)) {
+            statementUpdate.setNull(1,
                 Types.INTEGER);
-            this.stmtUpdate.setNull(2,
+            statementUpdate.setNull(2,
                 Types.DATE);
-            this.stmtUpdate.setInt(3,
+            statementUpdate.setInt(3,
                 idLivre);
             return this.stmtUpdate.executeUpdate();
         } catch(SQLException sqlException) {
             throw new DAOException(sqlException);
         }
+
     }
 
     /**
@@ -238,10 +230,11 @@ public class LivreDAO extends DAO {
      */
     public int vendre(int idLivre) throws DAOException {
         /* Suppression du livre. */
-        try {
-            this.stmtDelete.setInt(1,
+        try(
+            PreparedStatement statementDelete = this.getConnexion().getConnection().prepareStatement(LivreDAO.DELETE_REQUEST)) {
+            statementDelete.setInt(1,
                 idLivre);
-            return this.stmtDelete.executeUpdate();
+            return statementDelete.executeUpdate();
         } catch(SQLException sqlException) {
             throw new DAOException(sqlException);
         }
