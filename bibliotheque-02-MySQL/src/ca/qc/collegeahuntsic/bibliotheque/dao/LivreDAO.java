@@ -46,7 +46,7 @@ public class LivreDAO extends DAO {
         + "titre = ?, auteur = ?, "
         + "dateAcquisition = ? "
         + "WHERE idLivre = ?";
-    
+
     private final static String RETOUR_REQUEST = "UPDATE livre "
         + "SET idMembre = null, datePret = null, "
         + "titre = ?, auteur = ?, "
@@ -95,13 +95,13 @@ public class LivreDAO extends DAO {
     }
 
     /**
-     *
-     * Lecture d'un livre.
-     *
-     * @param idLivre id du livre recherché
-     * @return Objet de livre LivreDTO
-     * @throws DAOException S'il y a une erreur avec la base de données
-     */
+    *
+    * Lecture d'un livre.
+    *
+    * @param idLivre id du livre recherché
+    * @return Objet de livre LivreDTO
+    * @throws DAOException S'il y a une erreur avec la base de données
+    */
     public LivreDTO getLivre(int idLivre) throws DAOException {
 
         LivreDTO tupleLivre = null;
@@ -217,13 +217,13 @@ public class LivreDAO extends DAO {
     }
 
     /**
-     *
-     * Suppression d'un livre.
-     *
-     * @param idLivre id du livre à vendre
-     * @return resultat de ;a requete delete
-     * @throws DAOException S'il y a une erreur avec la base de données
-     */
+    *
+    * Suppression d'un livre.
+    *
+    * @param idLivre id du livre à vendre
+    * @return resultat de la requete delete
+    * @throws DAOException S'il y a une erreur avec la base de données
+    */
     public int vendre(int idLivre) throws DAOException {
         /* Suppression du livre. */
         try(
@@ -235,4 +235,130 @@ public class LivreDAO extends DAO {
             throw new DAOException(sqlException);
         }
     }
+
+    /*
+     * Methodes CRUD add/read/update/delete
+     *
+     */
+
+    /**
+     *
+     * Methode CRUD Add pour ajouter un nouveau livre.
+     *
+     * @param livreDTO Une instance du livre a ajouter
+     * @throws DAOException S'il y a une erreur avec la base de données
+     */
+    public void add(LivreDTO livreDTO) throws DAOException {
+        /* Ajout du livre. */
+        try(
+            PreparedStatement statementInsert = this.getConnexion().getConnection().prepareStatement(LivreDAO.ADD_REQUEST)) {
+            statementInsert.setInt(1,
+                livreDTO.getIdLivre());
+            statementInsert.setString(2,
+                livreDTO.getTitre());
+            statementInsert.setString(3,
+                livreDTO.getAuteur());
+            statementInsert.setDate(4,
+                livreDTO.getDateAcquisition());
+            statementInsert.setDate(4,
+                livreDTO.getDateAcquisition());
+            statementInsert.setInt(5,
+                livreDTO.getIdMembre());
+            statementInsert.setDate(6,
+                livreDTO.getDatePret());
+
+            statementInsert.executeUpdate();
+        } catch(SQLException sqlException) {
+            throw new DAOException(sqlException);
+        }
+    }
+
+    /**
+     *
+     * Method CRUD Update pour modifier un livre.
+     *
+     * @param livreDTO Une instance du livre a modifier
+     * @throws DAOException S'il y a une erreur avec la base de données
+     */
+    public void update(LivreDTO livreDTO) throws DAOException {
+        /* Update d'un livre. */
+        try(
+            PreparedStatement statementUpdate = this.getConnexion().getConnection().prepareStatement(LivreDAO.UPDATE_REQUEST)) {
+
+            statementUpdate.setInt(1,
+                livreDTO.getIdMembre());
+            statementUpdate.setDate(2,
+                livreDTO.getDatePret());
+            statementUpdate.setString(3,
+                livreDTO.getTitre());
+            statementUpdate.setString(4,
+                livreDTO.getAuteur());
+            statementUpdate.setDate(5,
+                livreDTO.getDateAcquisition());
+            statementUpdate.setInt(6,
+                livreDTO.getIdLivre());
+
+            statementUpdate.executeUpdate();
+        } catch(SQLException sqlException) {
+            throw new DAOException(sqlException);
+        }
+    }
+
+    /**
+    *
+    * Methode CRUD Read pour lire un livre.
+    *
+    * @param idLivre id du livre recherché
+    * @return Objet de livre LivreDTO
+    * @throws DAOException S'il y a une erreur avec la base de données
+    */
+    public LivreDTO read(int idLivre) throws DAOException {
+        // Cette methode est exactement comme la methode getLivre()
+        LivreDTO tupleLivre = null;
+
+        try(
+            PreparedStatement statementExist = this.getConnexion().getConnection().prepareStatement(LivreDAO.READ_REQUEST)) {
+
+            statementExist.setInt(1,
+                idLivre);
+
+            try(
+                ResultSet resultSet = statementExist.executeQuery()) {
+                if(resultSet.next()) {
+                    tupleLivre = new LivreDTO();
+                    tupleLivre.setIdLivre(idLivre);
+                    tupleLivre.setTitre(resultSet.getString(2));
+                    tupleLivre.setAuteur(resultSet.getString(3));
+                    tupleLivre.setDateAcquisition(resultSet.getDate(4));
+                    tupleLivre.setIdMembre(resultSet.getInt(5));
+                    tupleLivre.setDatePret(resultSet.getDate(6));
+                }
+            }
+        } catch(SQLException sqlException) {
+            throw new DAOException(sqlException);
+        }
+
+        return tupleLivre;
+    }
+
+    /**
+    *
+    * Method CRUD pour supprimer un livre.
+    *
+    * @param idLivre id du livre à vendre
+    * @return resultat de la requete delete
+    * @throws DAOException S'il y a une erreur avec la base de données
+    */
+    public int delete(int idLivre) throws DAOException {
+        // Cette methode est exactement comme la methode vendre()
+        try(
+            PreparedStatement statementDelete = this.getConnexion().getConnection().prepareStatement(LivreDAO.DELETE_REQUEST)) {
+            statementDelete.setInt(1,
+                idLivre);
+            return statementDelete.executeUpdate();
+        } catch(SQLException sqlException) {
+            throw new DAOException(sqlException);
+        }
+    }
+
 }
