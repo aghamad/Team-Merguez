@@ -24,11 +24,11 @@ import ca.qc.collegeahuntsic.bibliotheque.exception.ServiceException;
  */
 
 public class PretService {
-    private LivreDAO livre;
+    private LivreDAO livreDAO;
 
-    private MembreDAO membre;
+    private MembreDAO membreDAO;
 
-    private ReservationDAO reservation;
+    private ReservationDAO reservationDAO;
 
     private Connexion connexion;
 
@@ -49,9 +49,9 @@ public class PretService {
             throw new ServiceException("Les instances de livre, de membre et de reservation n'utilisent pas la meme connexion au serveur");
         }
         this.connexion = livre.getConnexion();
-        this.livre = livre;
-        this.membre = membre;
-        this.reservation = reservation;
+        this.livreDAO = livre;
+        this.membreDAO = membre;
+        this.reservationDAO = reservation;
     }
 
     /**
@@ -67,7 +67,7 @@ public class PretService {
         String datePret) throws ServiceException {
         try {
             /* Verfier si le livre est disponible */
-            final LivreDTO tupleLivre = this.livre.getLivre(idLivre);
+            final LivreDTO tupleLivre = this.livreDAO.getLivre(idLivre);
             if(tupleLivre == null) {
                 throw new ServiceException("Livre inexistant: "
                     + idLivre);
@@ -79,7 +79,7 @@ public class PretService {
                     + tupleLivre.getIdMembre());
             }
 
-            final MembreDTO tupleMembre = this.membre.getMembre(idMembre);
+            final MembreDTO tupleMembre = this.membreDAO.getMembre(idMembre);
             if(tupleMembre == null) {
                 throw new ServiceException("Membre inexistant: "
                     + idMembre);
@@ -91,7 +91,7 @@ public class PretService {
             }
 
             /* Vérifie s'il existe une r�servation pour le livre */
-            final ReservationDTO tupleReservation = this.reservation.getReservationLivre(idLivre);
+            final ReservationDTO tupleReservation = this.reservationDAO.getReservationLivre(idLivre);
             if(tupleReservation != null) {
                 throw new ServiceException("Livre réservé par : "
                     + tupleReservation.getIdMembre()
@@ -100,13 +100,13 @@ public class PretService {
             }
 
             /* Enregistrement du pret. */
-            final int nb1 = this.livre.preter(idLivre,
+            final int nb1 = this.livreDAO.preter(idLivre,
                 idMembre,
                 datePret);
             if(nb1 == 0) {
                 throw new ServiceException("Livre supprimé par une autre transaction");
             }
-            final int nb2 = this.membre.preter(idMembre);
+            final int nb2 = this.membreDAO.preter(idMembre);
             if(nb2 == 0) {
                 throw new ServiceException("Membre supprimé par une autre transaction");
             }
@@ -136,7 +136,7 @@ public class PretService {
         String datePret) throws ServiceException {
         try {
             /* Verifier si le livre est prété */
-            final LivreDTO tupleLivre = this.livre.getLivre(idLivre);
+            final LivreDTO tupleLivre = this.livreDAO.getLivre(idLivre);
             if(tupleLivre == null) {
                 throw new ServiceException("Livre inexistant: "
                     + idLivre);
@@ -153,7 +153,7 @@ public class PretService {
             }
 
             /* V�rifie s'il existe une réservation pour le livre */
-            final ReservationDTO tupleReservation = this.reservation.getReservationLivre(idLivre);
+            final ReservationDTO tupleReservation = this.reservationDAO.getReservationLivre(idLivre);
             if(tupleReservation != null) {
                 throw new ServiceException("Livre réservé par : "
                     + tupleReservation.getIdMembre()
@@ -162,7 +162,7 @@ public class PretService {
             }
 
             /* Enregistrement du pret. */
-            final int nb1 = this.livre.preter(idLivre,
+            final int nb1 = this.livreDAO.preter(idLivre,
                 tupleLivre.getIdMembre(),
                 datePret);
             if(nb1 == 0) {
@@ -193,7 +193,7 @@ public class PretService {
         String dateRetour) throws ServiceException {
         try {
             /* Verifier si le livre est prété  */
-            final LivreDTO tupleLivre = this.livre.getLivre(idLivre);
+            final LivreDTO tupleLivre = this.livreDAO.getLivre(idLivre);
             if(tupleLivre == null) {
                 throw new ServiceException("Livre inexistant: "
                     + idLivre);
@@ -210,12 +210,12 @@ public class PretService {
             }
 
             /* Retour du pret. */
-            final int nb1 = this.livre.retourner(idLivre);
+            final int nb1 = this.livreDAO.retourner(idLivre);
             if(nb1 == 0) {
                 throw new ServiceException("Livre supprim� par une autre transaction");
             }
 
-            final int nb2 = this.membre.retourner(tupleLivre.getIdMembre());
+            final int nb2 = this.membreDAO.retourner(tupleLivre.getIdMembre());
             if(nb2 == 0) {
                 throw new ServiceException("Livre supprim� par une autre transaction");
             }

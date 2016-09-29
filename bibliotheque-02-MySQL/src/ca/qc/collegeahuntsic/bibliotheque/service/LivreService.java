@@ -20,9 +20,9 @@ import ca.qc.collegeahuntsic.bibliotheque.exception.ServiceException;
  */
 public class LivreService {
 
-    private LivreDAO livre;
+    private LivreDAO livreDAO;
 
-    private ReservationDAO reservation;
+    private ReservationDAO reservationDAO;
 
     private Connexion connexion;
 
@@ -36,8 +36,8 @@ public class LivreService {
     public LivreService(LivreDAO livre,
         ReservationDAO reservation) {
         this.connexion = livre.getConnexion();
-        this.livre = livre;
-        this.reservation = reservation;
+        this.livreDAO = livre;
+        this.reservationDAO = reservation;
     }
 
     /**
@@ -54,13 +54,13 @@ public class LivreService {
         String auteur,
         String dateAcquisition) throws ServiceException {
         try {
-            if(this.livre.existe(idLivre)) {
+            if(this.livreDAO.existe(idLivre)) {
                 throw new ServiceException("Livre existe deja: "
                     + idLivre);
             }
 
             /* Ajout du livre dans la table des livres */
-            this.livre.acquerir(idLivre,
+            this.livreDAO.acquerir(idLivre,
                 titre,
                 auteur,
                 dateAcquisition);
@@ -88,7 +88,7 @@ public class LivreService {
     */
     public void vendre(int idLivre) throws ServiceException {
         try {
-            final LivreDTO tupleLivre = this.livre.getLivre(idLivre);
+            final LivreDTO tupleLivre = this.livreDAO.getLivre(idLivre);
             if(tupleLivre == null) {
                 throw new ServiceException("Livre inexistant: "
                     + idLivre);
@@ -99,14 +99,14 @@ public class LivreService {
                     + " prete a "
                     + tupleLivre.getIdMembre());
             }
-            if(this.reservation.getReservationLivre(idLivre) != null) {
+            if(this.reservationDAO.getReservationLivre(idLivre) != null) {
                 throw new ServiceException("Livre "
                     + idLivre
                     + " réservé ");
             }
 
             /* Suppression du livre. */
-            final int nb = this.livre.vendre(idLivre);
+            final int nb = this.livreDAO.vendre(idLivre);
             if(nb == 0) {
                 throw new ServiceException("Livre "
                     + idLivre

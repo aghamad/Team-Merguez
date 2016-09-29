@@ -22,9 +22,9 @@ public class MembreService {
 
     private Connexion connexion;
 
-    private MembreDAO membre;
+    private MembreDAO membreDAO;
 
-    private ReservationDAO reservation;
+    private ReservationDAO reservationDAO;
 
     /**
      *
@@ -36,8 +36,8 @@ public class MembreService {
     public MembreService(MembreDAO membre,
         ReservationDAO reservation) {
         this.connexion = membre.getConnexion();
-        this.membre = membre;
-        this.reservation = reservation;
+        this.membreDAO = membre;
+        this.reservationDAO = reservation;
     }
 
     /**
@@ -55,13 +55,13 @@ public class MembreService {
         long telephone,
         int limitePret) throws ServiceException {
         try {
-            if(this.membre.existe(idMembre)) {
+            if(this.membreDAO.existe(idMembre)) {
                 throw new ServiceException("Membre existe deja: "
                     + idMembre);
             }
 
             /* Ajout du membre. */
-            this.membre.inscrire(idMembre,
+            this.membreDAO.inscrire(idMembre,
                 nom,
                 telephone,
                 limitePret);
@@ -87,7 +87,7 @@ public class MembreService {
      */
     public void desinscrire(int idMembre) throws ServiceException {
         try {
-            final MembreDTO tupleMembre = this.membre.getMembre(idMembre);
+            final MembreDTO tupleMembre = this.membreDAO.getMembre(idMembre);
             if(tupleMembre == null) {
                 throw new ServiceException("Membre inexistant: "
                     + idMembre);
@@ -97,14 +97,14 @@ public class MembreService {
                     + idMembre
                     + " a encore des prets.");
             }
-            if(this.reservation.getReservationMembre(idMembre) != null) {
+            if(this.reservationDAO.getReservationMembre(idMembre) != null) {
                 throw new ServiceException("Membre "
                     + idMembre
                     + " a des réservations");
             }
 
             /* Suppression du membre */
-            final int nb = this.membre.desinscrire(idMembre);
+            final int nb = this.membreDAO.desinscrire(idMembre);
             if(nb == 0) {
                 throw new ServiceException("Membre "
                     + idMembre
