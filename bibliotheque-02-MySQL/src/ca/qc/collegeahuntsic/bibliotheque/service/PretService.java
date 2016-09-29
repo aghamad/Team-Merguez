@@ -1,4 +1,4 @@
-// Fichier PretService.java
+// Fichier  PretService.java
 // Auteur : Team-Merguez
 // Date de création : 2016-09-15
 

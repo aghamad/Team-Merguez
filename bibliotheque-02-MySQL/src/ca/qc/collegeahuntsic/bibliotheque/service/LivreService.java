@@ -1,5 +1,5 @@
 // Fichier LivreService.java
-// Auteur : Team-Merguez
+// Auteur :Team-Merguez
 // Date de création : 2016-09-15
 
 package ca.qc.collegeahuntsic.bibliotheque.service;
