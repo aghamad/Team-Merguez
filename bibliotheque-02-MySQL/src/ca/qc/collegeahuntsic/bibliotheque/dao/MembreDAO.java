@@ -7,6 +7,9 @@ package ca.qc.collegeahuntsic.bibliotheque.dao;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import ca.qc.collegeahuntsic.bibliotheque.db.Connexion;
 import ca.qc.collegeahuntsic.bibliotheque.dto.MembreDTO;
 import ca.qc.collegeahuntsic.bibliotheque.exception.DAOException;
@@ -20,13 +23,17 @@ import ca.qc.collegeahuntsic.bibliotheque.exception.DAOException;
 
 public class MembreDAO extends DAO {
 
+    private static final long serialVersionUID = 1L;
+
     private static final String READ_REQUEST = "SELECT * FROM membre "
         + "WHERE idMembre = ?";
 
     private static final String ADD_REQUEST = "INSERT INTO membre "
         + "VALUES (?,?,?,?,?)";
 
-    private static final String UPDATE_REQUEST = "UPDATE membre SET idMembre = ?, nom = ?, telephone = ?, limitePret = ?, nbPret = ? WHERE idMembre = ?";
+    private static final String UPDATE_REQUEST = "UPDATE membre "
+        + "SET nom = ?, telephone = ?, limitePret = ?, nbPret = ?"
+        + "WHERE idMembre = ?";
 
     private static final String EMPRUNT_REQUEST = "UPDATE membre "
         + "SET nom = ?, telephone = ?, limitePret = ?, nbPret = nbPret + 1 "
@@ -39,7 +46,7 @@ public class MembreDAO extends DAO {
     private static final String DELETE_REQUEST = "DELETE FROM membre "
         + "WHERE idMembre = ?";
 
-    private static final long serialVersionUID = 1L;
+    private static final String GET_ALL_REQUEST = "SELECT * FROM membre";
 
     /**
      *
@@ -216,20 +223,21 @@ public class MembreDAO extends DAO {
      * @throws DAOException S'il y a une erreur avec la base de données
      */
     public void add(MembreDTO membreDTO) throws DAOException {
-        /* Ajout d'un membre. */
         try(
-            PreparedStatement statementInsert = getConnection().prepareStatement(MembreDAO.ADD_REQUEST)) {
-            statementInsert.setInt(1,
+            PreparedStatement addPreparedStatement = getConnection().prepareStatement(MembreDAO.ADD_REQUEST)) {
+
+            addPreparedStatement.setInt(1,
                 membreDTO.getIdMembre());
-            statementInsert.setString(2,
+            addPreparedStatement.setString(2,
                 membreDTO.getNom());
-            statementInsert.setLong(3,
+            addPreparedStatement.setLong(3,
                 membreDTO.getTelephone());
-            statementInsert.setInt(4,
+            addPreparedStatement.setInt(4,
                 membreDTO.getLimitePret());
-            statementInsert.setInt(5,
+            addPreparedStatement.setInt(5,
                 membreDTO.getNbPret());
-            statementInsert.executeUpdate();
+            addPreparedStatement.executeUpdate();
+
         } catch(SQLException sqlException) {
             throw new DAOException(sqlException);
         }
@@ -317,6 +325,96 @@ public class MembreDAO extends DAO {
         } catch(SQLException sqlException) {
             throw new DAOException(sqlException);
         }
+    }
+
+    /**
+     *
+     * Emprend d'un livre par un membre.
+     *
+     * @param membreDTO Le livre que le membre à emprunter
+     * @throws DAOException S'il y a une erreur avec la base de données
+     */
+    public void emprunter(MembreDTO membreDTO) throws DAOException {
+        try(
+            PreparedStatement emprunterPreparedStatement = getConnection().prepareStatement(MembreDAO.EMPRUNT_REQUEST)) {
+
+            emprunterPreparedStatement.setString(1,
+                membreDTO.getNom());
+            emprunterPreparedStatement.setLong(2,
+                membreDTO.getTelephone());
+            emprunterPreparedStatement.setInt(3,
+                membreDTO.getLimitePret());
+            emprunterPreparedStatement.setInt(4,
+                membreDTO.getIdMembre());
+
+            emprunterPreparedStatement.executeUpdate();
+        } catch(SQLException sqlException) {
+            throw new DAOException(sqlException);
+        }
+    }
+
+    /**
+     *
+     * Retourne un membre.
+     *
+     * @param membreDTO Le membre à retourner
+     * @throws DAOException S'il y a une erreur avec la base de données
+     */
+    public void retourner(MembreDTO membreDTO) throws DAOException {
+        try(
+            PreparedStatement retournerPreparedStatement = getConnection().prepareStatement(MembreDAO.RETOUR_REQUEST)) {
+
+            retournerPreparedStatement.setString(1,
+                membreDTO.getNom());
+            retournerPreparedStatement.setLong(2,
+                membreDTO.getTelephone());
+            retournerPreparedStatement.setInt(3,
+                membreDTO.getLimitePret());
+            retournerPreparedStatement.setInt(4,
+                membreDTO.getIdMembre());
+
+            retournerPreparedStatement.executeUpdate();
+        } catch(SQLException sqlException) {
+            throw new DAOException(sqlException);
+        }
+    }
+
+    /**
+     *
+     * Trouve tous les membres.
+     *
+     * @return La liste des membres ; une liste vide sinon
+     * @throws DAOException S'il y a une erreur avec la base de données
+     */
+    public List<MembreDTO> getAll() throws DAOException {
+        List<MembreDTO> listeDTO = Collections.EMPTY_LIST;
+        MembreDTO membreDTO = null;
+
+        try(
+            PreparedStatement getAllMembrePreparedStatement = getConnection().prepareStatement(MembreDAO.GET_ALL_REQUEST)) {
+            try(
+                ResultSet rset = getAllMembrePreparedStatement.executeQuery();) {
+                if(rset.next()) {
+                    listeDTO = new ArrayList<>();
+                    do {
+                        membreDTO = new MembreDTO();
+                        membreDTO.setIdMembre(rset.getInt(1));
+                        membreDTO.setNom(rset.getString(2));
+                        membreDTO.setTelephone(rset.getLong(3));
+                        membreDTO.setLimitePret(rset.getInt(4));
+                        membreDTO.setNbPret(rset.getInt(5));
+                        listeDTO.add(membreDTO);
+                    } while(rset.next());
+                }
+
+            } catch(SQLException sqlException1) {
+                throw new DAOException(sqlException1);
+            }
+        } catch(SQLException sqlException2) {
+            throw new DAOException(sqlException2);
+        }
+
+        return listeDTO;
     }
 
 }
