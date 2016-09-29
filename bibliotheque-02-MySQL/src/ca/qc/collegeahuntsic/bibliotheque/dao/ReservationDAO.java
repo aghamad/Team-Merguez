@@ -28,6 +28,8 @@ public class ReservationDAO extends DAO {
     private static final String DELETE_REQUEST = "DELETE FROM reservation "
         + "WHERE idReservation = ?";
 
+    private static final String UPDATE_REQUEST = "UPDATE Reservation SET idReservation = ?, idMembre = ?, idLivre = ?, dateReservation = ? WHERE idReservation = ?";
+
     private static final String FIND_BY_LIVRE = "SELECT idReservation, idMembre, idLivre, dateReservation "
         + "FROM reservation "
         + "WHERE idLivre = ? "
@@ -236,4 +238,114 @@ public class ReservationDAO extends DAO {
             throw new DAOException(sqlException);
         }
     }
+
+    /*
+     * Methodes CRUD add/read/update/delete Mergeuz Represent
+     *
+     */
+
+    /**
+     *
+     * Methode CRUD Add pour ajouter une nouvelle reservation.
+     *
+     * @param reservationDTO Une instance ReservationDTO du reservation a ajouter
+     * @throws DAOException S'il y a une erreur avec la base de données
+     */
+    public void add(ReservationDTO reservationDTO) throws DAOException {
+        try(
+            PreparedStatement statementAdd = getConnexion().getConnection().prepareStatement(ReservationDAO.ADD_REQUEST)) {
+            statementAdd.setInt(1,
+                reservationDTO.getIdReservation());
+            statementAdd.setInt(2,
+                reservationDTO.getIdLivre());
+            statementAdd.setInt(3,
+                reservationDTO.getIdMembre());
+            statementAdd.setDate(4,
+                reservationDTO.getDateReservation());
+            statementAdd.execute();
+        } catch(SQLException e) {
+            throw new DAOException(e);
+        }
+    }
+
+    /**
+    *
+    * Method CRUD Update pour modifier les informations d'une reservation.
+    *
+    * @param reservationDTO Une instance ReservationDTO du reservation a ajouter
+    * @throws DAOException S'il y a une erreur avec la base de données
+    */
+    public void update(ReservationDTO reservationDTO) throws DAOException {
+        /* Update d'une reservation. */
+        try(
+            PreparedStatement statementUpdate = getConnexion().getConnection().prepareStatement(ReservationDAO.UPDATE_REQUEST)) {
+            statementUpdate.setInt(1,
+                reservationDTO.getIdReservation());
+            statementUpdate.setInt(2,
+                reservationDTO.getIdMembre());
+            statementUpdate.setInt(3,
+                reservationDTO.getIdLivre());
+            statementUpdate.setDate(4,
+                reservationDTO.getDateReservation());
+            statementUpdate.setInt(5,
+                reservationDTO.getIdReservation());
+            statementUpdate.execute();
+        } catch(SQLException e) {
+            throw new DAOException(e);
+        }
+    }
+
+    /**
+    *
+    * Methode CRUD Read pour lire les informations d'une reservation.
+    *
+    * @param idReservation id de la reservation recherchée
+    * @return Une instance MembreDTO du membre a lire
+    * @throws DAOException S'il y a une erreur avec la base de données
+    */
+    public ReservationDTO read(int idReservation) throws DAOException {
+        // Cette methode est exactement comme la methode getMembre()
+        ReservationDTO reservationDTO = null;
+
+        try(
+            PreparedStatement statementExist = this.getConnexion().getConnection().prepareStatement(ReservationDAO.READ_REQUEST)) {
+
+            statementExist.setInt(1,
+                idReservation);
+
+            try(
+                ResultSet resultSet = statementExist.executeQuery()) {
+                if(resultSet.next()) {
+                    reservationDTO = new ReservationDTO();
+                    reservationDTO.setIdReservation(idReservation);
+                    reservationDTO.setIdMembre(resultSet.getInt(2));
+                    reservationDTO.setIdLivre(resultSet.getInt(3));
+                    reservationDTO.setDateReservation(resultSet.getDate(3));
+                }
+            }
+        } catch(SQLException sqlException) {
+            throw new DAOException(sqlException);
+        }
+
+        return reservationDTO;
+    }
+
+    /**
+     * Method CRUD pour supprimer une reservation.
+     *
+     * @param reservationDTO La reservation à supprimer
+     * @throws DAOException S'il y a une erreur avec la base de données
+     */
+    public void delete(ReservationDTO reservationDTO) throws DAOException {
+        // Cette methode est exactement comme la methode deinscrire
+        try(
+            PreparedStatement statementDelete = getConnexion().getConnection().prepareStatement(ReservationDAO.DELETE_REQUEST)) {
+            statementDelete.setInt(1,
+                reservationDTO.getIdReservation());
+            statementDelete.execute();
+        } catch(SQLException sqlException) {
+            throw new DAOException(sqlException);
+        }
+    }
+
 }
