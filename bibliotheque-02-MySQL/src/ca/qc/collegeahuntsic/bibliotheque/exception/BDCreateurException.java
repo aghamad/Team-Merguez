@@ -5,7 +5,7 @@
 package ca.qc.collegeahuntsic.bibliotheque.exception;
 
 /**
- * Cette classe consiste a gérer les exceptions lors de la création de la base de donnée.
+ * Cette exception est utilisée en cas de problème avec l'objet BDCreateur.
  *
  * @author Team-Merguez
  */
