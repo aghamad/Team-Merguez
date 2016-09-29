@@ -37,6 +37,10 @@ public class ReservationDAO extends DAO {
         + "FROM reservation "
         + "WHERE idMembre = ?";
 
+    // private static final String UPDATE_REQUEST = "UPDATE reservation "
+    //+ "SET idMembre = ?, idLivre = ?, dateReservation = ? "
+    // + "WHERE idReservation = ?";
+
     private static final long serialVersionUID = 1L;
 
     /**
