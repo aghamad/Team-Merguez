@@ -40,7 +40,7 @@ public class LivreDAO extends DAO {
     private static final String DELETE_REQUEST = "DELETE FROM livre "
         + "WHERE idlivre = ?";
 
-    /*
+    
     private final static String EMPRUNT_REQUEST = "UPDATE livre "
         + "SET idMembre = ?, datePret = CURRENT_TIMESTAMP, "
         + "titre = ?, auteur = ?, "
@@ -52,7 +52,7 @@ public class LivreDAO extends DAO {
         + "titre = ?, auteur = ?, "
         + "dateAcquisition = ? "
         + "WHERE idLivre = ?";
-    */
+    
 
     /**
      *
@@ -177,7 +177,7 @@ public class LivreDAO extends DAO {
         String datePret) throws DAOException {
         /* Enregistrement du pret. */
         try(
-            PreparedStatement statementUpdate = this.getConnexion().getConnection().prepareStatement(LivreDAO.UPDATE_REQUEST)) {
+            PreparedStatement statementUpdate = this.getConnexion().getConnection().prepareStatement(LivreDAO.EMPRUNT_REQUEST)) {
             statementUpdate.setInt(1,
                 idMembre);
             statementUpdate.setDate(2,
@@ -202,7 +202,7 @@ public class LivreDAO extends DAO {
     public int retourner(int idLivre) throws DAOException {
         /* Enregistrement du pret. */
         try(
-            PreparedStatement statementUpdate = this.getConnexion().getConnection().prepareStatement(LivreDAO.UPDATE_REQUEST)) {
+            PreparedStatement statementUpdate = this.getConnexion().getConnection().prepareStatement(LivreDAO.RETOUR_REQUEST)) {
             statementUpdate.setNull(1,
                 Types.INTEGER);
             statementUpdate.setNull(2,
