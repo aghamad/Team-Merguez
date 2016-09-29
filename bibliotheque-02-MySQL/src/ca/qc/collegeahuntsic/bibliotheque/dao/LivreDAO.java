@@ -9,8 +9,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
+import java.util.Collections;
+import java.util.List;
 import ca.qc.collegeahuntsic.bibliotheque.db.Connexion;
 import ca.qc.collegeahuntsic.bibliotheque.dto.LivreDTO;
+import ca.qc.collegeahuntsic.bibliotheque.dto.MembreDTO;
 import ca.qc.collegeahuntsic.bibliotheque.exception.DAOException;
 
 /**
@@ -40,14 +43,14 @@ public class LivreDAO extends DAO {
     private static final String DELETE_REQUEST = "DELETE FROM livre "
         + "WHERE idlivre = ?";
 
-    /* private static final String FIND_BY_TITRE = "SELECT idLivre, titre, auteur, dateAcquisition, idMembre"
-         + "FROM LIVRE" +
-        "WHERE LOWER(titre)  LIKE LOWER(?)";
-    
+    private static final String FIND_BY_TITRE = "SELECT idLivre, titre, auteur, dateAcquisition, idMembre"
+        + "FROM LIVRE"
+        + "WHERE LOWER(titre) LIKE LOWER(?)";
+
     private static final String FIND_BY_MEMBRE = "SELECT idLivre, titre, auteur, dateAcquisition, idMembre"
-      + "FROM LIVRE" +
-       "WHERE idMembre = ?";
-    */
+        + "FROM LIVRE"
+        + "WHERE idMembre = ?";
+
     private static final String EMPRUNT_REQUEST = "UPDATE livre "
         + "SET idMembre = ?, datePret = CURRENT_TIMESTAMP, "
         + "titre = ?, auteur = ?, "
@@ -240,6 +243,82 @@ public class LivreDAO extends DAO {
         } catch(SQLException sqlException) {
             throw new DAOException(sqlException);
         }
+    }
+
+    /**
+     *
+     * Find les livres avec l'aide d'un titre.
+     *
+     * @param titre titre du livre
+     * @return Liste de livres
+     * @throws DAOException S'il y a une erreur avec la base de données
+     */
+    public List<LivreDTO> findByTitre(String titre) throws DAOException {
+        final List<LivreDTO> livres = Collections.EMPTY_LIST;
+
+        try(
+            PreparedStatement findByTitreStatement = getConnection().prepareStatement(LivreDAO.FIND_BY_TITRE)) {
+
+            findByTitreStatement.setString(1,
+                "%"
+                    + titre
+                    + "%");
+
+            try(
+                ResultSet resultSet = findByTitreStatement.executeQuery()) {
+                LivreDTO livreDTO = null;
+                if(resultSet.next()) {
+                    livreDTO = new LivreDTO();
+                    livreDTO.setIdLivre(resultSet.getInt(1));
+                    livreDTO.setTitre(resultSet.getString(2));
+                    livreDTO.setAuteur(resultSet.getString(3));
+                    livreDTO.setDateAcquisition(resultSet.getTimestamp(4));
+                    livreDTO.setIdMembre(resultSet.getInt(5));
+                    livreDTO.setDatePret(resultSet.getDate(6));
+                }
+                livres.add(livreDTO);
+            }
+        } catch(SQLException sqlException) {
+            throw new DAOException(sqlException);
+        }
+
+        return livres;
+    }
+
+    /**
+    *
+    * Find le membre avec l'aide d'un id.
+    *
+    * @param idMembre id d'un membre
+    * @return Liste de livres
+    * @throws DAOException S'il y a une erreur avec la base de données
+    */
+    public MembreDTO findByMembre(int idMembre) throws DAOException {
+        MembreDTO membreDTO = null;
+
+        try(
+            PreparedStatement findByTitreStatement = getConnection().prepareStatement(LivreDAO.FIND_BY_MEMBRE)) {
+
+            findByTitreStatement.setInt(1,
+                idMembre);
+
+            try(
+                ResultSet resultSet = findByTitreStatement.executeQuery()) {
+                if(resultSet.next()) {
+                    membreDTO = new MembreDTO();
+                    membreDTO.setIdMembre(resultSet.getInt(1));
+                    membreDTO.setNom(resultSet.getString(2));
+                    membreDTO.setTelephone(resultSet.getLong(3));
+                    membreDTO.setLimitePret(resultSet.getInt(4));
+                    membreDTO.setNbPret(resultSet.getInt(5));
+                }
+
+            }
+        } catch(SQLException sqlException) {
+            throw new DAOException(sqlException);
+        }
+
+        return membreDTO;
     }
 
     /*
