@@ -392,7 +392,7 @@ public class MembreDAO extends DAO {
         try(
             PreparedStatement getAllMembrePreparedStatement = getConnection().prepareStatement(MembreDAO.GET_ALL_REQUEST)) {
             try(
-                ResultSet rset = getAllMembrePreparedStatement.executeQuery();) {
+                ResultSet rset = getAllMembrePreparedStatement.executeQuery()) {
                 if(rset.next()) {
                     listeDTO = new ArrayList<>();
                     do {

@@ -4,11 +4,10 @@
 
 package ca.qc.collegeahuntsic.bibliotheque.service;
 
+import java.util.List;
 import ca.qc.collegeahuntsic.bibliotheque.dao.MembreDAO;
 import ca.qc.collegeahuntsic.bibliotheque.dao.ReservationDAO;
-import ca.qc.collegeahuntsic.bibliotheque.db.Connexion;
 import ca.qc.collegeahuntsic.bibliotheque.dto.MembreDTO;
-import ca.qc.collegeahuntsic.bibliotheque.exception.ConnexionException;
 import ca.qc.collegeahuntsic.bibliotheque.exception.DAOException;
 import ca.qc.collegeahuntsic.bibliotheque.exception.ServiceException;
 
@@ -18,9 +17,8 @@ import ca.qc.collegeahuntsic.bibliotheque.exception.ServiceException;
  *
  * @author Team-Merguez
  */
-public class MembreService {
-
-    private Connexion connexion;
+public class MembreService extends Service {
+    private static final long serialVersionUID = 1L;
 
     private MembreDAO membreDAO;
 
@@ -30,96 +28,209 @@ public class MembreService {
      *
      * Crée le service de la table livre.
      *
-     * @param membre Le DAO de la table membre
-     * @param reservation Le DAO de la table reservation
+     * @param membreDAO Le DAO de la table membre
+     * @param reservationDAO Le DAO de la table reservation
      */
-    public MembreService(MembreDAO membre,
-        ReservationDAO reservation) {
-        this.connexion = membre.getConnexion();
-        this.membreDAO = membre;
-        this.reservationDAO = reservation;
+    public MembreService(MembreDAO membreDAO,
+        ReservationDAO reservationDAO) {
+        setMembreDAO(membreDAO);
+        setReservationDAO(reservationDAO);
+    }
+
+    // Region Getters and Setters
+
+    /**
+     * Getter de la variable d'instance <code>this.membreDAO</code>.
+     *
+     * @return La variable d'instance <code>this.membreDAO</code>
+     */
+    private MembreDAO getMembreDAO() {
+        return this.membreDAO;
+    }
+
+    /**
+     * Setter de la variable d'instance <code>this.membreDAO</code>.
+     *
+     * @param membreDAO La valeur à utiliser pour la variable d'instance <code>this.membreDAO</code>
+     */
+    private void setMembreDAO(MembreDAO membreDAO) {
+        this.membreDAO = membreDAO;
+    }
+
+    /**
+     * Getter de la variable d'instance <code>this.reservationDAO</code>.
+     *
+     * @return La variable d'instance <code>this.reservationDAO</code>
+     */
+    private ReservationDAO getReservationDAO() {
+        return this.reservationDAO;
+    }
+
+    /**
+     * Setter de la variable d'instance <code>this.reservationDAO</code>.
+     *
+     * @param reservationDAO La valeur à utiliser pour la variable d'instance <code>this.reservationDAO</code>
+     */
+    private void setReservationDAO(ReservationDAO reservationDAO) {
+        this.reservationDAO = reservationDAO;
+    }
+
+    // EndRegion Getters and Setters
+
+    /**
+     *
+     * Ajout d'un nouveau membre.
+     *
+     * @param membreDTO Le membre à ajouter
+     * @throws ServiceException S'il y a une erreur avec la base de données
+     */
+    public void add(MembreDTO membreDTO) throws ServiceException {
+        try {
+            getMembreDAO().add(membreDTO);
+        } catch(DAOException daoException) {
+            throw new ServiceException(daoException);
+        }
+    }
+
+    /**
+     *
+     * Supprime un membre.
+     *
+     * @param membreDTO Le membre à supprimer
+     * @throws ServiceException S'il y a une erreur avec la base de données
+     */
+    public void delete(MembreDTO membreDTO) throws ServiceException {
+        try {
+            getMembreDAO().delete(membreDTO);
+        } catch(DAOException daoException) {
+            throw new ServiceException(daoException);
+        }
+    }
+
+    /**
+     *
+     * Met à jour un membre.
+     *
+     * @param membreDTO Le membre à mettre à jour
+     * @throws ServiceException S'il y a une erreur avec la base de données
+     */
+    public void update(MembreDTO membreDTO) throws ServiceException {
+        try {
+            getMembreDAO().update(membreDTO);
+        } catch(DAOException daoException) {
+            throw new ServiceException(daoException);
+        }
+    }
+
+    /**
+     *
+     * Regarde si le membre existe. Si aucun membre n'est trouvé, null est retourné.
+     *
+     * @param idMembre Le id d'un membre
+     * @return Un membre s'il existe; null s'il n'existe pas
+     * @throws ServiceException S'il y a une erreur avec la base de données
+     */
+    public MembreDTO read(int idMembre) throws ServiceException {
+        try {
+            return getMembreDAO().read(idMembre);
+        } catch(DAOException daoException) {
+            throw new ServiceException(daoException);
+        }
+    }
+
+    /**
+     *
+     * Trouve tous les membres.
+     *
+     * @return La liste des membres; une liste vide sinon
+     * @throws ServiceException S'il y a une erreur avec la base de données
+     */
+    public List<MembreDTO> getAll() throws ServiceException {
+        try {
+            return getMembreDAO().getAll();
+        } catch(DAOException daoException) {
+            throw new ServiceException(daoException);
+        }
+    }
+
+    /**
+     *
+     * Emprunt d'un livre par un membre.
+     *
+     * @param membreDTO Le membre qui emprunte un livre
+     * @throws ServiceException S'il y a une erreur avec la base de données
+     */
+    public void emprunter(MembreDTO membreDTO) throws ServiceException {
+        try {
+            getMembreDAO().emprunter(membreDTO);
+        } catch(DAOException daoException) {
+            throw new ServiceException(daoException);
+        }
+    }
+
+    /**
+     *
+     * Retourne un livre du membre.
+     *
+     * @param membreDTO Le membre qui retourne un livre
+     * @throws ServiceException S'il y a une erreur avec la base de données
+     */
+    public void retourner(MembreDTO membreDTO) throws ServiceException {
+        try {
+            getMembreDAO().retourner(membreDTO);
+        } catch(DAOException daoException) {
+            throw new ServiceException(daoException);
+        }
     }
 
     /**
      *
      * Inscrit un membre.
      *
-     * @param idMembre id du membre à inscrire
-     * @param nom nom du membre à inscrire
-     * @param telephone telephone du membre à inscrire
-     * @param limitePret limitPret du membre à inscrire
+     * @param membreDTO Le membre à inscrire
      * @throws ServiceException Si le membre existe déjà ou s'il y a une erreur avec la base de données
      */
-    public void inscrire(int idMembre,
-        String nom,
-        long telephone,
-        int limitePret) throws ServiceException {
-        try {
-            if(this.membreDAO.existe(idMembre)) {
-                throw new ServiceException("Membre existe deja: "
-                    + idMembre);
-            }
-
-            /* Ajout du membre. */
-            this.membreDAO.inscrire(idMembre,
-                nom,
-                telephone,
-                limitePret);
-            this.connexion.commit();
-        } catch(DAOException daoException) {
-            try {
-                this.connexion.rollback();
-            } catch(ConnexionException connexionException) {
-                throw new ServiceException(connexionException);
-            }
-            throw new ServiceException(daoException);
-        } catch(ConnexionException connexionException) {
-            throw new ServiceException(connexionException);
+    public void inscrire(MembreDTO membreDTO) throws ServiceException {
+        // if membre existe deja
+        if(read(membreDTO.getIdMembre()) != null) {
+            throw new ServiceException("Le Membre "
+                + membreDTO.getIdMembre()
+                + " existe déjà");
         }
+        add(membreDTO);
     }
 
     /**
      *
      * Désincrit un membre.
      *
-     * @param idMembre id du membre à désinscrire
+     * @param membreDTO Le membre à désinscrire
      * @throws ServiceException Si le membre existe déjà ou s'il y a une erreur avec la base de données
      */
-    public void desinscrire(int idMembre) throws ServiceException {
+    public void desinscrire(MembreDTO membreDTO) throws ServiceException {
         try {
-            final MembreDTO tupleMembre = this.membreDAO.getMembre(idMembre);
-            if(tupleMembre == null) {
-                throw new ServiceException("Membre inexistant: "
-                    + idMembre);
-            }
-            if(tupleMembre.getNbPret() > 0) {
-                throw new ServiceException("Le membre "
-                    + idMembre
-                    + " a encore des prets.");
-            }
-            if(this.reservationDAO.getReservationMembre(idMembre) != null) {
-                throw new ServiceException("Membre "
-                    + idMembre
-                    + " a des réservations");
+            // if membre n'existe pas
+            if(read(membreDTO.getIdMembre()) == null) {
+                throw new ServiceException("Le Membre "
+                    + membreDTO.getIdMembre()
+                    + "n'existe pas");
             }
 
-            /* Suppression du membre */
-            final int nb = this.membreDAO.desinscrire(idMembre);
-            if(nb == 0) {
-                throw new ServiceException("Membre "
-                    + idMembre
-                    + " inexistant");
+            if(membreDTO.getNbPret() > 0) {
+                throw new ServiceException("Le Membre "
+                    + membreDTO.getIdMembre()
+                    + "a encore des prets");
             }
-            this.connexion.commit();
+
+            if(!getReservationDAO().findByMembre(membreDTO).isEmpty()) {
+                throw new ServiceException("Le Membre "
+                    + membreDTO.getIdMembre()
+                    + "a encore des reservations");
+            }
+
+            delete(membreDTO);
         } catch(DAOException daoException) {
-            try {
-                this.connexion.rollback();
-            } catch(ConnexionException connexionException) {
-                throw new ServiceException(connexionException);
-            }
             throw new ServiceException(daoException);
-        } catch(ConnexionException connexionException) {
-            throw new ServiceException(connexionException);
         }
     }
 
