@@ -1,5 +1,5 @@
 // Fichier BibliothequeCreateur.java
-// Auteur : Gilles Bénichou
+// Auteur : Team Merguez
 // Date de création : 2016-05-18
 
 package ca.qc.collegeahuntsic.bibliotheque.util;
@@ -10,7 +10,6 @@ import ca.qc.collegeahuntsic.bibliotheque.dao.ReservationDAO;
 import ca.qc.collegeahuntsic.bibliotheque.db.Connexion;
 import ca.qc.collegeahuntsic.bibliotheque.exception.BibliothequeException;
 import ca.qc.collegeahuntsic.bibliotheque.exception.ConnexionException;
-import ca.qc.collegeahuntsic.bibliotheque.exception.DAOException;
 import ca.qc.collegeahuntsic.bibliotheque.service.LivreService;
 import ca.qc.collegeahuntsic.bibliotheque.service.MembreService;
 import ca.qc.collegeahuntsic.bibliotheque.service.PretService;
@@ -19,7 +18,7 @@ import ca.qc.collegeahuntsic.bibliotheque.service.ReservationService;
 /**
  * Utilitaire de création des outils de la bibliothèque.
  *
- * @author Gilles Benichou
+ * @author Team Merguez
  */
 public class BibliothequeCreateur {
     private Connexion connexion;
@@ -40,7 +39,6 @@ public class BibliothequeCreateur {
      * @param nomUtilisateur Nom d'utilisateur sur le serveur SQL
      * @param motPasse Mot de passe sur le serveur SQL
      * @throws BibliothequeException S'il y a une erreur avec la base de données
-     * @throws DAOException S'il y a une erreur avec la base de données
      */
     @SuppressWarnings("resource")
     public BibliothequeCreateur(String typeServeur,
@@ -171,8 +169,8 @@ public class BibliothequeCreateur {
     public void commit() throws BibliothequeException {
         try {
             getConnexion().commit();
-        } catch(ConnexionException Exception) {
-            throw new BibliothequeException(Exception);
+        } catch(ConnexionException connexionException) {
+            throw new BibliothequeException(connexionException);
         }
     }
 
@@ -184,9 +182,8 @@ public class BibliothequeCreateur {
     public void rollback() throws BibliothequeException {
         try {
             getConnexion().rollback();
-        } catch(ConnexionException exception) {
-            throw new BibliothequeException(exception);
-
+        } catch(ConnexionException connexionException) {
+            throw new BibliothequeException(connexionException);
         }
     }
 
