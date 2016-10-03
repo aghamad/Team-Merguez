@@ -143,7 +143,7 @@ public final class Bibliotheque {
       *@throws BibliothequeException - Si une erreur survient.
       *@throws Exception lancer s'il y a une erreur de transaction
       */
-    static void executerTransaction(StringTokenizer tokenizer) throws Exception {
+    private static void executerTransaction(StringTokenizer tokenizer) throws Exception {
         try {
             final String command = tokenizer.nextToken();
 
