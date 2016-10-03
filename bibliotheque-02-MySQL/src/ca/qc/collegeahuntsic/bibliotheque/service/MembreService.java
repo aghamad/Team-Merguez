@@ -267,7 +267,7 @@ public class MembreService extends Service {
                 || read(livreDTO.getIdMembre()) == null) {
                 throw new ServiceException("Le Livre "
                     + livreDTO.getIdLivre()
-                    + "n'a pas était emprunter");
+                    + "n'a pas été emprunté");
             }
 
             final MembreDTO emprunteur = read(livreDTO.getIdMembre());
@@ -288,7 +288,7 @@ public class MembreService extends Service {
             if(livreDTO.getIdMembre() != membreDTO.getIdMembre()) {
                 throw new ServiceException("Le Livre "
                     + livreDTO.getIdLivre()
-                    + "n'a pas était prêté par celui qui souhaite de le retourner");
+                    + "n'a pas été prêté par celui qui souhaite de le retourner");
             }
 
             getMembreDAO().retourner(membreDTO);
@@ -338,7 +338,7 @@ public class MembreService extends Service {
             if(membreDTO.getIdMembre() != livreDTO.getIdMembre()) {
                 throw new ServiceException("Le livre "
                     + livreDTO.getIdLivre()
-                    + "n'apparteint pas au membre "
+                    + "n'appartient pas au membre "
                     + membreDTO.getIdMembre());
             }
 
@@ -347,7 +347,7 @@ public class MembreService extends Service {
                 || read(livreDTO.getIdMembre()) == null) {
                 throw new ServiceException("Le Livre "
                     + livreDTO.getIdLivre()
-                    + "n'a pas était emprunter afin d'etre renouveler");
+                    + "n'a pas été emprunté afin d'être renouvelé");
             }
 
             getLivreDAO().emprunter(livreDTO);
@@ -394,13 +394,13 @@ public class MembreService extends Service {
             if(membreDTO.getNbPret() > 0) {
                 throw new ServiceException("Le Membre "
                     + membreDTO.getIdMembre()
-                    + "a encore des prets");
+                    + "n'a encore des prets");
             }
 
             if(!getReservationDAO().findByMembre(membreDTO).isEmpty()) {
                 throw new ServiceException("Le Membre "
                     + membreDTO.getIdMembre()
-                    + "a encore des reservations");
+                    + "à encore des reservations");
             }
 
             delete(membreDTO);
