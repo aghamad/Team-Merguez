@@ -5,6 +5,7 @@
 package ca.qc.collegeahuntsic.bibliotheque.service;
 
 import java.sql.Date;
+import java.util.List;
 import ca.qc.collegeahuntsic.bibliotheque.dao.LivreDAO;
 import ca.qc.collegeahuntsic.bibliotheque.dao.MembreDAO;
 import ca.qc.collegeahuntsic.bibliotheque.dao.ReservationDAO;
@@ -54,6 +55,91 @@ public class ReservationService extends Service {
         this.livreDAO = livre;
         this.membreDAO = membre;
         this.reservationDAO = reservation;
+    }
+
+    /**
+     * Getter de la variable d'instance <code>this.reservationDAO</code>.
+     *
+     * @return La variable d'instance <code>this.reservationDAO</code>
+     */
+    private ReservationDAO getReservationDAO() {
+        return this.reservationDAO;
+    }
+
+    /**
+    *
+    * Ajoute une nouvelle réservation.
+    *
+    * @param reservationDTO - La réservation à ajouter
+    * @throws ServiceException - S'il y a une erreur avec la base de données
+    */
+    public void add(ReservationDTO reservationDTO) throws ServiceException {
+        try {
+            getReservationDAO().add(reservationDTO);
+        } catch(DAOException daoException) {
+            throw new ServiceException(daoException);
+        }
+    }
+
+    /**
+    *
+    * Lit une réservation. Si aucune réservation n'est trouvée, null est retourné.
+    *
+    * @param idReservation Le id d'une reservation
+    * @return La réservation lue ; null sinon
+    * @throws ServiceException -S'il y a une erreur avec la base de données
+    */
+    public ReservationDTO read(int idReservation) throws ServiceException {
+        try {
+            return getReservationDAO().read(idReservation);
+        } catch(DAOException daoException) {
+            throw new ServiceException(daoException);
+        }
+    }
+
+    /**
+    *
+    * Met à jour une réservation.
+    *
+    * @param reservationDTO - La réservation à mettre à jour
+    * @throws ServiceException - S'il y a une erreur avec la base de données
+    */
+    public void update(ReservationDTO reservationDTO) throws ServiceException {
+        try {
+            getReservationDAO().update(reservationDTO);
+        } catch(DAOException daoException) {
+            throw new ServiceException(daoException);
+        }
+    }
+
+    /**
+    *
+    * Supprime une reservation.
+    *
+    * @param reservationDTO - La réservation à supprimer
+    * @throws ServiceException - S'il y a une erreur avec la base de données
+    */
+    public void delete(ReservationDTO reservationDTO) throws ServiceException {
+        try {
+            getReservationDAO().delete(reservationDTO);
+        } catch(DAOException daoException) {
+            throw new ServiceException(daoException);
+        }
+    }
+
+    /**
+    *
+    * Trouve toutes les réservations.
+    *
+    * @return La liste des réservations ; une liste vide sinon
+    * @throws ServiceException - S'il y a une erreur avec la base de données
+    */
+    public List<ReservationDTO> getAll() throws ServiceException {
+        try {
+            return getReservationDAO().getAll();
+        } catch(DAOException daoException) {
+            throw new ServiceException(daoException);
+        }
     }
 
     /**
