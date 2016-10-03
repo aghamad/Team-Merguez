@@ -11,7 +11,7 @@ import ca.qc.collegeahuntsic.bibliotheque.exception.ConnexionException;
 
 /**
  *Permet de créer la BD utilisé par Bibliotheque.java.
- *Paramètres:0- serveur SQL
+ *Paramètres:0- serveur SQL.
  *           1- bd nom de la BD
  *           2- user id pour établir une connexion avec le serveur SQL
  *           3- mot de passe pour le user id
@@ -22,14 +22,14 @@ import ca.qc.collegeahuntsic.bibliotheque.exception.ConnexionException;
  *
  * @author Team-Merguez
  */
-final class BibliothequeCreateur {
+final class BDCreateur {
 
     /**
      *
      * Constructeur privé pour empêcher toute instanciation.
      *
      */
-    private BibliothequeCreateur() {
+    private BDCreateur() {
         super();
     }
 

@@ -59,7 +59,7 @@ public final class Bibliotheque {
     /**
      *Crée une connexion sur la base de données, traite toutes les transactions et détruit la connexion.
      *@param argv Les arguments du main.
-     *@throws Exception - Si une erreur survient.
+     *@throws Exception -Si une erreur survient.
      */
     public static void main(String[] argv) throws Exception {
 
