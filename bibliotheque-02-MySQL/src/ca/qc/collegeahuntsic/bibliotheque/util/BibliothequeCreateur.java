@@ -4,13 +4,13 @@
 
 package ca.qc.collegeahuntsic.bibliotheque.util;
 
-import java.sql.SQLException;
 import ca.qc.collegeahuntsic.bibliotheque.dao.LivreDAO;
 import ca.qc.collegeahuntsic.bibliotheque.dao.MembreDAO;
 import ca.qc.collegeahuntsic.bibliotheque.dao.ReservationDAO;
 import ca.qc.collegeahuntsic.bibliotheque.db.Connexion;
 import ca.qc.collegeahuntsic.bibliotheque.exception.BibliothequeException;
 import ca.qc.collegeahuntsic.bibliotheque.exception.ConnexionException;
+import ca.qc.collegeahuntsic.bibliotheque.exception.DAOException;
 import ca.qc.collegeahuntsic.bibliotheque.service.LivreService;
 import ca.qc.collegeahuntsic.bibliotheque.service.MembreService;
 import ca.qc.collegeahuntsic.bibliotheque.service.PretService;
@@ -40,6 +40,7 @@ public class BibliothequeCreateur {
      * @param nomUtilisateur Nom d'utilisateur sur le serveur SQL
      * @param motPasse Mot de passe sur le serveur SQL
      * @throws BibliothequeException S'il y a une erreur avec la base de données
+     * @throws DAOException S'il y a une erreur avec la base de données
      */
     @SuppressWarnings("resource")
     public BibliothequeCreateur(String typeServeur,
@@ -58,12 +59,12 @@ public class BibliothequeCreateur {
                 membreDAO,
                 reservationDAO));
             setMembreService(new MembreService(membreDAO,
-                livreDAO,
-                reservationDAO));
+                reservationDAO,
+                livreDAO));
             setPretService(new PretService());
-            setReservationService(new ReservationService(reservationDAO,
-                livreDAO,
-                membreDAO));
+            setReservationService(new ReservationService(livreDAO,
+                membreDAO,
+                reservationDAO));
         } catch(ConnexionException connexionException) {
             throw new BibliothequeException(connexionException);
         }
@@ -170,8 +171,8 @@ public class BibliothequeCreateur {
     public void commit() throws BibliothequeException {
         try {
             getConnexion().commit();
-        } catch(SQLException sqlException) {
-            throw new BibliothequeException(sqlException);
+        } catch(ConnexionException Exception) {
+            throw new BibliothequeException(Exception);
         }
     }
 
@@ -183,8 +184,9 @@ public class BibliothequeCreateur {
     public void rollback() throws BibliothequeException {
         try {
             getConnexion().rollback();
-        } catch(SQLException sqlException) {
-            throw new BibliothequeException(sqlException);
+        } catch(ConnexionException exception) {
+            throw new BibliothequeException(exception);
+
         }
     }
 
