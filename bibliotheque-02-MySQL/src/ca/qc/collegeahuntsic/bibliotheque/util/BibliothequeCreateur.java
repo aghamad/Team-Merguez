@@ -1,6 +1,6 @@
-// Fichier GestionBibliotheque.java
-// Auteur : Team-Merguez
-// Date de création : 2016-09-15
+// Fichier BibliothequeCreateur.java
+// Auteur : Gilles Bénichou
+// Date de création : 2016-05-18
 
 package ca.qc.collegeahuntsic.bibliotheque.util;
 
@@ -11,259 +11,193 @@ import ca.qc.collegeahuntsic.bibliotheque.dao.ReservationDAO;
 import ca.qc.collegeahuntsic.bibliotheque.db.Connexion;
 import ca.qc.collegeahuntsic.bibliotheque.exception.BibliothequeException;
 import ca.qc.collegeahuntsic.bibliotheque.exception.ConnexionException;
-import ca.qc.collegeahuntsic.bibliotheque.exception.DAOException;
-import ca.qc.collegeahuntsic.bibliotheque.exception.ServiceException;
 import ca.qc.collegeahuntsic.bibliotheque.service.LivreService;
 import ca.qc.collegeahuntsic.bibliotheque.service.MembreService;
 import ca.qc.collegeahuntsic.bibliotheque.service.PretService;
 import ca.qc.collegeahuntsic.bibliotheque.service.ReservationService;
 
 /**
- * Système de gestion d'une bibliothèque
+ * Utilitaire de création des outils de la bibliothèque.
  *
- *
- * Ce programme permet de gérer les transaction de base d'une
- * bibliothèque.  Il gère des livres, des membres et des
- * réservations. Les données sont conservées dans une base de
- * données relationnelles accédée avec JDBC.
- *
- * Pré-condition
- *   la base de données de la bibliothéque doit exister
- *
- * Post-condition
- *   le programme effectue les maj associées à chaque
- *   transaction
- *
- * @author Team-Merguez
+ * @author Gilles Benichou
  */
-
 public class BibliothequeCreateur {
-
     private Connexion connexion;
 
-    private LivreDAO livreDAO;
+    private LivreService livreService;
 
-    private MembreDAO membreDAO;
+    private MembreService membreService;
 
-    private ReservationDAO reservationDAO;
+    private PretService pretService;
 
-    private LivreService gestionLivre;
-
-    private MembreService gestionMembre;
-
-    private PretService gestionPret;
-
-    private ReservationService gestionReservation;
-
-    private GestionInterrogation gestionInterrogation;
+    private ReservationService reservationService;
 
     /**
-     *
      * Crée les services nécessaires à l'application bibliothèque.
      *
-     * @param serveur serveur de la BD
-     * @param bd le nom de la BD
-     * @param user Nom d'utilisateur sur le serveur SQL
-     * @param password Mot de passe sur le serveur SQL
+     * @param typeServeur Type de serveur SQL de la BD
+     * @param schema Nom du schéma de la base de données
+     * @param nomUtilisateur Nom d'utilisateur sur le serveur SQL
+     * @param motPasse Mot de passe sur le serveur SQL
      * @throws BibliothequeException S'il y a une erreur avec la base de données
      */
-    public BibliothequeCreateur(String serveur,
-        String bd,
-        String user,
-        String password) throws BibliothequeException {
-        // allocation des objets pour le traitement des transactions
+    @SuppressWarnings("resource")
+    public BibliothequeCreateur(String typeServeur,
+        String schema,
+        String nomUtilisateur,
+        String motPasse) throws BibliothequeException {
         try {
-            try {
-                this.connexion = new Connexion(serveur,
-                    bd,
-                    user,
-                    password);
-
-            } catch(ConnexionException connectionExeption) {
-                throw new BibliothequeException(connectionExeption);
-            }
-
-            this.livreDAO = new LivreDAO(this.connexion);
-            this.membreDAO = new MembreDAO(this.connexion);
-            this.reservationDAO = new ReservationDAO(this.connexion);
-            this.gestionLivre = new LivreService(this.livreDAO,
-                this.membreDAO,
-                this.reservationDAO);
-            this.gestionMembre = new MembreService(this.membreDAO,
-                this.reservationDAO,
-                this.livreDAO);
-
-            this.gestionPret = new PretService(this.livreDAO,
-                this.membreDAO,
-                this.reservationDAO);
-
-            this.gestionReservation = new ReservationService(this.livreDAO,
-                this.membreDAO,
-                this.reservationDAO);
-
-            this.gestionInterrogation = new GestionInterrogation(this.connexion);
-        } catch(
-            SQLException
-            | ServiceException
-            | DAOException exception) {
-            throw new BibliothequeException(exception);
+            setConnexion(new Connexion(typeServeur,
+                schema,
+                nomUtilisateur,
+                motPasse));
+            final LivreDAO livreDAO = new LivreDAO(getConnexion());
+            final MembreDAO membreDAO = new MembreDAO(getConnexion());
+            final ReservationDAO reservationDAO = new ReservationDAO(getConnexion());
+            setLivreService(new LivreService(livreDAO,
+                membreDAO,
+                reservationDAO));
+            setMembreService(new MembreService(membreDAO,
+                livreDAO,
+                reservationDAO));
+            setPretService(new PretService());
+            setReservationService(new ReservationService(reservationDAO,
+                livreDAO,
+                membreDAO));
+        } catch(ConnexionException connexionException) {
+            throw new BibliothequeException(connexionException);
         }
     }
 
+    // Region Getters and Setters
     /**
-     * Getter de la variable d'instance this.connexion.
-     * @return La variable d'instance this.connexion
+     * Getter de la variable d'instance <code>this.connexion</code>.
+     *
+     * @return La variable d'instance <code>this.connexion</code>
      */
-    public Connexion getConnexion() {
+    private Connexion getConnexion() {
         return this.connexion;
     }
 
     /**
-     * Setter de la variable d'instance this.connnexion.
+     * Setter de la variable d'instance <code>this.connexion</code>.
      *
-     * @param conn La variable d'instance this.connexion
+     * @param connexion La valeur à utiliser pour la variable d'instance <code>this.connexion</code>
      */
-    public void setconn(Connexion conn) {
-        this.connexion = conn;
+    private void setConnexion(Connexion connexion) {
+        this.connexion = connexion;
     }
 
     /**
-     * Getter de l'instance this.livreDAO.
-     * @return this.livreDAO retourne la valeur de this.livre.
+     * Getter de la variable d'instance <code>this.livreService</code>.
+     *
+     * @return La variable d'instance <code>this.livreService</code>
      */
-    public LivreDAO getLivre() {
-        return this.livreDAO;
+    public LivreService getLivreService() {
+        return this.livreService;
     }
 
     /**
-     * Setter de l'instance this.livreDAO.
-     * @param livre initialisation de la variable LivreDAO.
+     * Setter de la variable d'instance <code>this.livreService</code>.
+     *
+     * @param livreService La valeur à utiliser pour la variable d'instance <code>this.livreService</code>
      */
-    public void setLivre(LivreDAO livre) {
-        this.livreDAO = livre;
+    private void setLivreService(LivreService livreService) {
+        this.livreService = livreService;
     }
 
     /**
-     * Getter de l'instance membreDAO.
-     * @return this.membreDAO retourne la valeur de this.membre.
+     * Getter de la variable d'instance <code>this.membreService</code>.
+     *
+     * @return La variable d'instance <code>this.membreService</code>
      */
-    public MembreDAO getMembre() {
-        return this.membreDAO;
+    public MembreService getMembreService() {
+        return this.membreService;
     }
 
     /**
-     * Setter de l'instance this.membreDAO.
-     * @param membre initialisation de la variable membre
+     * Setter de la variable d'instance <code>this.membreService</code>.
+     *
+     * @param membreService La valeur à utiliser pour la variable d'instance <code>this.membreService</code>
      */
-    public void setMembre(MembreDAO membre) {
-        this.membreDAO = membre;
+    private void setMembreService(MembreService membreService) {
+        this.membreService = membreService;
     }
 
     /**
-     * Getter de reservation.
-     * @return this.reservation retourne la valeur de this.reservation.
+     * Getter de la variable d'instance <code>this.pretService</code>.
+     *
+     * @return La variable d'instance <code>this.pretService</code>
      */
-    public ReservationDAO getReservation() {
-        return this.reservationDAO;
+    public PretService getPretService() {
+        return this.pretService;
     }
 
     /**
-     * Setter de reservation.
-     * @param reservation initialisation de la variable reservation.
+     * Setter de la variable d'instance <code>this.pretService</code>.
+     *
+     * @param pretService La valeur à utiliser pour la variable d'instance <code>this.pretService</code>
      */
-    public void setReservation(ReservationDAO reservation) {
-        this.reservationDAO = reservation;
+    private void setPretService(PretService pretService) {
+        this.pretService = pretService;
     }
 
     /**
-     * Getter de LivreService.
-     * @return this.gestionLivre retourne la valeur de this.gestionLivre.
+     * Getter de la variable d'instance <code>this.reservationService</code>.
+     *
+     * @return La variable d'instance <code>this.reservationService</code>
      */
-    public LivreService getGestionLivre() {
-        return this.gestionLivre;
+    public ReservationService getReservationService() {
+        return this.reservationService;
     }
 
     /**
-     * Setter de gestionLivre.
-     * @param gestionLivre initialisation de la variable gestionLivre.
+     * Setter de la variable d'instance <code>this.reservationService</code>.
+     *
+     * @param reservationService La valeur à utiliser pour la variable d'instance <code>this.reservationService</code>
      */
-    public void setGestionLivre(LivreService gestionLivre) {
-        this.gestionLivre = gestionLivre;
+    private void setReservationService(ReservationService reservationService) {
+        this.reservationService = reservationService;
     }
+
+    // EndRegion Getters and Setters
 
     /**
-     * Getter de MembreService.
-     * @return this.gestionMembre retourne la valeur de this.GesitonMembre.
+     * Effectue un commit sur la connexion.
+     *
+     * @throws BibliothequeException S'il y a une erreur avec la base de données
      */
-    public MembreService getGestionMembre() {
-        return this.gestionMembre;
-    }
-
-    /**
-     * Setter de gestionMembre.
-     * @param gestionMembre initialisation de la variable gestionMembre.
-     */
-    public void setGestionMembre(MembreService gestionMembre) {
-        this.gestionMembre = gestionMembre;
-    }
-
-    /**
-     * Getter de PretService.
-     * @return this.gestionPret retourne la valeur de this.gestionPret.
-     */
-    public PretService getGestionPret() {
-        return this.gestionPret;
-    }
-
-    /**
-     * Setter de gestionPret.
-     * @param gestionPret initialisation de la variable gestionPret.
-     */
-    public void setGestionPret(PretService gestionPret) {
-        this.gestionPret = gestionPret;
-    }
-
-    /**
-     * Getter de ReservationService.
-     * @return this.gestionReservation retourne la valeur de this.gestionReservation.
-     */
-    public ReservationService getGestionReservation() {
-        return this.gestionReservation;
-    }
-
-    /** Setter de gestionReservation.
-     * @param gestionReservation initialisation de la variable gestionReservation.
-     */
-    public void setGestionReservation(ReservationService gestionReservation) {
-        this.gestionReservation = gestionReservation;
-    }
-
-    /**
-     * Getter de GestionInterrogation.
-     * @return this.gestionInterrogation retourne la valeur de this.gestionInterrogation.
-     */
-    public GestionInterrogation getGestionInterrogation() {
-        return this.gestionInterrogation;
-    }
-
-    /**
-     * Setter de gestionInterrogation.
-     * @param gestionInterrogation initialisation de la variable gestionInterrogation.
-     */
-    public void setGestionInterrogation(GestionInterrogation gestionInterrogation) {
-        this.gestionInterrogation = gestionInterrogation;
-    }
-
-    /**
-     * Fermeture de la connexion.
-     * @throws BibliothequeException est l'exception lancer en cas d'une erreur.
-     */
-    public void fermer() throws BibliothequeException {
-        // fermeture de la connexion
+    public void commit() throws BibliothequeException {
         try {
-            this.connexion.fermer();
-        } catch(ConnexionException connectionExeption) {
-            throw new BibliothequeException(connectionExeption);
+            getConnexion().commit();
+        } catch(SQLException sqlException) {
+            throw new BibliothequeException(sqlException);
+        }
+    }
+
+    /**
+     * Effectue un rollback sur la connexion.
+     *
+     * @throws BibliothequeException S'il y a une erreur avec la base de données
+     */
+    public void rollback() throws BibliothequeException {
+        try {
+            getConnexion().rollback();
+        } catch(SQLException sqlException) {
+            throw new BibliothequeException(sqlException);
+        }
+    }
+
+    /**
+     * Ferme la connexion.
+     *
+     * @throws BibliothequeException S'il y a une erreur avec la base de données
+     */
+    public void close() throws BibliothequeException {
+        try {
+            getConnexion().close();
+        } catch(Exception exception) {
+            throw new BibliothequeException(exception);
         }
     }
 }
