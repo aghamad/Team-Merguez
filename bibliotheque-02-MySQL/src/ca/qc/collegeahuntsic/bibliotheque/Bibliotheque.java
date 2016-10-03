@@ -13,6 +13,7 @@ import java.util.StringTokenizer;
 import ca.qc.collegeahuntsic.bibliotheque.db.Connexion;
 import ca.qc.collegeahuntsic.bibliotheque.dto.LivreDTO;
 import ca.qc.collegeahuntsic.bibliotheque.dto.MembreDTO;
+import ca.qc.collegeahuntsic.bibliotheque.dto.ReservationDTO;
 import ca.qc.collegeahuntsic.bibliotheque.exception.BibliothequeException;
 import ca.qc.collegeahuntsic.bibliotheque.util.BibliothequeCreateur;
 import ca.qc.collegeahuntsic.bibliotheque.util.FormatDate;
@@ -183,21 +184,41 @@ public final class Bibliotheque {
                     livreDTO);
 
             } else if("retourner".startsWith(command)) {
-                gestionBibliotheque.getGestionPret().retourner(readInt(tokenizer) /* idLivre */,
-                    readDate(tokenizer) /* dateRetour */);
+                final int idMembre = readInt(tokenizer);
+                final int idLivre = readInt(tokenizer);
+
+                final MembreDTO membreDTO = new MembreDTO();
+                membreDTO.setIdMembre(idMembre);
+                final LivreDTO livreDTO = new LivreDTO();
+                livreDTO.setIdLivre(idLivre);
+                Bibliotheque.gestionBibliotheque.getMembreService().retourner(membreDTO,
+                    livreDTO);
 
             } else if("inscrire".startsWith(command)) {
-                gestionBibliotheque.getGestionMembre().inscrire(readInt(tokenizer) /* idMembre */,
-                    readString(tokenizer) /* nom */,
-                    readLong(tokenizer) /* tel */,
-                    readInt(tokenizer) /* limitePret */);
+                final MembreDTO membreDTO = new MembreDTO();
+                membreDTO.setIdMembre(readInt(tokenizer));
+                membreDTO.setNom(readString(tokenizer));
+                membreDTO.setTelephone(readLong(tokenizer));
+                membreDTO.setLimitePret(readInt(tokenizer));
+
+                Bibliotheque.gestionBibliotheque.getMembreService().inscrire(membreDTO);
             } else if("desinscrire".startsWith(command)) {
-                gestionBibliotheque.getGestionMembre().desinscrire(readInt(tokenizer) /* idMembre */);
+                Bibliotheque.gestionBibliotheque.getMembreService().desinscrire(Bibliotheque.gestionBibliotheque.getMembreService().read(readInt(tokenizer)));
             } else if("reserver".startsWith(command)) {
-                gestionBibliotheque.getGestionReservation().reserver(readInt(tokenizer) /* idReservation */,
-                    readInt(tokenizer) /* idLivre */,
-                    readInt(tokenizer) /* idMembre */,
-                    readDate(tokenizer) /* dateReservation */);
+                final int idReservation = readInt(tokenizer);
+                final int idMembre = readInt(tokenizer);
+                final int idLivre = readInt(tokenizer);
+
+                final ReservationDTO reservationDTO = new ReservationDTO();
+                reservationDTO.setIdReservation(idReservation);
+                final MembreDTO membreDTO = new MembreDTO();
+                membreDTO.setIdMembre(idMembre);
+                final LivreDTO livreDTO = new LivreDTO();
+                livreDTO.setIdLivre(idLivre);
+
+                Bibliotheque.gestionBibliotheque.getReservationService().reserver(reservationDTO,
+                    livreDTO,
+                    membreDTO);
             } else if("prendreRes".startsWith(command)) {
                 gestionBibliotheque.getGestionReservation().prendreRes(readInt(tokenizer) /* idReservation */,
                     readDate(tokenizer) /* dateReservation */);
