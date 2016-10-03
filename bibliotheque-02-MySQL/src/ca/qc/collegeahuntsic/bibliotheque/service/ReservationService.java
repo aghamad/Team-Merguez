@@ -4,16 +4,13 @@
 
 package ca.qc.collegeahuntsic.bibliotheque.service;
 
-import java.sql.Date;
 import java.util.List;
 import ca.qc.collegeahuntsic.bibliotheque.dao.LivreDAO;
 import ca.qc.collegeahuntsic.bibliotheque.dao.MembreDAO;
 import ca.qc.collegeahuntsic.bibliotheque.dao.ReservationDAO;
-import ca.qc.collegeahuntsic.bibliotheque.db.Connexion;
 import ca.qc.collegeahuntsic.bibliotheque.dto.LivreDTO;
 import ca.qc.collegeahuntsic.bibliotheque.dto.MembreDTO;
 import ca.qc.collegeahuntsic.bibliotheque.dto.ReservationDTO;
-import ca.qc.collegeahuntsic.bibliotheque.exception.ConnexionException;
 import ca.qc.collegeahuntsic.bibliotheque.exception.DAOException;
 import ca.qc.collegeahuntsic.bibliotheque.exception.ServiceException;
 
@@ -24,7 +21,6 @@ import ca.qc.collegeahuntsic.bibliotheque.exception.ServiceException;
  * @author Team-Merguez
  */
 public class ReservationService extends Service {
-
     private static final long serialVersionUID = 1L;
 
     private LivreDAO livreDAO;
@@ -33,85 +29,80 @@ public class ReservationService extends Service {
 
     private ReservationDAO reservationDAO;
 
-    private Connexion connexion;
-
     /**
      *
      * Crée le service de la table reservation.
      *
-     * @param livre Le DAO de la table livre
-     * @param membre Le DAO de la table membre
-     * @param reservation Le DAO de la table reservation
-     * @throws ServiceException Si la réservation existe déjà, si le membre n'existe pas, si le livre n'existe pas, si le livre n'a pas encore été prêté, si le livre est déjà prêté au membre, si le membre a déjà réservé ce livre ou s'il y a une erreur avec la base de données
+     * @param livreDAO Le DAO de la table livre
+     * @param membreDAO Le DAO de la table membre
+     * @param reservationDAO Le DAO de la table reservation
      */
-    public ReservationService(LivreDAO livre,
-        MembreDAO membre,
-        ReservationDAO reservation) throws ServiceException {
-        if(livre.getConnexion() != membre.getConnexion()
-            || reservation.getConnexion() != membre.getConnexion()) {
-            throw new ServiceException("Les instances de livre, de membre et de reservation n'utilisent pas la même connexion au serveur");
-        }
-        this.connexion = livre.getConnexion();
-        this.livreDAO = livre;
-        this.membreDAO = membre;
-        this.reservationDAO = reservation;
+    public ReservationService(LivreDAO livreDAO,
+        MembreDAO membreDAO,
+        ReservationDAO reservationDAO) {
+        setLivreDAO(livreDAO);
+        setReservationDAO(reservationDAO);
+        setMembreDAO(membreDAO);
     }
 
-    //    /**
-    //     * Getter de la variable d'instance <code>this.reservationDAO</code>.
-    //     *
-    //     * @return La variable d'instance <code>this.reservationDAO</code>
-    //     */
-    //    private ReservationDAO getReservationDAO() {
-    //        return this.reservationDAO;
-    //    }
-    //    
-    //    
-    //    /**
-    //     * Getter de la variable d'instance <code>this.livreDAO</code>.
-    //     *
-    //     * @return La variable d'instance <code>this.livreDAO</code>
-    //     */
-    //    private LivreDAO getLivreDAO() {
-    //        return this.livreDAO;
-    //    }
-    //    
-    //    /**
-    //     * Setter de la variable d'instance <code>this.livreDAO</code>.
-    //     *
-    //     * @param livreDAO La valeur à utiliser pour la variable d'instance <code>this.livreDAO</code>
-    //     */
-    //
-    //    private void setLivreDAO(LivreDAO livreDAO) {
-    //        this.livreDAO = livreDAO;
-    //    }
-    //
-    //    /**
-    //     * Getter de la variable d'instance <code>this.membreDAO</code>.
-    //     *
-    //     * @return La variable d'instance <code>this.membreDAO</code>
-    //     */
-    //    private MembreDAO getMembreDAO() {
-    //        return this.membreDAO;
-    //    }
-    //
-    //    /**
-    //     * Setter de la variable d'instance <code>this.membreDAO</code>.
-    //     *
-    //     * @param membreDAO La valeur à utiliser pour la variable d'instance <code>this.membreDAO</code>
-    //     */
-    //    private void setMembreDAO(MembreDAO membreDAO) {
-    //        this.membreDAO = membreDAO;
-    //    }
-    //    
-    //    /**
-    //     * Getter de la variable d'instance <code>this.reservationDAO</code>.
-    //     *
-    //     * @return La variable d'instance <code>this.reservationDAO</code>
-    //     */
-    //    private void setReservationDAO(ReservationDAO reservationDAO) {
-    //        this.reservationDAO = reservationDAO;
-    //    }
+    // Region Getters and Setters
+
+    /**
+     * Getter de la variable d'instance <code>this.livreDAO</code>.
+     *
+     * @return La variable d'instance <code>this.livreDAO</code>
+     */
+    private LivreDAO getLivreDAO() {
+        return this.livreDAO;
+    }
+
+    /**
+     * Getter de la variable d'instance <code>this.reservationDAO</code>.
+     *
+     * @return La variable d'instance <code>this.reservationDAO</code>
+     */
+    private ReservationDAO getReservationDAO() {
+        return this.reservationDAO;
+    }
+
+    /**
+     * Getter de la variable d'instance <code>this.membreDAO</code>.
+     *
+     * @return La variable d'instance <code>this.membreDAO</code>
+     */
+    private MembreDAO getMembreDAO() {
+        return this.membreDAO;
+    }
+
+    /**
+     * Setter de la variable d'instance <code>this.livreDAO</code>.
+     *
+     * @param livreDAO La valeur à utiliser pour la variable d'instance <code>this.livreDAO</code>
+     */
+
+    private void setLivreDAO(LivreDAO livreDAO) {
+        this.livreDAO = livreDAO;
+    }
+
+    /**
+     * Setter de la variable d'instance <code>this.membreDAO</code>.
+     *
+     * @param membreDAO La valeur à utiliser pour la variable d'instance <code>this.membreDAO</code>
+     */
+    private void setMembreDAO(MembreDAO membreDAO) {
+        this.membreDAO = membreDAO;
+    }
+
+    /**
+     * Getter de la variable d'instance <code>this.reservationDAO</code>.
+     *
+     * @param reservationDAO La variable d'instance <code>this.reservationDAO</code>
+     */
+    private void setReservationDAO(ReservationDAO reservationDAO) {
+        this.reservationDAO = reservationDAO;
+    }
+
+    // EndRegion Getters and Setters
 
     /**
     *
@@ -190,181 +181,113 @@ public class ReservationService extends Service {
     }
 
     /**
+    *
+    * Trouve les réservations à partir d'un membre.
+    *
+    * @return La liste des réservations correspondantes ; une liste vide sinon
+    * @param membreDTO Le membre à utiliser
+    * @throws ServiceException S'il y a une erreur avec la base de données
+    */
+    public List<ReservationDTO> findByMembre(MembreDTO membreDTO) throws ServiceException {
+        try {
+            return getReservationDAO().findByMembre(membreDTO);
+        } catch(DAOException daoException) {
+            throw new ServiceException(daoException);
+        }
+    }
+
+    /**
+    *
+    * Trouve les réservations à partir d'un livre.
+    *
+    * @return La liste des réservations correspondantes ; une liste vide sinon
+    * @param livreDTO Le livre à utiliser
+    * @throws ServiceException S'il y a une erreur avec la base de données
+    */
+    public List<ReservationDTO> findByLivre(LivreDTO livreDTO) throws ServiceException {
+        try {
+            return getReservationDAO().findByLivre(livreDTO);
+        } catch(DAOException daoException) {
+            throw new ServiceException(daoException);
+        }
+    }
+
+    /**
      *
      * Réserve un livre.
      *
-     * @param idReservation id de la reservation
-     * @param idLivre id du livre à réserver
-     * @param idMembre id du membre qui à réserver
-     * @param dateReservation date de reservation du livre
-     * @throws ServiceException  Si la réservation existe déjà, si le membre n'existe pas, si le livre n'existe pas, si le livre n'a pas encore été prêté, si le livre est déjà prêté au membre, si le membre a déjà réservé ce livre ou s'il y a une erreur avec la base de données
+     * @param reservationDTO La réservation à créer
+     * @param livreDTO Le livre à reserver
+     * @param membreDTO Le membre qui réserve
+     * @throws ServiceException Si la réservation existe déjà,
+     *                          Si le membre n'existe pas,
+     *                          Si le livre n'existe pas,
+     *                          Si le livre n'a pas encore été prêté,
+     *                          Si le livre est déjà prêté au membre,
+     *                          Si le membre a déjà réservé ce livre ou s'il y a une erreur avec la base de données
      */
-    public void reserver(int idReservation,
-        int idLivre,
-        int idMembre,
-        String dateReservation) throws ServiceException {
-        try {
-            /* Verifier que le livre est preté */
-            final LivreDTO tupleLivre = this.livreDAO.getLivre(idLivre);
-            if(tupleLivre == null) {
-                throw new ServiceException("Livre inexistant: "
-                    + idLivre);
-            }
-            if(tupleLivre.getIdMembre() == 0) {
-                throw new ServiceException("Livre "
-                    + idLivre
-                    + " n'est pas prete");
-            }
-            if(tupleLivre.getIdMembre() == idMembre) {
-                throw new ServiceException("Livre "
-                    + idLivre
-                    + " deja prete a ce membre");
-            }
-
-            /* Vérifier que le membre existe */
-            final MembreDTO tupleMembre = this.membreDAO.getMembre(idMembre);
-            if(tupleMembre == null) {
-                throw new ServiceException("Membre inexistant: "
-                    + idMembre);
-            }
-
-            /* Verifier si date reservation >= datePret */
-            if(Date.valueOf(dateReservation).before(tupleLivre.getDatePret())) {
-                throw new ServiceException("Date de reservation inferieure à la date de pret");
-            }
-
-            /* Vérifier que la réservation n'existe pas */
-            if(this.reservationDAO.existe(idReservation)) {
-                throw new ServiceException("Réservation "
-                    + idReservation
-                    + " existe deja");
-            }
-
-            /* Creation de la reservation */
-            this.reservationDAO.reserver(idReservation,
-                idLivre,
-                idMembre,
-                dateReservation);
-            this.connexion.commit();
-        } catch(
-            DAOException
-            | ConnexionException exception) {
-            try {
-                this.connexion.rollback();
-            } catch(ConnexionException connexionException) {
-                throw new ServiceException(connexionException);
-            }
-            throw new ServiceException(exception);
-        }
-    }
-
-    /**
-     *
-     * Prise d'une réservation.
-     *
-     * @param idReservation id de la reservation
-     * @param datePret date de pret de la reservation
-     * @throws ServiceException Si la réservation existe déjà, si le membre n'existe pas, si le livre n'existe pas, si le livre n'a pas encore été prêté, si le livre est déjà prêté au membre, si le membre a déjà réservé ce livre ou s'il y a une erreur avec la base de données
-     */
-    public void prendreRes(int idReservation,
-        String datePret) throws ServiceException {
-        try {
-            /* Vérifie s'il existe une réservation pour le livre */
-            final ReservationDTO tupleReservation = this.reservationDAO.getReservation(idReservation);
-            if(tupleReservation == null) {
-                throw new ServiceException("Réservation inexistante : "
-                    + idReservation);
-            }
-
-            /* Vérifie que c'est la première réservation pour le livre */
-            final ReservationDTO tupleReservationPremiere = this.reservationDAO.getReservationLivre(tupleReservation.getIdLivre());
-            if(tupleReservation.getIdReservation() != tupleReservationPremiere.getIdReservation()) {
-                throw new ServiceException("La réservation n'est pas la première de la liste "
-                    + "pour ce livre; la premiere est "
-                    + tupleReservationPremiere.getIdReservation());
-            }
-
-            /* Verifier si le livre est disponible */
-            final LivreDTO tupleLivre = this.livreDAO.getLivre(tupleReservation.getIdLivre());
-            if(tupleLivre == null) {
-                throw new ServiceException("Livre inexistant: "
-                    + tupleReservation.getIdLivre());
-            }
-            if(tupleLivre.getIdMembre() != 0) {
-                throw new ServiceException("Livre "
-                    + tupleLivre.getIdLivre()
-                    + " deja prété "
-                    + tupleLivre.getIdMembre());
-            }
-
-            /* Vérifie si le membre existe et sa limite de pret */
-            final MembreDTO tupleMembre = this.membreDAO.getMembre(tupleReservation.getIdMembre());
-            if(tupleMembre == null) {
-                throw new ServiceException("Membre inexistant: "
-                    + tupleReservation.getIdMembre());
-            }
-            if(tupleMembre.getNbPret() >= tupleMembre.getLimitePret()) {
-                throw new ServiceException("Limite de prêt du membre "
-                    + tupleReservation.getIdMembre()
-                    + " atteinte");
-            }
-
-            /* Verifier si datePret >= tupleReservation.dateReservation */
-            if(Date.valueOf(datePret).before(tupleReservation.getDateReservation())) {
-                throw new ServiceException("Date de prêt inférieure à la date de réservation");
-            }
-
-            /* Enregistrement du pret. */
-            if(this.livreDAO.preter(tupleReservation.getIdLivre(),
-                tupleReservation.getIdMembre(),
-                datePret) == 0) {
-                throw new ServiceException("Livre supprimé par une autre transaction");
-            }
-            if(this.membreDAO.preter(tupleReservation.getIdMembre()) == 0) {
-                throw new ServiceException("Membre supprimé par une autre transaction");
-            }
-            /* Eliminer la réservation */
-            this.reservationDAO.annulerRes(idReservation);
-            this.connexion.commit();
-        } catch(
-            DAOException
-            | ConnexionException exception) {
-            try {
-                this.connexion.rollback();
-            } catch(ConnexionException connexionException) {
-                throw new ServiceException(connexionException);
-            }
-            throw new ServiceException(exception);
-        }
-    }
-
-    /**
-     *
-     * Annule une réservation.
-     *
-     * @param idReservation id de la réservation à annuler
-     * @throws ServiceException Si la réservation existe déjà, si le membre n'existe pas, si le livre n'existe pas, si le livre n'a pas encore été prêté, si le livre est déjà prêté au membre, si le membre a déjà réservé ce livre ou s'il y a une erreur avec la base de données
-     */
-    public void annulerRes(int idReservation) throws ServiceException {
+    public void reserver(ReservationDTO reservationDTO,
+        LivreDTO livreDTO,
+        MembreDTO membreDTO) throws ServiceException {
         try {
 
-            /* Vérifier que la réservation existe */
-            if(this.reservationDAO.annulerRes(idReservation) == 0) {
-                throw new ServiceException("Réservation "
-                    + idReservation
+            // Si le membre n'existe pas
+            if(getMembreDAO().read(membreDTO.getIdMembre()) == null) {
+                throw new ServiceException("Le membre "
+                    + membreDTO.getIdMembre()
                     + " n'existe pas");
             }
 
-            this.connexion.commit();
-        } catch(
-            DAOException
-            | ConnexionException exception) {
-            try {
-                this.connexion.rollback();
-            } catch(ConnexionException connexionException) {
-                throw new ServiceException(connexionException);
+            //Si le livre n'existe pas
+            if(getLivreDAO().read(livreDTO.getIdLivre()) == null) {
+                throw new ServiceException("Le livre "
+                    + livreDTO.getIdLivre()
+                    + " n'existe pas");
             }
-            throw new ServiceException(exception);
+
+            // Si la réservation existe déjà
+            if(getReservationDAO().findByLivre(livreDTO) != null) {
+                throw new ServiceException("La réservation "
+                    + reservationDTO.getIdReservation()
+                    + " existe déjà");
+            }
+
+            // Si le livre n'a pas encore été prêté
+            if(livreDTO.getIdMembre() == 0) {
+                throw new ServiceException("Le livre "
+                    + livreDTO.getIdLivre()
+                    + " n'a pas encore été prêté");
+            }
+
+            // Si le livre est déjà prêté au membre,
+            if(livreDTO.getIdMembre() == membreDTO.getIdMembre()) {
+                throw new ServiceException("Le livre "
+                    + livreDTO.getIdLivre()
+                    + " est déjà prêté au membre");
+            }
+
+            //  Si le membre en question a déjà réservé ce livre
+            final List<ReservationDTO> listeDesReservations = getReservationDAO().findByMembre(membreDTO);
+            if(!listeDesReservations.isEmpty()) {
+                for(ReservationDTO reservation : listeDesReservations) {
+                    if(reservation.getIdLivre() == livreDTO.getIdLivre()) {
+                        throw new ServiceException("Le membre "
+                            + livreDTO.getIdLivre()
+                            + " a déjà réservé ce livre");
+                    }
+                }
+            }
+
+            final ReservationDTO reservation = new ReservationDTO();
+
+            reservation.setIdLivre(livreDTO.getIdLivre());
+            reservation.setIdMembre(membreDTO.getIdMembre());
+            reservation.setIdReservation(reservationDTO.getIdReservation());
+            add(reservation);
+
+        } catch(DAOException daoException) {
+            throw new ServiceException(daoException);
         }
     }
+
 }
