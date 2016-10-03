@@ -57,7 +57,7 @@ public class MembreDAO extends DAO {
      * @param connexion  La connexion à utiliser
      * @throws DAOException S'il y a une erreur avec la base de données
      */
-    public MembreDAO(Connexion connexion) throws DAOException {
+    public MembreDAO(Connexion connexion) {
         super(connexion);
     }
 
