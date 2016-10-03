@@ -22,14 +22,14 @@ import ca.qc.collegeahuntsic.bibliotheque.exception.ConnexionException;
  *
  * @author Team-Merguez
  */
-final class BDCreateur {
+final class BibliothequeCreateur {
 
     /**
      *
      * Constructeur privé pour empêcher toute instanciation.
      *
      */
-    private BDCreateur() {
+    private BibliothequeCreateur() {
         super();
     }
 
