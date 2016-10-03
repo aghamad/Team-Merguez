@@ -37,7 +37,7 @@ import ca.qc.collegeahuntsic.bibliotheque.service.ReservationService;
  * @author Team-Merguez
  */
 
-public class GestionBibliotheque {
+public class BibliothequeCreateur {
 
     private Connexion connexion;
 
@@ -67,7 +67,7 @@ public class GestionBibliotheque {
      * @param password Mot de passe sur le serveur SQL
      * @throws BibliothequeException S'il y a une erreur avec la base de données
      */
-    public GestionBibliotheque(String serveur,
+    public BibliothequeCreateur(String serveur,
         String bd,
         String user,
         String password) throws BibliothequeException {

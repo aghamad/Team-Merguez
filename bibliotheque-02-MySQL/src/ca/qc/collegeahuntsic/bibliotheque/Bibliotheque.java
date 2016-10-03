@@ -14,7 +14,7 @@ import java.util.StringTokenizer;
 import ca.qc.collegeahuntsic.bibliotheque.db.Connexion;
 import ca.qc.collegeahuntsic.bibliotheque.exception.BibliothequeException;
 import ca.qc.collegeahuntsic.bibliotheque.util.FormatDate;
-import ca.qc.collegeahuntsic.bibliotheque.util.GestionBibliotheque;
+import ca.qc.collegeahuntsic.bibliotheque.util.BibliothequeCreateur;
 
 /**
  * Interface du système de gestion d'une bibliothèque +.
@@ -43,7 +43,7 @@ import ca.qc.collegeahuntsic.bibliotheque.util.GestionBibliotheque;
  * @author Team-Merguez
  */
 public final class Bibliotheque {
-    private static GestionBibliotheque gestionBiblio;
+    private static BibliothequeCreateur gestionBiblio;
 
     private static boolean lectureAuClavier;
 
@@ -81,7 +81,7 @@ public final class Bibliotheque {
                 lectureAuClavier = false;
             }
 
-            gestionBiblio = new GestionBibliotheque(argv[0],
+            gestionBiblio = new BibliothequeCreateur(argv[0],
                 argv[1],
                 argv[2],
                 argv[3]);
