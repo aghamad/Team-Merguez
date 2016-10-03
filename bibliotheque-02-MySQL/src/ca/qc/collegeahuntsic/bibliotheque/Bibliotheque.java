@@ -12,6 +12,7 @@ import java.text.ParseException;
 import java.util.StringTokenizer;
 import ca.qc.collegeahuntsic.bibliotheque.db.Connexion;
 import ca.qc.collegeahuntsic.bibliotheque.dto.LivreDTO;
+import ca.qc.collegeahuntsic.bibliotheque.dto.MembreDTO;
 import ca.qc.collegeahuntsic.bibliotheque.exception.BibliothequeException;
 import ca.qc.collegeahuntsic.bibliotheque.util.BibliothequeCreateur;
 import ca.qc.collegeahuntsic.bibliotheque.util.FormatDate;
@@ -167,15 +168,24 @@ public final class Bibliotheque {
                 Bibliotheque.gestionBibliotheque.commit();
 
             } else if("preter".startsWith(command)) {
-                gestionBibliotheque.getGestionPret().preter(readInt(tokenizer) /* idLivre */,
-                    readInt(tokenizer) /* idMembre */,
-                    readDate(tokenizer) /* dateEmprunt */);
+                final MembreDTO membreDTO = new MembreDTO();
+                membreDTO.setIdMembre(Bibliotheque.readInt(tokenizer));
+                final LivreDTO livreDTO = new LivreDTO();
+                livreDTO.setIdLivre(Bibliotheque.readInt(tokenizer));
+                Bibliotheque.gestionBibliotheque.getMembreService().emprunter(membreDTO,
+                    livreDTO);
+
             } else if("renouveler".startsWith(command)) {
-                gestionBibliotheque.getGestionPret().renouveler(readInt(tokenizer) /* idLivre */,
-                    readDate(tokenizer) /* dateRenouvellement */);
+                final MembreDTO membreDTO = new MembreDTO();
+                membreDTO.setIdMembre(Bibliotheque.readInt(tokenizer));
+                final LivreDTO livreDTO = new LivreDTO();
+                Bibliotheque.gestionBibliotheque.getMembreService().renouveler(membreDTO,
+                    livreDTO);
+
             } else if("retourner".startsWith(command)) {
                 gestionBibliotheque.getGestionPret().retourner(readInt(tokenizer) /* idLivre */,
                     readDate(tokenizer) /* dateRetour */);
+
             } else if("inscrire".startsWith(command)) {
                 gestionBibliotheque.getGestionMembre().inscrire(readInt(tokenizer) /* idMembre */,
                     readString(tokenizer) /* nom */,
