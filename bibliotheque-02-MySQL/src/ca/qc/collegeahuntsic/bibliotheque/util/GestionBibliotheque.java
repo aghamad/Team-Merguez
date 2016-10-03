@@ -41,11 +41,11 @@ public class GestionBibliotheque {
 
     private Connexion connexion;
 
-    private LivreDAO livreDao;
+    private LivreDAO livreDAO;
 
-    private MembreDAO membreDao;
+    private MembreDAO membreDAO;
 
-    private ReservationDAO reservationDao;
+    private ReservationDAO reservationDAO;
 
     private LivreService gestionLivre;
 
@@ -83,21 +83,23 @@ public class GestionBibliotheque {
                 throw new BibliothequeException(connectionExeption);
             }
 
-            this.livreDao = new LivreDAO(this.connexion);
-            this.membreDao = new MembreDAO(this.connexion);
-            this.reservationDao = new ReservationDAO(this.connexion);
-            this.gestionLivre = new LivreService(this.livreDao,
-                this.reservationDao);
-            this.gestionMembre = new MembreService(this.membreDao,
-                this.reservationDao);
+            this.livreDAO = new LivreDAO(this.connexion);
+            this.membreDAO = new MembreDAO(this.connexion);
+            this.reservationDAO = new ReservationDAO(this.connexion);
+            this.gestionLivre = new LivreService(this.livreDAO,
+                this.membreDAO,
+                this.reservationDAO);
+            this.gestionMembre = new MembreService(this.membreDAO,
+                this.reservationDAO,
+                this.livreDAO);
 
-            this.gestionPret = new PretService(this.livreDao,
-                this.membreDao,
-                this.reservationDao);
+            this.gestionPret = new PretService(this.livreDAO,
+                this.membreDAO,
+                this.reservationDAO);
 
-            this.gestionReservation = new ReservationService(this.livreDao,
-                this.membreDao,
-                this.reservationDao);
+            this.gestionReservation = new ReservationService(this.livreDAO,
+                this.membreDAO,
+                this.reservationDAO);
 
             this.gestionInterrogation = new GestionInterrogation(this.connexion);
         } catch(
@@ -130,7 +132,7 @@ public class GestionBibliotheque {
      * @return this.livreDAO retourne la valeur de this.livre.
      */
     public LivreDAO getLivre() {
-        return this.livreDao;
+        return this.livreDAO;
     }
 
     /**
@@ -138,7 +140,7 @@ public class GestionBibliotheque {
      * @param livre initialisation de la variable LivreDAO.
      */
     public void setLivre(LivreDAO livre) {
-        this.livreDao = livre;
+        this.livreDAO = livre;
     }
 
     /**
@@ -146,7 +148,7 @@ public class GestionBibliotheque {
      * @return this.membreDAO retourne la valeur de this.membre.
      */
     public MembreDAO getMembre() {
-        return this.membreDao;
+        return this.membreDAO;
     }
 
     /**
@@ -154,7 +156,7 @@ public class GestionBibliotheque {
      * @param membre initialisation de la variable membre
      */
     public void setMembre(MembreDAO membre) {
-        this.membreDao = membre;
+        this.membreDAO = membre;
     }
 
     /**
@@ -162,7 +164,7 @@ public class GestionBibliotheque {
      * @return this.reservation retourne la valeur de this.reservation.
      */
     public ReservationDAO getReservation() {
-        return this.reservationDao;
+        return this.reservationDAO;
     }
 
     /**
@@ -170,7 +172,7 @@ public class GestionBibliotheque {
      * @param reservation initialisation de la variable reservation.
      */
     public void setReservation(ReservationDAO reservation) {
-        this.reservationDao = reservation;
+        this.reservationDAO = reservation;
     }
 
     /**
