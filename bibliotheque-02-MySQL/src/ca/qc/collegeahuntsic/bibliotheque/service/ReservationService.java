@@ -57,14 +57,61 @@ public class ReservationService extends Service {
         this.reservationDAO = reservation;
     }
 
-    /**
-     * Getter de la variable d'instance <code>this.reservationDAO</code>.
-     *
-     * @return La variable d'instance <code>this.reservationDAO</code>
-     */
-    private ReservationDAO getReservationDAO() {
-        return this.reservationDAO;
-    }
+    //    /**
+    //     * Getter de la variable d'instance <code>this.reservationDAO</code>.
+    //     *
+    //     * @return La variable d'instance <code>this.reservationDAO</code>
+    //     */
+    //    private ReservationDAO getReservationDAO() {
+    //        return this.reservationDAO;
+    //    }
+    //    
+    //    
+    //    /**
+    //     * Getter de la variable d'instance <code>this.livreDAO</code>.
+    //     *
+    //     * @return La variable d'instance <code>this.livreDAO</code>
+    //     */
+    //    private LivreDAO getLivreDAO() {
+    //        return this.livreDAO;
+    //    }
+    //    
+    //    /**
+    //     * Setter de la variable d'instance <code>this.livreDAO</code>.
+    //     *
+    //     * @param livreDAO La valeur à utiliser pour la variable d'instance <code>this.livreDAO</code>
+    //     */
+    //
+    //    private void setLivreDAO(LivreDAO livreDAO) {
+    //        this.livreDAO = livreDAO;
+    //    }
+    //
+    //    /**
+    //     * Getter de la variable d'instance <code>this.membreDAO</code>.
+    //     *
+    //     * @return La variable d'instance <code>this.membreDAO</code>
+    //     */
+    //    private MembreDAO getMembreDAO() {
+    //        return this.membreDAO;
+    //    }
+    //
+    //    /**
+    //     * Setter de la variable d'instance <code>this.membreDAO</code>.
+    //     *
+    //     * @param membreDAO La valeur à utiliser pour la variable d'instance <code>this.membreDAO</code>
+    //     */
+    //    private void setMembreDAO(MembreDAO membreDAO) {
+    //        this.membreDAO = membreDAO;
+    //    }
+    //    
+    //    /**
+    //     * Getter de la variable d'instance <code>this.reservationDAO</code>.
+    //     *
+    //     * @return La variable d'instance <code>this.reservationDAO</code>
+    //     */
+    //    private void setReservationDAO(ReservationDAO reservationDAO) {
+    //        this.reservationDAO = reservationDAO;
+    //    }
 
     /**
     *
