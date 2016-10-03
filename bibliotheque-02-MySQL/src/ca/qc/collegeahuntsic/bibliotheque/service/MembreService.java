@@ -5,8 +5,10 @@
 package ca.qc.collegeahuntsic.bibliotheque.service;
 
 import java.util.List;
+import ca.qc.collegeahuntsic.bibliotheque.dao.LivreDAO;
 import ca.qc.collegeahuntsic.bibliotheque.dao.MembreDAO;
 import ca.qc.collegeahuntsic.bibliotheque.dao.ReservationDAO;
+import ca.qc.collegeahuntsic.bibliotheque.dto.LivreDTO;
 import ca.qc.collegeahuntsic.bibliotheque.dto.MembreDTO;
 import ca.qc.collegeahuntsic.bibliotheque.exception.DAOException;
 import ca.qc.collegeahuntsic.bibliotheque.exception.ServiceException;
@@ -24,20 +26,43 @@ public class MembreService extends Service {
 
     private ReservationDAO reservationDAO;
 
+    private LivreDAO livreDAO;
+
     /**
      *
      * Crée le service de la table livre.
      *
      * @param membreDAO Le DAO de la table membre
      * @param reservationDAO Le DAO de la table reservation
+     * @param livreDAO Le DAO de la table Livre
      */
     public MembreService(MembreDAO membreDAO,
-        ReservationDAO reservationDAO) {
+        ReservationDAO reservationDAO,
+        LivreDAO livreDAO) {
         setMembreDAO(membreDAO);
         setReservationDAO(reservationDAO);
+        setLivreDAO(livreDAO);
     }
 
     // Region Getters and Setters
+
+    /**
+     * Getter de la variable d'instance <code>this.livreDAO</code>.
+     *
+     * @return La variable d'instance <code>this.livreDAO</code>
+     */
+    private LivreDAO getLivreDAO() {
+        return this.livreDAO;
+    }
+
+    /**
+     * Setter de la variable d'instance <code>this.livreDAO</code>.
+     *
+     * @param livreDAO La valeur à utiliser pour la variable d'instance <code>this.livreDAO</code>
+     */
+    private void setLivreDAO(LivreDAO livreDAO) {
+        this.livreDAO = livreDAO;
+    }
 
     /**
      * Getter de la variable d'instance <code>this.membreDAO</code>.
@@ -158,11 +183,53 @@ public class MembreService extends Service {
      * Emprunt d'un livre par un membre.
      *
      * @param membreDTO Le membre qui emprunte un livre
-     * @throws ServiceException S'il y a une erreur avec la base de données
+     * @param livreDTO Le livre à emprunter
+     * @throws ServiceException Si le membre n'existe pas, si le livre n'existe pas, si le livre a été prêté, si le livre a été réservé, si le membre a atteint sa limite de prêt ou s'il y a une erreur avec la base de données
      */
-    public void emprunter(MembreDTO membreDTO) throws ServiceException {
+    public void emprunter(MembreDTO membreDTO,
+        LivreDTO livreDTO) throws ServiceException {
         try {
+
+            // Si le membre n'existe pas
+            if(read(membreDTO.getIdMembre()) == null) {
+                throw new ServiceException("Le Membre "
+                    + membreDTO.getIdMembre()
+                    + "n'existe pas");
+            }
+
+            // Si le livre n'existe pas
+            if(getLivreDAO().read(livreDTO.getIdLivre()) == null) {
+                throw new ServiceException("Le Livre "
+                    + livreDTO.getIdLivre()
+                    + "n'existe pas");
+            }
+
+            // Si le livre a été réservé
+            if(!getReservationDAO().findByLivre(livreDTO).isEmpty()) {
+                throw new ServiceException("Le Livre "
+                    + livreDTO.getIdLivre()
+                    + "est déjà réservé");
+            }
+
+            // Si le membre a atteint sa limite de prêt
+            if(membreDTO.getNbPret() == membreDTO.getLimitePret()) {
+                throw new ServiceException("Le membre "
+                    + membreDTO.getIdMembre()
+                    + "a atteint sa limite de pret");
+            }
+
+            // if id membre de LivreDTO est egale a 0 alors il peut l'emprunter
+            // Si le livre a été prêté
+            if(livreDTO.getIdMembre() != 0
+                && read(livreDTO.getIdMembre()) != null) {
+                throw new ServiceException("Le Livre "
+                    + livreDTO.getIdLivre()
+                    + "est déjà prêté");
+            }
+
             getMembreDAO().emprunter(membreDTO);
+            getLivreDAO().emprunter(livreDTO);
+            livreDTO.setIdMembre(membreDTO.getIdMembre());
         } catch(DAOException daoException) {
             throw new ServiceException(daoException);
         }
@@ -173,11 +240,105 @@ public class MembreService extends Service {
      * Retourne un livre du membre.
      *
      * @param membreDTO Le membre qui retourne un livre
-     * @throws ServiceException S'il y a une erreur avec la base de données
+     * @param livreDTO Le livre à retourner
+     * @throws ServiceException Si le membre n'existe pas, si le livre n'existe pas, si le livre n'a pas encore été prêté, si le livre a été prêté à quelqu'un d'autre ou s'il y a une erreur avec la base de données
      */
-    public void retourner(MembreDTO membreDTO) throws ServiceException {
+    public void retourner(MembreDTO membreDTO,
+        LivreDTO livreDTO) throws ServiceException {
         try {
+
+            // Si le membre n'existe pas
+            if(read(membreDTO.getIdMembre()) == null) {
+                throw new ServiceException("Le Membre "
+                    + membreDTO.getIdMembre()
+                    + "n'existe pas");
+            }
+
+            // Si le livre n'existe pas
+            if(getLivreDAO().read(livreDTO.getIdLivre()) == null) {
+                throw new ServiceException("Le Livre "
+                    + livreDTO.getIdLivre()
+                    + "n'existe pas");
+            }
+
+            // Un livreDTO a un idMembre. Celui qui a emprunter ce livre
+            // Si le livre n'a pas encore été prêté,
+            if(livreDTO.getIdMembre() == 0
+                || read(livreDTO.getIdMembre()) == null) {
+                throw new ServiceException("Le Livre "
+                    + livreDTO.getIdLivre()
+                    + "n'a pas était emprunter");
+            }
+
+            // Si le livre a été prêté à quelqu'un d'autre
+            if(livreDTO.getIdMembre() != membreDTO.getIdMembre()) {
+                throw new ServiceException("Le Livre "
+                    + livreDTO.getIdLivre()
+                    + "n'a pas était prêté par celui qui souhaite de le retourner");
+            }
+
             getMembreDAO().retourner(membreDTO);
+            getLivreDAO().retourner(livreDTO);
+            livreDTO.setIdMembre(0);
+        } catch(DAOException daoException) {
+            throw new ServiceException(daoException);
+        }
+    }
+
+    /**
+     *
+     * Renouvelle le prêt d'un livre.
+     *
+     * @param membreDTO Le membre qui renouvelle
+     * @param livreDTO Le livre à renouveler
+     * @throws ServiceException Si le membre n'existe pas, si le livre n'existe pas, si le livre n'a pas encore été prêté, si le livre a été prêté à quelqu'un d'autre, si le livre a été réservé ou s'il y a une erreur avec la base de données
+     */
+    public void renouveler(MembreDTO membreDTO,
+        LivreDTO livreDTO) throws ServiceException {
+        try {
+
+            // Si le membre n'existe pas
+            if(read(membreDTO.getIdMembre()) == null) {
+                throw new ServiceException("Le Membre "
+                    + membreDTO.getIdMembre()
+                    + "n'existe pas");
+            }
+
+            // Si le livre n'existe pas
+            if(getLivreDAO().read(livreDTO.getIdLivre()) == null) {
+                throw new ServiceException("Le Livre "
+                    + livreDTO.getIdLivre()
+                    + "n'existe pas");
+            }
+
+            // Si le livre a été réservé
+            // Quand cette methode return une list non vide; Alors le livre est réservé pour quelqu'un d'autre
+            if(!getReservationDAO().findByLivre(livreDTO).isEmpty()) {
+                throw new ServiceException("Le livre "
+                    + livreDTO.getIdLivre()
+                    + "est déjà réservé");
+            }
+
+            // Si le livre a été prêté à quelqu'un d'autre
+            // N'apparteint pas au membre alors il ne peut pas le renouveler
+            if(membreDTO.getIdMembre() != livreDTO.getIdMembre()) {
+                throw new ServiceException("Le livre "
+                    + livreDTO.getIdLivre()
+                    + "n'apparteint pas au membre "
+                    + membreDTO.getIdMembre());
+            }
+
+            // Si le livre n'a pas encore été prêté
+            if(membreDTO.getIdMembre() == 0
+                || read(livreDTO.getIdMembre()) == null) {
+                throw new ServiceException("Le Livre "
+                    + livreDTO.getIdLivre()
+                    + "n'a pas était emprunter afin d'etre renouveler");
+            }
+
+            getLivreDAO().emprunter(livreDTO);
+            getMembreDAO().emprunter(membreDTO);
+            livreDTO.setIdMembre(membreDTO.getIdMembre());
         } catch(DAOException daoException) {
             throw new ServiceException(daoException);
         }
