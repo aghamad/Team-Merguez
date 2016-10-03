@@ -270,6 +270,20 @@ public class MembreService extends Service {
                     + "n'a pas était emprunter");
             }
 
+            final MembreDTO emprunteur = read(livreDTO.getIdMembre());
+
+            if(emprunteur != null) {
+                throw new ServiceException("Le Livre "
+                    + livreDTO.getTitre()
+                    + " (ID de livre: "
+                    + livreDTO.getIdLivre()
+                    + ") à été prêté à "
+                    + emprunteur.getNom()
+                    + " (ID du membre "
+                    + emprunteur.getIdMembre()
+                    + " )");
+            }
+
             // Si le livre a été prêté à quelqu'un d'autre
             if(livreDTO.getIdMembre() != membreDTO.getIdMembre()) {
                 throw new ServiceException("Le Livre "
