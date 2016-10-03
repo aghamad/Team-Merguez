@@ -25,7 +25,8 @@ public class MembreDAO extends DAO {
 
     private static final long serialVersionUID = 1L;
 
-    private static final String READ_REQUEST = "SELECT * FROM membre "
+    private static final String READ_REQUEST = "SELECT idMembre, nom, telephone, limitePret, nbPret "
+        + "FROM membre "
         + "WHERE idMembre = ?";
 
     private static final String ADD_REQUEST = "INSERT INTO membre "
@@ -46,7 +47,8 @@ public class MembreDAO extends DAO {
     private static final String DELETE_REQUEST = "DELETE FROM membre "
         + "WHERE idMembre = ?";
 
-    private static final String GET_ALL_REQUEST = "SELECT * FROM membre";
+    private static final String GET_ALL_REQUEST = " idMembre, nom, telephone, limitePret, nbPret "
+        + "FROM membre";
 
     /**
      *
