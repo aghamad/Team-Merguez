@@ -284,7 +284,7 @@ public class MembreService extends Service {
                     + " )");
             }
 
-            // Si le livre a été prêté à quelqu'un d'autre
+            // Si le livre a été prêté à quelqu'un d' autre
             if(livreDTO.getIdMembre() != membreDTO.getIdMembre()) {
                 throw new ServiceException("Le Livre "
                     + livreDTO.getIdLivre()
