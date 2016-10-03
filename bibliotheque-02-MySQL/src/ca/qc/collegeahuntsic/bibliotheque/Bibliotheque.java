@@ -5,16 +5,16 @@
 package ca.qc.collegeahuntsic.bibliotheque;
 
 import java.io.BufferedReader;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.text.ParseException;
 import java.util.StringTokenizer;
 import ca.qc.collegeahuntsic.bibliotheque.db.Connexion;
+import ca.qc.collegeahuntsic.bibliotheque.dto.LivreDTO;
 import ca.qc.collegeahuntsic.bibliotheque.exception.BibliothequeException;
-import ca.qc.collegeahuntsic.bibliotheque.util.FormatDate;
 import ca.qc.collegeahuntsic.bibliotheque.util.BibliothequeCreateur;
+import ca.qc.collegeahuntsic.bibliotheque.util.FormatDate;
 
 /**
  * Interface du système de gestion d'une bibliothèque +.
@@ -43,28 +43,26 @@ import ca.qc.collegeahuntsic.bibliotheque.util.BibliothequeCreateur;
  * @author Team-Merguez
  */
 public final class Bibliotheque {
-    private static BibliothequeCreateur gestionBiblio;
+    private static BibliothequeCreateur gestionBibliotheque;
 
-    private static boolean lectureAuClavier;
-
-    /**
-     *Constructeur privé pour empêcher toute instanciation.
-     *
-     */
-
+    /**¸
+    *
+    * Constructeur privé pour empêcher toute instanciation.
+    *
+    */
     private Bibliotheque() {
         super();
     }
 
     /**
      *Crée une connexion sur la base de données, traite toutes les transactions et détruit la connexion.
-     *@param argv Les arguments du main.
+     *@param arguments Les arguments du main.
      *@throws Exception -Si une erreur survient.
      */
-    public static void main(String[] argv) throws Exception {
+    public static void main(String[] arguments) throws Exception {
 
-        if(argv.length < 4) {
-            System.out.println("Usage: java Biblio <serveur> <bd> <user> <password> [<fichier-transactions>]");
+        if(arguments.length < 5) {
+            System.out.println("Usage: java Biblio <serveur> <bd> <user> <password> <fichier-transactions>");
             System.out.println(Connexion.serveursSupportes());
             return;
         }
@@ -74,30 +72,31 @@ public final class Bibliotheque {
              *  ouverture du fichier de transactions
              * s'il est spécifié comme argument
              */
-            lectureAuClavier = true;
-            InputStream sourceTransaction = System.in;
-            if(argv.length > 4) {
-                sourceTransaction = new FileInputStream(argv[4]);
-                lectureAuClavier = false;
-            }
 
-            gestionBiblio = new BibliothequeCreateur(argv[0],
-                argv[1],
-                argv[2],
-                argv[3]);
+            // Ouverture du fichier de transactions
+            final InputStream sourceTransaction = Bibliotheque.class.getResourceAsStream("/"
+                + arguments[4]);
+
             /*
              * try-with-resources Statement
              */
 
             try(
                 BufferedReader reader = new BufferedReader(new InputStreamReader(sourceTransaction))) {
-                traiterTransactions(reader);
+
+                Bibliotheque.gestionBibliotheque = new BibliothequeCreateur(arguments[0],
+                    arguments[1],
+                    arguments[2],
+                    arguments[3]);
+
+                Bibliotheque.traiterTransactions(reader);
             }
 
-        } catch(Exception e) {
-            e.printStackTrace(System.out);
+        } catch(Exception exception) {
+            Bibliotheque.gestionBibliotheque.rollback();
+            exception.printStackTrace(System.out);
         } finally {
-            gestionBiblio.fermer();
+            Bibliotheque.gestionBibliotheque.close();
         }
     }
 
@@ -106,20 +105,18 @@ public final class Bibliotheque {
       *@param reader - Le flux d'entrée à lire.
       *@throws Exception - Si une erreur survient.
       */
-    static void traiterTransactions(BufferedReader reader) throws Exception {
-        afficherAide();
-        String transaction = lireTransaction(reader);
+    private static void traiterTransactions(BufferedReader reader) throws Exception {
+        Bibliotheque.afficherAide();
+        System.out.println("\n\n\n");
+        String transaction = Bibliotheque.lireTransaction(reader);
         while(!finTransaction(transaction)) {
-            /*
-             * découpage de la transaction en mots.
-             */
-
+            /* découpage de la transaction en mots. */
             final StringTokenizer tokenizer = new StringTokenizer(transaction,
                 " ");
             if(tokenizer.hasMoreTokens()) {
-                executerTransaction(tokenizer);
+                Bibliotheque.executerTransaction(tokenizer);
             }
-            transaction = lireTransaction(reader);
+            transaction = Bibliotheque.lireTransaction(reader);
         }
     }
 
@@ -129,14 +126,12 @@ public final class Bibliotheque {
       *@return La transaction lue.
       *@throws IOException - Si une erreur de lecture survient.
       */
-    static String lireTransaction(BufferedReader reader) throws IOException {
+    private static String lireTransaction(BufferedReader reader) throws IOException {
         System.out.print("> ");
         final String transaction = reader.readLine();
-        /*
-         * echo si lecture dans un fichier.
-         */
-        if(!lectureAuClavier
-            && transaction != null) {
+        if(transaction != null) {
+            /* echo si lecture dans un fichier.*/
+            System.out.print("> :");
             System.out.println(transaction);
         }
         return transaction;
@@ -155,43 +150,53 @@ public final class Bibliotheque {
             if("aide".startsWith(command)) {
                 afficherAide();
             } else if("acquerir".startsWith(command)) {
-                gestionBiblio.getGestionLivre().acquerir(readInt(tokenizer),
-                    readString(tokenizer),
-                    readString(tokenizer),
-                    readDate(tokenizer));
+
+                final LivreDTO livreDTO = new LivreDTO();
+                livreDTO.setIdLivre(Bibliotheque.readInt(tokenizer));
+                livreDTO.setTitre(Bibliotheque.readString(tokenizer));
+                livreDTO.setAuteur(Bibliotheque.readString(tokenizer));
+                livreDTO.setDateAcquisition(Bibliotheque.readDate(tokenizer));
+                Bibliotheque.gestionBibliotheque.getLivreService().acquerir(livreDTO);
+                Bibliotheque.gestionBibliotheque.commit();
+
             } else if("vendre".startsWith(command)) {
-                gestionBiblio.getGestionLivre().vendre(readInt(tokenizer) /* idLivre */);
+
+                final LivreDTO livreDTO = new LivreDTO();
+                livreDTO.setIdLivre(Bibliotheque.readInt(tokenizer));
+                Bibliotheque.gestionBibliotheque.getLivreService().vendre(livreDTO);
+                Bibliotheque.gestionBibliotheque.commit();
+
             } else if("preter".startsWith(command)) {
-                gestionBiblio.getGestionPret().preter(readInt(tokenizer) /* idLivre */,
+                gestionBibliotheque.getGestionPret().preter(readInt(tokenizer) /* idLivre */,
                     readInt(tokenizer) /* idMembre */,
                     readDate(tokenizer) /* dateEmprunt */);
             } else if("renouveler".startsWith(command)) {
-                gestionBiblio.getGestionPret().renouveler(readInt(tokenizer) /* idLivre */,
+                gestionBibliotheque.getGestionPret().renouveler(readInt(tokenizer) /* idLivre */,
                     readDate(tokenizer) /* dateRenouvellement */);
             } else if("retourner".startsWith(command)) {
-                gestionBiblio.getGestionPret().retourner(readInt(tokenizer) /* idLivre */,
+                gestionBibliotheque.getGestionPret().retourner(readInt(tokenizer) /* idLivre */,
                     readDate(tokenizer) /* dateRetour */);
             } else if("inscrire".startsWith(command)) {
-                gestionBiblio.getGestionMembre().inscrire(readInt(tokenizer) /* idMembre */,
+                gestionBibliotheque.getGestionMembre().inscrire(readInt(tokenizer) /* idMembre */,
                     readString(tokenizer) /* nom */,
                     readLong(tokenizer) /* tel */,
                     readInt(tokenizer) /* limitePret */);
             } else if("desinscrire".startsWith(command)) {
-                gestionBiblio.getGestionMembre().desinscrire(readInt(tokenizer) /* idMembre */);
+                gestionBibliotheque.getGestionMembre().desinscrire(readInt(tokenizer) /* idMembre */);
             } else if("reserver".startsWith(command)) {
-                gestionBiblio.getGestionReservation().reserver(readInt(tokenizer) /* idReservation */,
+                gestionBibliotheque.getGestionReservation().reserver(readInt(tokenizer) /* idReservation */,
                     readInt(tokenizer) /* idLivre */,
                     readInt(tokenizer) /* idMembre */,
                     readDate(tokenizer) /* dateReservation */);
             } else if("prendreRes".startsWith(command)) {
-                gestionBiblio.getGestionReservation().prendreRes(readInt(tokenizer) /* idReservation */,
+                gestionBibliotheque.getGestionReservation().prendreRes(readInt(tokenizer) /* idReservation */,
                     readDate(tokenizer) /* dateReservation */);
             } else if("annulerRes".startsWith(command)) {
-                gestionBiblio.getGestionReservation().annulerRes(readInt(tokenizer) /* idReservation */);
+                gestionBibliotheque.getGestionReservation().annulerRes(readInt(tokenizer) /* idReservation */);
             } else if("listerLivres".startsWith(command)) {
-                gestionBiblio.getGestionInterrogation().listerLivres();
+                gestionBibliotheque.getGestionInterrogation().listerLivres();
             } else if("listerLivresTitre".startsWith(command)) {
-                gestionBiblio.getGestionInterrogation().listerLivresTitre(readString(tokenizer) /* mot */);
+                gestionBibliotheque.getGestionInterrogation().listerLivresTitre(readString(tokenizer) /* mot */);
             } else if(!"--".startsWith(command)) {
                 System.out.println("  Transactions non reconnue.  Essayer \"aide\"");
             }
