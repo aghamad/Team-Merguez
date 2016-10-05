@@ -4,53 +4,55 @@
 
 package ca.qc.collegeahuntsic.bibliotheque.util;
 
+import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
- * Utilitaire de création d'un Timestamp dans un format défini.
+ * Utilitaire de création d'un {@link java.sql.Timestamp} dans un format défini.
  *
- * @author Team-Merguez
+ * @author Gilles Benichou
  */
-
 public final class FormatDate {
+    private static final String FORMAT_DATE = "yyyy-MM-dd";
 
-    /**
-     * variable private static.
-     *
-     */
-    private static SimpleDateFormat formatAMJ;
+    private static final SimpleDateFormat SIMPLE_DATE_FORMAT = new SimpleDateFormat(FormatDate.FORMAT_DATE);
+
     static {
-        formatAMJ = new SimpleDateFormat("yyyy-MM-dd");
-        formatAMJ.setLenient(false);
+        FormatDate.SIMPLE_DATE_FORMAT.setLenient(false);
     }
 
     /**
-     *
      * Constructeur privé pour empêcher toute instanciation.
-     *
      */
     private FormatDate() {
         super();
     }
 
     /**
-     * Convertit une String du format YYYY-MM-DD en un objet de la classe Date.
-     * @param dateString nom de la String passer en parametre
-     * @throws ParseException est l'exception retourner
-     * @return formatAMJ retourne la date qui est parse.
+     * Convertit une chaîne de caractères en {@link java.sql.Timestamp} selon le format <code>yyyy-MM-dd</code>.
+     *
+     * @param date La chaîne de caractères
+     * @return Le {@link java.sql.Timestamp} issu de la conversion
+     * @throws ParseException Si la chaîne de caractères n'est pas formatée correctement
      */
-    public static Date convertirDate(String dateString) throws ParseException {
-        return formatAMJ.parse(dateString);
+    public static Timestamp timestampValue(String date) throws ParseException {
+        final Date dateFormatee = FormatDate.SIMPLE_DATE_FORMAT.parse(date);
+        final Timestamp timestamp = new Timestamp(dateFormatee.getTime());
+        return timestamp;
     }
 
     /**
-     * Convertit une String du format YYYY-MM-DD en un objet de la classe Date.
-     * @param date est la date passe en paramettre.
-     * @return formatAMJ retourne la date qui est parse.
+     * Convertit un {@link java.sql.Timestamp} en une chaîne de caractères selon le format <code>yyyy-MM-dd</code>.
+     *
+     * @param timestamp Le {@link java.sql.Timestamp}
+     * @return La chaîne de caractères issue de la conversion
+     * @throws ParseException Si le {@link java.sql.Timestamp} n'est pas formaté correctement
      */
-    public static String toString(Date date) {
-        return formatAMJ.format(date);
+    public static String stringValue(Timestamp timestamp) {
+        final Date date = new Date(timestamp.getTime());
+        final String dateFormatee = FormatDate.SIMPLE_DATE_FORMAT.format(date);
+        return dateFormatee;
     }
 }
