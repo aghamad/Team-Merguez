@@ -48,40 +48,43 @@ public final class BDCreateur {
                 try(
                     Statement statement = connexion.getConnection().createStatement()) {
 
-                    statement.executeUpdate("DROP TABLE IF EXISTS reservation CASCADE");
-                    statement.executeUpdate("DROP TABLE IF EXISTS livre       CASCADE");
-                    statement.executeUpdate("DROP TABLE IF EXISTS membre      CASCADE");
+                    statement.executeUpdate("DROP TABLE reservation CASCADE CONSTRAINTS PURGE");
+                    statement.executeUpdate("DROP TABLE livre CASCADE CONSTRAINTS PURGE");
+                    statement.executeUpdate("DROP TABLE membre CASCADE CONSTRAINTS PURGE");
 
-                    statement.executeUpdate("CREATE TABLE membre ("
-                        + "                               idMembre   INTEGER(3)   CHECK (idMembre > 0), "
-                        + "                               nom        VARCHAR(10)  NOT NULL, "
-                        + "                               telephone  BIGINT(10), "
-                        + "                               limitePret INTEGER(2)   CHECK (limitePret > 0 AND limitePret <= 10), "
-                        + "                               nbPret     INTEGER(2)   DEFAULT 0 CHECK (nbpret >= 0), "
-                        + "                               CONSTRAINT cleMembre    PRIMARY KEY (idMembre), "
-                        + "                               CONSTRAINT limiteNbPret CHECK (nbPret <= limitePret))");
+                    statement.executeUpdate("CREATE TABLE membre ( "
+                        + "idMembre        NUMBER(3) CHECK(idMembre > 0), "
+                        + "nom             varchar(10) NOT NULL, "
+                        + "telephone       NUMBER(10) , "
+                        + "limitePret      NUMBER(2) CHECK(limitePret > 0 AND limitePret <= 10) , "
+                        + "nbpret          NUMBER(2) DEFAULT 0 CHECK(nbpret >= 0) , "
+                        + "CONSTRAINT cleMembre PRIMARY KEY (idMembre), "
+                        + "CONSTRAINT limiteNbPret CHECK(nbpret <= limitePret) "
+                        + ")");
 
-                    statement.executeUpdate("CREATE TABLE livre ("
-                        + "                               idLivre         INTEGER(3)    CHECK (idLivre > 0), "
-                        + "                               titre           VARCHAR(10)   NOT NULL, "
-                        + "                               auteur          VARCHAR(10)   NOT NULL, "
-                        + "                               dateAcquisition TIMESTAMP(3)  NOT NULL, "
-                        + "                               idMembre        INTEGER(3), "
-                        + "                               datePret        TIMESTAMP(3), "
-                        + "                               CONSTRAINT      cleLivre      PRIMARY KEY (idLivre), "
-                        + "                               CONSTRAINT      refPretMembre FOREIGN KEY (idMembre) REFERENCES membre (idMembre))");
+                    statement.executeUpdate("CREATE TABLE livre ( "
+                        + "idLivre         NUMBER(3) CHECK(idLivre > 0) , "
+                        + "titre           varchar(10) NOT NULL, "
+                        + "auteur          varchar(10) NOT NULL, "
+                        + "dateAcquisition TIMESTAMP NOT NULL, "
+                        + "idMembre        NUMBER(3) , "
+                        + "datePret        TIMESTAMP , "
+                        + "CONSTRAINT cleLivre PRIMARY KEY (idLivre), "
+                        + "CONSTRAINT refPretMembre FOREIGN KEY (idMembre) REFERENCES membre(idMembre)"
+                        + ")");
 
-                    statement.executeUpdate("CREATE TABLE reservation ("
-                        + "                               idReservation   INTEGER(3), "
-                        + "                               idMembre        INTEGER(3), "
-                        + "                               idLivre         INTEGER(3), "
-                        + "                               dateReservation TIMESTAMP(3), "
-                        + "                               CONSTRAINT      clePrimaireReservation  PRIMARY KEY (idReservation), "
-                        + "                               CONSTRAINT      cleEtrangereReservation UNIQUE (idMembre, idLivre), "
-                        + "                               CONSTRAINT      refReservationMembre    FOREIGN KEY (idMembre) REFERENCES membre (idMembre) "
-                        + "                                                                       ON DELETE CASCADE, "
-                        + "                               CONSTRAINT      refReservationLivre     FOREIGN KEY (idLivre) REFERENCES livre (idLivre) "
-                        + "                                                                       ON DELETE CASCADE)");
+                    statement.executeUpdate("CREATE TABLE reservation ( "
+                        + "idReservation   NUMBER(3) , "
+                        + "idMembre        NUMBER(3) , "
+                        + "idLivre         NUMBER(3) , "
+                        + "dateReservation TIMESTAMP, "
+                        + "CONSTRAINT cleReservation PRIMARY KEY (idReservation) , "
+                        + "CONSTRAINT cleCandidateReservation UNIQUE (idMembre,idLivre) , "
+                        + "CONSTRAINT refReservationMembre FOREIGN KEY (idMembre) REFERENCES membre(idMembre)"
+                        + "  ON DELETE CASCADE , "
+                        + "CONSTRAINT refReservationLivre FOREIGN KEY (idLivre) REFERENCES livre(idLivre) "
+                        + "  ON DELETE CASCADE "
+                        + ")");
 
                     connexion.commit();
 
