@@ -5,7 +5,7 @@ import ca.qc.collegeahuntsic.bibliotheque.db.Connexion;
 
 /**
  *
- * TODO Auto-generated class javadoc
+ * TODO Auto-generated class javadoc.
  *
  * @author Team-Merguez
  */
@@ -14,9 +14,9 @@ public class PretDAO extends DAO {
 
     /**
      *
-     * TODO Auto-generated constructor javadoc
+     * TODO Auto-generated constructor javadoc.
      *
-     * @param connexion
+     * @param connexion qui crée la connection.
      */
     public PretDAO(Connexion connexion) {
         super(connexion);
