@@ -86,7 +86,7 @@ public class LivreDAO extends DAO {
         + "                                               auteur = ?, "
         + "                                               dateAcquisition = ?, "
         + "                                               idMembre = ?, "
-        + "                                               datePret = CURRENT_TIMESTAMP "
+        + "                                               datePret = SYSDATE "
         + "                                        WHERE  idLivre = ?";
 
     private static final String RETOUR_REQUEST = "UPDATE livre "
