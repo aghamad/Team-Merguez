@@ -21,7 +21,7 @@ import ca.qc.collegeahuntsic.bibliotheque.util.BibliothequeCreateur;
 import ca.qc.collegeahuntsic.bibliotheque.util.FormatteurDate;
 
 /**
- * Interface du système de gestion d'une bibliothèque.<br /><br />
+ * Interface du système de gestion d'une bibliotheque.<br /><br />
  *
  * Ce programme permet d'appeler les transactions de base d'une bibliothèque.  Il gère des livres, des membres et des réservations. Les données
  * sont conservées dans une base de données relationnelles accédée avec JDBC. Pour une liste des transactions traitées, voir la méthode
