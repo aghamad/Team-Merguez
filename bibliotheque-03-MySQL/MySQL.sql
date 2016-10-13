@@ -6,7 +6,6 @@ CREATE TABLE membre (idMembre   INTEGER(3)   CHECK (idMembre > 0),
                      nom        VARCHAR(10)  NOT NULL,
                      telephone  BIGINT(10),
 					 limitePret INTEGER(2)   CHECK (limitePret > 0 AND limitePret <= 10),
-					 nbPret     INTEGER(2)   DEFAULT 0 CHECK (nbpret >= 0),
 					 CONSTRAINT cleMembre    PRIMARY KEY (idMembre),
 					 CONSTRAINT limiteNbPret CHECK (nbPret <= limitePret));
 
@@ -18,6 +17,15 @@ CREATE TABLE livre (idLivre         INTEGER(3)    CHECK (idLivre > 0),
 					datePret        TIMESTAMP(3)  NULL,
 					CONSTRAINT      cleLivre      PRIMARY KEY (idLivre),
 					CONSTRAINT      refPretMembre FOREIGN KEY (idMembre) REFERENCES membre (idMembre));
+					
+CREATE TABLE pret (idPret INTEGER(3) AUTO_INCREMENT CHECK(idPret > 0),
+					idMembre INTEGER(3) NOT NULL CHECK(idMembre > 0),
+					idLivre INTEGER(3) NOT NULL CHECK(idLivre > 0),
+					datePret TIMESTAMP(3),
+					dateRetour TIMESTAMP(3) NULL,
+					CONSTRAINT clePrimairePret PRIMARY KEY (idPret),
+					CONSTRAINT refPretMembre FOREIGN KEY (idMembre) REFERENCES membre(idMembre),
+					CONSTRAINT refPretLivre FOREIGN KEY (idLivre) REFERENCES livre(idLivre));
 
 CREATE TABLE reservation (idReservation   INTEGER(3),
                           idMembre        INTEGER(3),

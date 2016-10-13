@@ -25,27 +25,23 @@ public class MembreDAO extends DAO {
     private static final String ADD_REQUEST = "INSERT INTO membre (idMembre, "
         + "                                                        nom, "
         + "                                                        telephone, "
-        + "                                                        limitePret, "
-        + "                                                        nbPret) "
+        + "                                                        limitePret) "
         + "                                    VALUES             (?, "
         + "                                                        ?, "
         + "                                                        ?, "
-        + "                                                        ?, "
-        + "                                                        0)";
+        + "                                                        ?)";
 
     private static final String READ_REQUEST = "SELECT idMembre, "
         + "                                            nom, "
         + "                                            telephone, "
-        + "                                            limitePret, "
-        + "                                            nbPret "
+        + "                                            limitePret "
         + "                                     FROM   membre "
         + "                                     WHERE  idMembre = ?";
 
     private static final String UPDATE_REQUEST = "UPDATE membre "
         + "                                       SET    nom = ?, "
         + "                                              telephone = ?, "
-        + "                                              limitePret = ?, "
-        + "                                              nbPret = ? "
+        + "                                              limitePret = ?"
         + "                                       WHERE  idMembre = ?";
 
     private static final String DELETE_REQUEST = "DELETE FROM membre "
@@ -54,8 +50,7 @@ public class MembreDAO extends DAO {
     private static final String GET_ALL_REQUEST = "SELECT idMembre, "
         + "                                               nom, "
         + "                                               telephone, "
-        + "                                               limitePret, "
-        + "                                               nbPret "
+        + "                                               limitePret "
         + "                                        FROM   membre";
 
     /**
