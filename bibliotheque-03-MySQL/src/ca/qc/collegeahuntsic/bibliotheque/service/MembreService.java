@@ -363,7 +363,7 @@ public class MembreService extends Service {
     /**
      * Désincrit un membre.
      *
-     * @param membreDTO Le membre à désinscrire
+     * @param membreDTO Le membre à désinscrire.
      * @throws ServiceException Si le membre n'existe pas, si le membre a encore des prêts, s'il a des réservations ou s'il y a une erreur avec
      *         la base de données
      */
