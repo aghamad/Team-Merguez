@@ -341,15 +341,6 @@ public class ReservationService extends Service {
                     + emprunteur.getIdMembre()
                     + ")");
             }
-            if(unMembreDTO.getNbPret() == unMembreDTO.getLimitePret()) {
-                throw new ServiceException("Le membre "
-                    + unMembreDTO.getNom()
-                    + " (ID de membre : "
-                    + unMembreDTO.getIdMembre()
-                    + ") a atteint sa limite de prêt ("
-                    + unMembreDTO.getLimitePret()
-                    + " emprunt(s) maximum)");
-            }
 
             // Cas éliminé en utilisant la date de prêt et de réservation comme étant la date système de la base de données
 

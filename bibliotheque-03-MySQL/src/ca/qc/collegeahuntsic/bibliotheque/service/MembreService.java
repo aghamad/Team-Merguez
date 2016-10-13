@@ -221,15 +221,7 @@ public class MembreService extends Service {
                     + emprunteur.getIdMembre()
                     + ")");
             }
-            if(unMembreDTO.getNbPret() == unMembreDTO.getLimitePret()) {
-                throw new ServiceException("Le membre "
-                    + unMembreDTO.getNom()
-                    + " (ID de membre : "
-                    + unMembreDTO.getIdMembre()
-                    + ") a atteint sa limite de prêt ("
-                    + unMembreDTO.getLimitePret()
-                    + " emprunt(s) maximum)");
-            }
+
             if(!getReservationDAO().findByLivre(unLivreDTO.getIdLivre()).isEmpty()) {
                 throw new ServiceException("Le livre "
                     + unLivreDTO.getTitre()
@@ -383,13 +375,7 @@ public class MembreService extends Service {
                     + membreDTO.getIdMembre()
                     + " n'existe pas");
             }
-            if(unMembreDTO.getNbPret() > 0) {
-                throw new ServiceException("Le membre "
-                    + unMembreDTO.getNom()
-                    + " (ID de membre : "
-                    + unMembreDTO.getIdMembre()
-                    + ") a encore des prêts");
-            }
+
             if(!getReservationDAO().findByMembre(unMembreDTO.getIdMembre()).isEmpty()) {
                 throw new ServiceException("Le membre "
                     + unMembreDTO.getNom()
