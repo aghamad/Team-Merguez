@@ -114,7 +114,8 @@ public class LivreDAO extends DAO {
      */
     public void add(LivreDTO livreDTO) throws DAOException {
         try(
-            PreparedStatement addPreparedStatement = getConnection().prepareStatement(LivreDAO.ADD_REQUEST)) {
+            PreparedStatement addPreparedStatement = getConnection()
+                .prepareStatement(LivreDAO.ADD_REQUEST)) {
             addPreparedStatement.setInt(1,
                 livreDTO.getIdLivre());
             addPreparedStatement.setString(2,
@@ -139,7 +140,8 @@ public class LivreDAO extends DAO {
     public LivreDTO read(int idLivre) throws DAOException {
         LivreDTO livreDTO = null;
         try(
-            PreparedStatement readPreparedStatement = getConnection().prepareStatement(LivreDAO.READ_REQUEST)) {
+            PreparedStatement readPreparedStatement = getConnection()
+                .prepareStatement(LivreDAO.READ_REQUEST)) {
             readPreparedStatement.setInt(1,
                 idLivre);
             try(
@@ -168,7 +170,8 @@ public class LivreDAO extends DAO {
      */
     public void update(LivreDTO livreDTO) throws DAOException {
         try(
-            PreparedStatement updatePreparedStatement = getConnection().prepareStatement(LivreDAO.UPDATE_REQUEST)) {
+            PreparedStatement updatePreparedStatement = getConnection()
+                .prepareStatement(LivreDAO.UPDATE_REQUEST)) {
             updatePreparedStatement.setString(1,
                 livreDTO.getTitre());
             updatePreparedStatement.setString(2,
@@ -195,7 +198,8 @@ public class LivreDAO extends DAO {
      */
     public void delete(LivreDTO livreDTO) throws DAOException {
         try(
-            PreparedStatement deletePreparedStatement = getConnection().prepareStatement(LivreDAO.DELETE_REQUEST)) {
+            PreparedStatement deletePreparedStatement = getConnection()
+                .prepareStatement(LivreDAO.DELETE_REQUEST)) {
             deletePreparedStatement.setInt(1,
                 livreDTO.getIdLivre());
             deletePreparedStatement.executeUpdate();
@@ -211,9 +215,10 @@ public class LivreDAO extends DAO {
      * @throws DAOException S'il y a une erreur avec la base de données
      */
     public List<LivreDTO> getAll() throws DAOException {
-        List<LivreDTO> livres = Collections.EMPTY_LIST;
+        List<LivreDTO> livres = Collections.emptyList();
         try(
-            PreparedStatement getAllPreparedStatement = getConnection().prepareStatement(LivreDAO.GET_ALL_REQUEST)) {
+            PreparedStatement getAllPreparedStatement = getConnection()
+                .prepareStatement(LivreDAO.GET_ALL_REQUEST)) {
             try(
                 ResultSet resultSet = getAllPreparedStatement.executeQuery()) {
                 LivreDTO livreDTO = null;
@@ -245,9 +250,10 @@ public class LivreDAO extends DAO {
      * @throws DAOException S'il y a une erreur avec la base de données
      */
     public List<LivreDTO> findByTitre(String titre) throws DAOException {
-        List<LivreDTO> livres = Collections.EMPTY_LIST;
+        List<LivreDTO> livres = Collections.emptyList();
         try(
-            PreparedStatement findByTitrePreparedStatement = getConnection().prepareStatement(LivreDAO.FIND_BY_TITRE)) {
+            PreparedStatement findByTitrePreparedStatement = getConnection()
+                .prepareStatement(LivreDAO.FIND_BY_TITRE)) {
             findByTitrePreparedStatement.setString(1,
                 "%"
                     + titre
@@ -283,9 +289,10 @@ public class LivreDAO extends DAO {
      * @throws DAOException S'il y a une erreur avec la base de données
      */
     public List<LivreDTO> findByMembre(int idMembre) throws DAOException {
-        List<LivreDTO> livres = Collections.EMPTY_LIST;
+        List<LivreDTO> livres = Collections.emptyList();
         try(
-            PreparedStatement findByMembrePreparedStatement = getConnection().prepareStatement(LivreDAO.FIND_BY_MEMBRE)) {
+            PreparedStatement findByMembrePreparedStatement = getConnection()
+                .prepareStatement(LivreDAO.FIND_BY_MEMBRE)) {
             findByMembrePreparedStatement.setInt(1,
                 idMembre);
             try(
@@ -319,7 +326,8 @@ public class LivreDAO extends DAO {
      */
     public void emprunter(LivreDTO livreDTO) throws DAOException {
         try(
-            PreparedStatement empruntPreparedStatement = getConnection().prepareStatement(LivreDAO.EMPRUNT_REQUEST)) {
+            PreparedStatement empruntPreparedStatement = getConnection()
+                .prepareStatement(LivreDAO.EMPRUNT_REQUEST)) {
             empruntPreparedStatement.setString(1,
                 livreDTO.getTitre());
             empruntPreparedStatement.setString(2,
@@ -344,7 +352,8 @@ public class LivreDAO extends DAO {
      */
     public void retourner(LivreDTO livreDTO) throws DAOException {
         try(
-            PreparedStatement retourPreparedStatement = getConnection().prepareStatement(LivreDAO.RETOUR_REQUEST)) {
+            PreparedStatement retourPreparedStatement = getConnection()
+                .prepareStatement(LivreDAO.RETOUR_REQUEST)) {
             retourPreparedStatement.setString(1,
                 livreDTO.getTitre());
             retourPreparedStatement.setString(2,

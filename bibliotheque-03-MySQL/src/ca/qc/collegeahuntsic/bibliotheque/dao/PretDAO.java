@@ -215,7 +215,7 @@ public class PretDAO extends DAO {
      * @throws DAOException S'il y a une erreur avec la base de données
      */
     public List<PretDTO> getAll() throws DAOException {
-        List<PretDTO> listeDTO = Collections.EMPTY_LIST;
+        List<PretDTO> listeDTO = Collections.emptyList();
         PretDTO pretDTO = null;
 
         try(
@@ -251,7 +251,7 @@ public class PretDAO extends DAO {
      * @throws DAOException S'il y a une erreur avec la base de données
      */
     public List<PretDTO> findByLivre(int idLivre) throws DAOException {
-        List<PretDTO> listePrets = Collections.EMPTY_LIST;
+        List<PretDTO> listePrets = Collections.emptyList();
         PretDTO pretDTO = null;
 
         try(
@@ -289,7 +289,7 @@ public class PretDAO extends DAO {
      * @throws DAOException S'il y a une erreur avec la base de données
      */
     public List<PretDTO> findByMembre(int idMembre) throws DAOException {
-        List<PretDTO> listePrets = Collections.EMPTY_LIST;
+        List<PretDTO> listePrets = Collections.emptyList();
         PretDTO pretDTO = null;
 
         try(
@@ -327,7 +327,7 @@ public class PretDAO extends DAO {
      * @throws DAOException S'il y a une erreur avec la base de données
      */
     public List<PretDTO> findByDateRetour(Timestamp dateRetour) throws DAOException {
-        List<PretDTO> listePrets = Collections.EMPTY_LIST;
+        List<PretDTO> listePrets = Collections.emptyList();
         PretDTO pretDTO = null;
 
         try(
@@ -365,7 +365,7 @@ public class PretDAO extends DAO {
      * @throws DAOException S'il y a une erreur avec la base de données
      */
     public List<PretDTO> findByDatePret(Timestamp datePret) throws DAOException {
-        List<PretDTO> listePrets = Collections.EMPTY_LIST;
+        List<PretDTO> listePrets = Collections.emptyList();
         PretDTO pretDTO = null;
 
         try(
