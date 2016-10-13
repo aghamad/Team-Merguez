@@ -101,15 +101,15 @@ public class PretDAO extends DAO {
     }
 
     /**
+     * Methode Add qui ajoute un pret.
      *
-     * TODO Auto-generated method javadoc
-     *
-     * @param pretDTO
-     * @throws DAOException
+     * @param pretDTO nom de la variable d'instance de la classe PretDTO
+     * @throws DAOException S'il y a une erreur avec la base de données
      */
     public void add(PretDTO pretDTO) throws DAOException {
         try(
-            PreparedStatement addPreparedStatement = getConnection().prepareStatement(PretDAO.ADD_REQUEST)) {
+            PreparedStatement addPreparedStatement = getConnection()
+                .prepareStatement(PretDAO.ADD_REQUEST)) {
             addPreparedStatement.setInt(1,
                 pretDTO.getIdPret());
             addPreparedStatement.setInt(2,
@@ -127,17 +127,17 @@ public class PretDAO extends DAO {
     }
 
     /**
+     * Methode read qui recoit un int en parametre.
      *
-     * TODO Auto-generated method javadoc
-     *
-     * @param idePret
-     * @return
-     * @throws DAOException
+     * @param idePret int recu en parametre pour
+     * @return la methode
+     * @throws DAOException S'il y a une erreur avec la base de données
      */
     public PretDTO read(int idePret) throws DAOException {
         PretDTO pretDTO = null;
         try(
-            PreparedStatement readPreparedStatement = getConnection().prepareStatement(PretDAO.READ_REQUEST)) {
+            PreparedStatement readPreparedStatement = getConnection()
+                .prepareStatement(PretDAO.READ_REQUEST)) {
             readPreparedStatement.setInt(1,
                 idePret);
             try(
@@ -159,14 +159,15 @@ public class PretDAO extends DAO {
 
     /**
      *
-     * TODO Auto-generated method javadoc
+     * Methode delete qui delete un pret.
      *
-     * @param pretDTO
-     * @throws DAOException
+     * @param pretDTO nom de la variable d'instance de la classe PretDTO
+     * @throws DAOException S'il y a une erreur avec la base de donnéesa
      */
     public void delete(PretDTO pretDTO) throws DAOException {
         try(
-            PreparedStatement deletePreparedStatement = getConnection().prepareStatement(PretDAO.DELETE_REQUEST)) {
+            PreparedStatement deletePreparedStatement = getConnection()
+                .prepareStatement(PretDAO.DELETE_REQUEST)) {
 
             deletePreparedStatement.setInt(1,
                 pretDTO.getIdPret());
@@ -179,14 +180,15 @@ public class PretDAO extends DAO {
 
     /**
      *
-     * TODO Auto-generated method javadoc
+     * Methode update qui update un pret.
      *
-     * @param pretDTO
-     * @throws DAOException
+     * @param pretDTO nom de la variable d'instance de la classe PretDTO
+     * @throws DAOException S'il y a une erreur avec la base de données
      */
     public void update(PretDTO pretDTO) throws DAOException {
         try(
-            PreparedStatement addPreparedStatement = getConnection().prepareStatement(PretDAO.UPDATE_REQUEST)) {
+            PreparedStatement addPreparedStatement = getConnection()
+                .prepareStatement(PretDAO.UPDATE_REQUEST)) {
             addPreparedStatement.setInt(1,
                 pretDTO.getIdPret());
             addPreparedStatement.setInt(2,
@@ -207,17 +209,18 @@ public class PretDAO extends DAO {
 
     /**
      *
-     * TODO Auto-generated method javadoc
+     * Methode List<PretDTO> getAll() qui liste tout.
      *
-     * @return
-     * @throws DAOException
+     * @return retourne tout les resultats des requestes
+     * @throws DAOException S'il y a une erreur avec la base de données
      */
     public List<PretDTO> getAll() throws DAOException {
         List<PretDTO> listeDTO = Collections.EMPTY_LIST;
         PretDTO pretDTO = null;
 
         try(
-            PreparedStatement getAllPreparedStatement = getConnection().prepareStatement(PretDAO.GET_ALL_REQUEST);
+            PreparedStatement getAllPreparedStatement = getConnection()
+                .prepareStatement(PretDAO.GET_ALL_REQUEST);
             ResultSet resultSet = getAllPreparedStatement.executeQuery();) {
 
             if(resultSet.next()) {
@@ -241,18 +244,19 @@ public class PretDAO extends DAO {
 
     /**
      *
-     * TODO Auto-generated method javadoc
+     * Methode List<PretDTO> findByLivre qui liste les livres.
      *
-     * @param idLivre
-     * @return
-     * @throws DAOException
+     * @param idLivre Nom de la variable qui correspond a l'id d'un livre
+     * @return la liste des livres
+     * @throws DAOException S'il y a une erreur avec la base de données
      */
     public List<PretDTO> findByLivre(int idLivre) throws DAOException {
         List<PretDTO> listePrets = Collections.EMPTY_LIST;
         PretDTO pretDTO = null;
 
         try(
-            PreparedStatement findByLivrePreparedStatement = getConnection().prepareStatement(PretDAO.FIND_BY_LIVRE);) {
+            PreparedStatement findByLivrePreparedStatement = getConnection()
+                .prepareStatement(PretDAO.FIND_BY_LIVRE);) {
             findByLivrePreparedStatement.setInt(1,
                 idLivre);
             try(
@@ -278,18 +282,19 @@ public class PretDAO extends DAO {
 
     /**
      *
-     * TODO Auto-generated method javadoc
+     * Methode List<PretDTO> findByMembre qui liste les membres.
      *
-     * @param idMembre
-     * @return
-     * @throws DAOException
+     * @param idMembre Nom de la variable qui correspond a l'id d'un membre
+     * @return la list de membre
+     * @throws DAOException S'il y a une erreur avec la base de données
      */
     public List<PretDTO> findByMembre(int idMembre) throws DAOException {
         List<PretDTO> listePrets = Collections.EMPTY_LIST;
         PretDTO pretDTO = null;
 
         try(
-            PreparedStatement findByLivrePreparedStatement = getConnection().prepareStatement(PretDAO.FIND_BY_MEMBRE);) {
+            PreparedStatement findByLivrePreparedStatement = getConnection()
+                .prepareStatement(PretDAO.FIND_BY_MEMBRE);) {
             findByLivrePreparedStatement.setInt(1,
                 idMembre);
             try(
@@ -315,18 +320,19 @@ public class PretDAO extends DAO {
 
     /**
      *
-     * TODO Auto-generated method javadoc
+     * Methode List<PretDTO> findByDateRetour qui liste par la date de pret.
      *
-     * @param dateRetour
-     * @return
-     * @throws DAOException
+     * @param dateRetour Nom de la variable de l'instance Timestamp
+     * @return return la liste de pret par la date de retour
+     * @throws DAOException S'il y a une erreur avec la base de données
      */
     public List<PretDTO> findByDateRetour(Timestamp dateRetour) throws DAOException {
         List<PretDTO> listePrets = Collections.EMPTY_LIST;
         PretDTO pretDTO = null;
 
         try(
-            PreparedStatement findByLivrePreparedStatement = getConnection().prepareStatement(PretDAO.FIND_BY_DATE_RETOUR);) {
+            PreparedStatement findByLivrePreparedStatement = getConnection()
+                .prepareStatement(PretDAO.FIND_BY_DATE_RETOUR);) {
             findByLivrePreparedStatement.setTimestamp(1,
                 dateRetour);
             try(
@@ -352,18 +358,19 @@ public class PretDAO extends DAO {
 
     /**
      *
-     * TODO Auto-generated method javadoc
+     * Methode List<PretDTO> findByDatePret qui liste par la date de pret.
      *
-     * @param datePret
-     * @return
-     * @throws DAOException
+     * @param datePret Nom de la variable de l'instance Timestamp
+     * @return la liste de pret
+     * @throws DAOException S'il y a une erreur avec la base de données
      */
     public List<PretDTO> findByDatePret(Timestamp datePret) throws DAOException {
         List<PretDTO> listePrets = Collections.EMPTY_LIST;
         PretDTO pretDTO = null;
 
         try(
-            PreparedStatement findByLivrePreparedStatement = getConnection().prepareStatement(PretDAO.FIND_BY_DATE_PRET);) {
+            PreparedStatement findByLivrePreparedStatement = getConnection()
+                .prepareStatement(PretDAO.FIND_BY_DATE_PRET);) {
             findByLivrePreparedStatement.setTimestamp(1,
                 datePret);
             try(
