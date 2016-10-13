@@ -29,7 +29,7 @@ public class ReservationDAO extends DAO {
         + "                                    VALUES                  (?, "
         + "                                                             ?, "
         + "                                                             ?, "
-        + "                                                             CURRENT_TIMESTAMP)";
+        + "                                                             SYSDATE)";
 
     private static final String READ_REQUEST = "SELECT idReservation, "
         + "                                            idLivre, "
