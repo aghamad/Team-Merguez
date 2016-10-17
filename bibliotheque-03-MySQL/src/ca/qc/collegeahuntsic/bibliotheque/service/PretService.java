@@ -124,7 +124,7 @@ public class PretService extends Service {
      */
     public List<PretDTO> getAll() throws ServiceException {
 
-        List<PretDTO> listeDTO = Collections.EMPTY_LIST;
+        List<PretDTO> listeDTO = Collections.emptyList();
 
         try {
             listeDTO = getPretDAO().getAll();
@@ -143,7 +143,7 @@ public class PretService extends Service {
      */
     public List<PretDTO> findByMembre(int idMembre) throws ServiceException {
 
-        List<PretDTO> listePrets = Collections.EMPTY_LIST;
+        List<PretDTO> listePrets = Collections.emptyList();
         try {
             listePrets = getPretDAO().findByMembre(idMembre);
         } catch(final DAOException sqlException) {
@@ -161,7 +161,7 @@ public class PretService extends Service {
      */
     public List<PretDTO> findByLivre(int idLivre) throws ServiceException {
 
-        List<PretDTO> listePrets = Collections.EMPTY_LIST;
+        List<PretDTO> listePrets = Collections.emptyList();
         try {
             listePrets = getPretDAO().findByLivre(idLivre);
         } catch(final DAOException sqlException) {
@@ -179,7 +179,7 @@ public class PretService extends Service {
      */
     public List<PretDTO> findByDatePret(Timestamp datePret) throws ServiceException {
 
-        List<PretDTO> listePrets = Collections.EMPTY_LIST;
+        List<PretDTO> listePrets = Collections.emptyList();
         try {
             listePrets = getPretDAO().findByDatePret(datePret);
         } catch(final DAOException sqlException) {
@@ -197,7 +197,7 @@ public class PretService extends Service {
      */
     public List<PretDTO> findByDateRetour(Timestamp dateRetour) throws ServiceException {
 
-        List<PretDTO> listePrets = Collections.EMPTY_LIST;
+        List<PretDTO> listePrets = Collections.emptyList();
 
         try {
             listePrets = getPretDAO().findByDatePret(dateRetour);
@@ -260,7 +260,8 @@ public class PretService extends Service {
             }
 
             // Vérifie si le livre est réservé par quelqu'un d'autre
-            final List<ReservationDTO> reservations = getReservationDAO().findByLivre(unLivreDTO.getIdLivre());
+            final List<ReservationDTO> reservations = getReservationDAO()
+                .findByLivre(unLivreDTO.getIdLivre());
             if(!reservations.isEmpty()) {
                 throw new ServiceException("Le livre "
                     + pretDTO.getIdLivre()
