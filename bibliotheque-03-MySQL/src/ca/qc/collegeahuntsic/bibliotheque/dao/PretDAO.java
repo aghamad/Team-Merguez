@@ -114,13 +114,10 @@ public class PretDAO extends DAO {
             PreparedStatement addPreparedStatement = getConnection().prepareStatement(PretDAO.ADD_REQUEST)) {
             addPreparedStatement.setInt(1,
                 pretDTO.getIdPret());
-            addPreparedStatement.setInt(2,
-                pretDTO.getIdMembre());
-            addPreparedStatement.setInt(3,
-                pretDTO.getIdLivre());
-            addPreparedStatement.setTimestamp(4,
+
+            addPreparedStatement.setTimestamp(2,
                 pretDTO.getDatePret());
-            addPreparedStatement.setTimestamp(5,
+            addPreparedStatement.setTimestamp(3,
                 pretDTO.getDateRetour());
             addPreparedStatement.executeUpdate();
         } catch(SQLException sqlException) {
@@ -146,10 +143,9 @@ public class PretDAO extends DAO {
                 if(resultSet.next()) {
                     pretDTO = new PretDTO();
                     pretDTO.setIdPret(resultSet.getInt(1));
-                    pretDTO.setIdMembre(resultSet.getInt(2));
-                    pretDTO.setIdLivre(resultSet.getInt(3));
-                    pretDTO.setDatePret(resultSet.getTimestamp(4));
-                    pretDTO.setDateRetour(resultSet.getTimestamp(5));
+
+                    pretDTO.setDatePret(resultSet.getTimestamp(2));
+                    pretDTO.setDateRetour(resultSet.getTimestamp(3));
                 }
             }
         } catch(SQLException sqlException) {
@@ -190,15 +186,12 @@ public class PretDAO extends DAO {
             PreparedStatement addPreparedStatement = getConnection().prepareStatement(PretDAO.UPDATE_REQUEST)) {
             addPreparedStatement.setInt(1,
                 pretDTO.getIdPret());
-            addPreparedStatement.setInt(2,
-                pretDTO.getIdMembre());
-            addPreparedStatement.setInt(3,
-                pretDTO.getIdLivre());
-            addPreparedStatement.setTimestamp(4,
+
+            addPreparedStatement.setTimestamp(2,
                 pretDTO.getDatePret());
-            addPreparedStatement.setTimestamp(5,
+            addPreparedStatement.setTimestamp(3,
                 pretDTO.getDateRetour());
-            addPreparedStatement.setInt(6,
+            addPreparedStatement.setInt(4,
                 pretDTO.getIdPret());
             addPreparedStatement.executeUpdate();
         } catch(SQLException sqlException) {
@@ -226,10 +219,9 @@ public class PretDAO extends DAO {
                 do {
                     pretDTO = new PretDTO();
                     pretDTO.setIdPret(resultSet.getInt(1));
-                    pretDTO.setIdMembre(resultSet.getInt(2));
-                    pretDTO.setIdLivre(resultSet.getInt(3));
-                    pretDTO.setDatePret(resultSet.getTimestamp(4));
-                    pretDTO.setDateRetour(resultSet.getTimestamp(5));
+
+                    pretDTO.setDatePret(resultSet.getTimestamp(2));
+                    pretDTO.setDateRetour(resultSet.getTimestamp(3));
                     listeDTO.add(pretDTO);
                 } while(resultSet.next());
             }
@@ -263,10 +255,9 @@ public class PretDAO extends DAO {
                     do {
                         pretDTO = new PretDTO();
                         pretDTO.setIdPret(resultSet.getInt(1));
-                        pretDTO.setIdMembre(resultSet.getInt(2));
-                        pretDTO.setIdLivre(resultSet.getInt(3));
-                        pretDTO.setDatePret(resultSet.getTimestamp(4));
-                        pretDTO.setDateRetour(resultSet.getTimestamp(5));
+
+                        pretDTO.setDatePret(resultSet.getTimestamp(2));
+                        pretDTO.setDateRetour(resultSet.getTimestamp(3));
                         listePrets.add(pretDTO);
                     } while(resultSet.next());
                 }
@@ -300,10 +291,9 @@ public class PretDAO extends DAO {
                     do {
                         pretDTO = new PretDTO();
                         pretDTO.setIdPret(resultSet.getInt(1));
-                        pretDTO.setIdMembre(resultSet.getInt(2));
-                        pretDTO.setIdLivre(resultSet.getInt(3));
-                        pretDTO.setDatePret(resultSet.getTimestamp(4));
-                        pretDTO.setDateRetour(resultSet.getTimestamp(5));
+
+                        pretDTO.setDatePret(resultSet.getTimestamp(2));
+                        pretDTO.setDateRetour(resultSet.getTimestamp(3));
                         listePrets.add(pretDTO);
                     } while(resultSet.next());
                 }
@@ -337,10 +327,9 @@ public class PretDAO extends DAO {
                     do {
                         pretDTO = new PretDTO();
                         pretDTO.setIdPret(resultSet.getInt(1));
-                        pretDTO.setIdMembre(resultSet.getInt(2));
-                        pretDTO.setIdLivre(resultSet.getInt(3));
-                        pretDTO.setDatePret(resultSet.getTimestamp(4));
-                        pretDTO.setDateRetour(resultSet.getTimestamp(5));
+
+                        pretDTO.setDatePret(resultSet.getTimestamp(2));
+                        pretDTO.setDateRetour(resultSet.getTimestamp(3));
                         listePrets.add(pretDTO);
                     } while(resultSet.next());
                 }
@@ -374,10 +363,9 @@ public class PretDAO extends DAO {
                     do {
                         pretDTO = new PretDTO();
                         pretDTO.setIdPret(resultSet.getInt(1));
-                        pretDTO.setIdMembre(resultSet.getInt(2));
-                        pretDTO.setIdLivre(resultSet.getInt(3));
-                        pretDTO.setDatePret(resultSet.getTimestamp(4));
-                        pretDTO.setDateRetour(resultSet.getTimestamp(5));
+
+                        pretDTO.setDatePret(resultSet.getTimestamp(2));
+                        pretDTO.setDateRetour(resultSet.getTimestamp(3));
                         listePrets.add(pretDTO);
                     } while(resultSet.next());
                 }
