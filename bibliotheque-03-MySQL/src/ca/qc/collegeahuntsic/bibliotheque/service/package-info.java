@@ -1,11 +1,11 @@
 // Fichier package-info.java
-// Auteur : Gilles Bénichou
+// Auteur : Team-Merguez
 // Date de création : 2016-05-18
 
 /**
  * Provides the Service classes used with the bibliothèque.
  *
- * @author Gilles Bénichou
+ * @author Team-Merguez
  */
 
 package ca.qc.collegeahuntsic.bibliotheque.service;

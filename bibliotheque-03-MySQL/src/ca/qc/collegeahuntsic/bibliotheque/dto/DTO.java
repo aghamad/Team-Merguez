@@ -9,7 +9,7 @@ import java.io.Serializable;
 /**
  * Classe de base pour tous les DTOs.
  *
- * @author Gilles Bénichou
+ * @author Team-Merguez
  */
 public class DTO implements Serializable {
     private static final long serialVersionUID = 1L;

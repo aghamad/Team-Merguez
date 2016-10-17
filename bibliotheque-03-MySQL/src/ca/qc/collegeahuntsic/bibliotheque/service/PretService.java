@@ -1,5 +1,5 @@
 // Fichier PretService.java
-// Auteur : Gilles Bénichou
+// Auteur : Team-Merguez
 // Date de création : 2016-05-18
 
 package ca.qc.collegeahuntsic.bibliotheque.service;
@@ -21,7 +21,7 @@ import ca.qc.collegeahuntsic.bibliotheque.exception.ServiceException;
 /**
  * Service de la table <code>pret</code>.
  *
- * @author Gilles Bénichou
+ * @author Team-Merguez
  */
 public class PretService extends Service {
     private static final long serialVersionUID = 1L;

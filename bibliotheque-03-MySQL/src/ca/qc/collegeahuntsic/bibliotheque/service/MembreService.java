@@ -16,7 +16,7 @@ import ca.qc.collegeahuntsic.bibliotheque.exception.ServiceException;
 /**
  * Service de la table <code>membre</code>.
  *
- * @author Gilles Bénichou
+ * @author Team-Merguez
  */
 public class MembreService extends Service {
     private static final long serialVersionUID = 1L;
