@@ -1,5 +1,5 @@
 // Fichier MembreDTO.java
-// Auteur : Gilles Bénichou
+// Auteur : Team-Merguez
 // Date de création : 2016-05-18
 
 package ca.qc.collegeahuntsic.bibliotheque.dto;
@@ -7,7 +7,7 @@ package ca.qc.collegeahuntsic.bibliotheque.dto;
 /**
  * DTO de la table <code>membre</code>.
  *
- * @author Gilles Bénichou
+ * @author Team-Merguez
  */
 public class MembreDTO extends DTO {
     private static final long serialVersionUID = 1L;

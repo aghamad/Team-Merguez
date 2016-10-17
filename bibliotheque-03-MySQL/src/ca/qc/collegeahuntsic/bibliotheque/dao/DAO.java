@@ -1,5 +1,5 @@
 // Fichier DAO.java
-// Auteur : Gilles Bénichou
+// Auteur : Team-Merguez
 // Date de création : 2016-05-18
 
 package ca.qc.collegeahuntsic.bibliotheque.dao;
@@ -11,7 +11,7 @@ import ca.qc.collegeahuntsic.bibliotheque.db.Connexion;
 /**
  * Classe de base pour tous les DAOs.
  *
- * @author Gilles Bénichou
+ * @author Team-Merguez
  */
 public class DAO implements Serializable {
     private static final long serialVersionUID = 1L;
