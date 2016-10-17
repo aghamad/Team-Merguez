@@ -14,7 +14,7 @@ import ca.qc.collegeahuntsic.bibliotheque.exception.DAOException;
 
 /**
  *
- * TODO Auto-generated class javadoc.
+ * DAO pour effectuer des CRUDs avec la table <code>pret</code>.
  *
  * @author Team-Merguez
  */
@@ -92,7 +92,7 @@ public class PretDAO extends DAO {
 
     /**
      *
-     * TODO Auto-generated constructor javadoc.
+     * Crée un DAO à partir d'une connexion à la base de données.
      *
      * @param connexion qui crée la connection.
      */
@@ -108,8 +108,7 @@ public class PretDAO extends DAO {
      */
     public void add(PretDTO pretDTO) throws DAOException {
         try(
-            PreparedStatement addPreparedStatement = getConnection()
-                .prepareStatement(PretDAO.ADD_REQUEST)) {
+            PreparedStatement addPreparedStatement = getConnection().prepareStatement(PretDAO.ADD_REQUEST)) {
             addPreparedStatement.setInt(1,
                 pretDTO.getIdPret());
             addPreparedStatement.setInt(2,
@@ -136,8 +135,7 @@ public class PretDAO extends DAO {
     public PretDTO read(int idePret) throws DAOException {
         PretDTO pretDTO = null;
         try(
-            PreparedStatement readPreparedStatement = getConnection()
-                .prepareStatement(PretDAO.READ_REQUEST)) {
+            PreparedStatement readPreparedStatement = getConnection().prepareStatement(PretDAO.READ_REQUEST)) {
             readPreparedStatement.setInt(1,
                 idePret);
             try(
@@ -166,8 +164,7 @@ public class PretDAO extends DAO {
      */
     public void delete(PretDTO pretDTO) throws DAOException {
         try(
-            PreparedStatement deletePreparedStatement = getConnection()
-                .prepareStatement(PretDAO.DELETE_REQUEST)) {
+            PreparedStatement deletePreparedStatement = getConnection().prepareStatement(PretDAO.DELETE_REQUEST)) {
 
             deletePreparedStatement.setInt(1,
                 pretDTO.getIdPret());
@@ -187,8 +184,7 @@ public class PretDAO extends DAO {
      */
     public void update(PretDTO pretDTO) throws DAOException {
         try(
-            PreparedStatement addPreparedStatement = getConnection()
-                .prepareStatement(PretDAO.UPDATE_REQUEST)) {
+            PreparedStatement addPreparedStatement = getConnection().prepareStatement(PretDAO.UPDATE_REQUEST)) {
             addPreparedStatement.setInt(1,
                 pretDTO.getIdPret());
             addPreparedStatement.setInt(2,
@@ -219,8 +215,7 @@ public class PretDAO extends DAO {
         PretDTO pretDTO = null;
 
         try(
-            PreparedStatement getAllPreparedStatement = getConnection()
-                .prepareStatement(PretDAO.GET_ALL_REQUEST);
+            PreparedStatement getAllPreparedStatement = getConnection().prepareStatement(PretDAO.GET_ALL_REQUEST);
             ResultSet resultSet = getAllPreparedStatement.executeQuery();) {
 
             if(resultSet.next()) {
@@ -255,8 +250,7 @@ public class PretDAO extends DAO {
         PretDTO pretDTO = null;
 
         try(
-            PreparedStatement findByLivrePreparedStatement = getConnection()
-                .prepareStatement(PretDAO.FIND_BY_LIVRE);) {
+            PreparedStatement findByLivrePreparedStatement = getConnection().prepareStatement(PretDAO.FIND_BY_LIVRE);) {
             findByLivrePreparedStatement.setInt(1,
                 idLivre);
             try(
@@ -293,8 +287,7 @@ public class PretDAO extends DAO {
         PretDTO pretDTO = null;
 
         try(
-            PreparedStatement findByLivrePreparedStatement = getConnection()
-                .prepareStatement(PretDAO.FIND_BY_MEMBRE);) {
+            PreparedStatement findByLivrePreparedStatement = getConnection().prepareStatement(PretDAO.FIND_BY_MEMBRE);) {
             findByLivrePreparedStatement.setInt(1,
                 idMembre);
             try(
@@ -331,8 +324,7 @@ public class PretDAO extends DAO {
         PretDTO pretDTO = null;
 
         try(
-            PreparedStatement findByLivrePreparedStatement = getConnection()
-                .prepareStatement(PretDAO.FIND_BY_DATE_RETOUR);) {
+            PreparedStatement findByLivrePreparedStatement = getConnection().prepareStatement(PretDAO.FIND_BY_DATE_RETOUR);) {
             findByLivrePreparedStatement.setTimestamp(1,
                 dateRetour);
             try(
@@ -369,8 +361,7 @@ public class PretDAO extends DAO {
         PretDTO pretDTO = null;
 
         try(
-            PreparedStatement findByLivrePreparedStatement = getConnection()
-                .prepareStatement(PretDAO.FIND_BY_DATE_PRET);) {
+            PreparedStatement findByLivrePreparedStatement = getConnection().prepareStatement(PretDAO.FIND_BY_DATE_PRET);) {
             findByLivrePreparedStatement.setTimestamp(1,
                 datePret);
             try(

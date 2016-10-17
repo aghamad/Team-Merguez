@@ -11,7 +11,10 @@ import ca.qc.collegeahuntsic.bibliotheque.dao.LivreDAO;
 import ca.qc.collegeahuntsic.bibliotheque.dao.MembreDAO;
 import ca.qc.collegeahuntsic.bibliotheque.dao.PretDAO;
 import ca.qc.collegeahuntsic.bibliotheque.dao.ReservationDAO;
+import ca.qc.collegeahuntsic.bibliotheque.dto.LivreDTO;
+import ca.qc.collegeahuntsic.bibliotheque.dto.MembreDTO;
 import ca.qc.collegeahuntsic.bibliotheque.dto.PretDTO;
+import ca.qc.collegeahuntsic.bibliotheque.dto.ReservationDTO;
 import ca.qc.collegeahuntsic.bibliotheque.exception.DAOException;
 import ca.qc.collegeahuntsic.bibliotheque.exception.ServiceException;
 
@@ -204,7 +207,140 @@ public class PretService extends Service {
         return listePrets;
     }
 
-    // region Getter - Setter
+    /**
+     * Renouvelle le prêt d'un livre.
+     *
+     * @param pretDTO Le prêt à renouveler
+     * @throws ServiceException Si le prêt n'existe pas, si le membre n'existe pas, si le livre n'existe pas, si le livre n'a pas encore été prêté, si le livre a été prêter à quelqu'un d'autre, si le livre a été réservé ou s'il y a une erreur avec la base de données
+     */
+    public void renouveler(PretDTO pretDTO) throws ServiceException {
+        try {
+
+            final PretDTO unPretDTO = getPretDAO().read(pretDTO.getIdPret());
+            // Vérifie si le prêt existe
+            if(unPretDTO == null) {
+                throw new ServiceException("Le prêt "
+                    + pretDTO.getIdPret()
+                    + " n'existe pas");
+            }
+
+            final LivreDTO unLivreDTO = getLivreDAO().read(unPretDTO.getIdLivre());
+            // Vérifie si le livre existe
+            if(unLivreDTO == null) {
+                throw new ServiceException("Le livre "
+                    + pretDTO.getIdLivre()
+                    + " n'existe pas");
+            }
+
+            final MembreDTO unMembreDTO = getMembreDAO().read(unPretDTO.getIdMembre());
+            // Vérifie si le livre existe
+            if(unMembreDTO == null) {
+                throw new ServiceException("Le membre "
+                    + pretDTO.getIdMembre()
+                    + " n'existe pas");
+            }
+
+            // Vérifie si le livre est emprunté par le membre qui tente de renouveler
+            final List<PretDTO> prets = findByMembre(unMembreDTO.getIdMembre());
+
+            if(!prets.isEmpty()) {
+                // Les prets du membre
+                boolean pretDumembre = false;
+                for(final PretDTO pret : prets) {
+                    if(pret.getIdMembre() == unPretDTO.getIdMembre()) {
+                        pretDumembre = true;
+                    }
+                }
+                if(!pretDumembre) {
+                    throw new ServiceException("Le pret "
+                        + pretDTO.getIdPret()
+                        + " n'est pas emprunter par ce membre");
+                }
+
+            }
+
+            // Vérifie si le livre est réservé par quelqu'un d'autre
+            final List<ReservationDTO> reservations = getReservationDAO().findByLivre(unLivreDTO.getIdLivre());
+            if(!reservations.isEmpty()) {
+                throw new ServiceException("Le livre "
+                    + pretDTO.getIdLivre()
+                    + " est réservé");
+            }
+
+            unPretDTO.setDatePret(new Timestamp(System.currentTimeMillis()));
+            update(unPretDTO);
+
+        } catch(final DAOException daoException) {
+            throw new ServiceException(daoException);
+        }
+    }
+
+    /**
+     * Retourne un livre.
+     *
+     * @param pretDTO Le prêt à retourner
+     * @throws ServiceException Si le prêt n'existe pas,
+     *                          Si le livre n'a pas encore été prêté,
+     *                          Si le livre a été prêté à quelqu'un d'autre ou
+     *                          S'il y a une erreur avec la base de données
+     */
+    public void retourner(PretDTO pretDTO) throws ServiceException {
+        try {
+
+            final PretDTO unPretDTO = getPretDAO().read(pretDTO.getIdPret());
+            // Vérifie si le prêt existe
+            if(unPretDTO == null) {
+                throw new ServiceException("Le prêt "
+                    + pretDTO.getIdPret()
+                    + " n'existe pas");
+            }
+
+            final LivreDTO unLivreDTO = getLivreDAO().read(unPretDTO.getIdLivre());
+            // Vérifie si le livre existe
+            if(unLivreDTO == null) {
+                throw new ServiceException("Le livre "
+                    + pretDTO.getIdLivre()
+                    + " n'existe pas");
+            }
+
+            final MembreDTO unMembreDTO = getMembreDAO().read(unPretDTO.getIdMembre());
+            // Vérifie si le livre existe
+            if(unMembreDTO == null) {
+                throw new ServiceException("Le membre "
+                    + pretDTO.getIdMembre()
+                    + " n'existe pas");
+            }
+
+            // Vérifie si le livre a été prêté
+            final List<PretDTO> prets = findByMembre(unMembreDTO.getIdMembre());
+            if(prets.isEmpty()) {
+                throw new ServiceException("le livre "
+                    + pretDTO.getIdLivre()
+                    + " n'a pas encore été prêté.");
+            }
+
+            // Vérifie si le livre a été prêté par quelqu'un d'autre.
+            boolean pretDuMembre = false;
+            for(final PretDTO pret : prets) {
+                pretDuMembre = pret.equals(unPretDTO);
+                if(!pretDuMembre) {
+                    throw new ServiceException("Le pret "
+                        + pretDTO.getIdPret()
+                        + " n'est pas emprunter par ce membre");
+                }
+            }
+
+            getMembreDAO().retourner(unMembreDTO);
+            unPretDTO.setDateRetour(new Timestamp(System.currentTimeMillis()));
+            update(unPretDTO);
+
+        } catch(final DAOException daoException) {
+            throw new ServiceException(daoException);
+        }
+
+    }
+
+    // Region Getters and Setters
     /**
      * Getter de la variable d'instance <code>this.pretDAO</code>.
      *
@@ -276,4 +412,7 @@ public class PretService extends Service {
     public void setReservationDAO(ReservationDAO reservationDAO) {
         this.reservationDAO = reservationDAO;
     }
+
+    // EndRegion Getters and Setters
+
 }
