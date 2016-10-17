@@ -6,6 +6,7 @@ package ca.qc.collegeahuntsic.bibliotheque.util;
 
 import ca.qc.collegeahuntsic.bibliotheque.dao.LivreDAO;
 import ca.qc.collegeahuntsic.bibliotheque.dao.MembreDAO;
+import ca.qc.collegeahuntsic.bibliotheque.dao.PretDAO;
 import ca.qc.collegeahuntsic.bibliotheque.dao.ReservationDAO;
 import ca.qc.collegeahuntsic.bibliotheque.db.Connexion;
 import ca.qc.collegeahuntsic.bibliotheque.exception.BibliothequeException;
@@ -53,13 +54,17 @@ public class BibliothequeCreateur {
             final LivreDAO livreDAO = new LivreDAO(getConnexion());
             final MembreDAO membreDAO = new MembreDAO(getConnexion());
             final ReservationDAO reservationDAO = new ReservationDAO(getConnexion());
+            final PretDAO pretDAO = new PretDAO(getConnexion());
             setLivreService(new LivreService(livreDAO,
                 membreDAO,
                 reservationDAO));
             setMembreService(new MembreService(membreDAO,
                 livreDAO,
                 reservationDAO));
-            setPretService(new PretService());
+            setPretService(new PretService(pretDAO,
+                membreDAO,
+                livreDAO,
+                reservationDAO));
             setReservationService(new ReservationService(reservationDAO,
                 livreDAO,
                 membreDAO));
