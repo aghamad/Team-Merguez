@@ -84,7 +84,8 @@ public class ReservationDAO extends DAO {
      */
     public void add(ReservationDTO reservationDTO) throws DAOException {
         try(
-            PreparedStatement addPreparedStatement = getConnection().prepareStatement(ReservationDAO.ADD_REQUEST)) {
+            PreparedStatement addPreparedStatement = getConnection()
+                .prepareStatement(ReservationDAO.ADD_REQUEST)) {
             addPreparedStatement.setInt(1,
                 reservationDTO.getLivreDTO().getIdLivre());
             addPreparedStatement.setInt(2,
@@ -105,7 +106,8 @@ public class ReservationDAO extends DAO {
     public ReservationDTO read(int idReservation) throws DAOException {
         ReservationDTO reservationDTO = null;
         try(
-            PreparedStatement readPreparedStatement = getConnection().prepareStatement(ReservationDAO.READ_REQUEST)) {
+            PreparedStatement readPreparedStatement = getConnection()
+                .prepareStatement(ReservationDAO.READ_REQUEST)) {
             readPreparedStatement.setInt(1,
                 idReservation);
             try(
@@ -132,7 +134,8 @@ public class ReservationDAO extends DAO {
      */
     public void update(ReservationDTO reservationDTO) throws DAOException {
         try(
-            PreparedStatement updatePreparedStatement = getConnection().prepareStatement(ReservationDAO.UPDATE_REQUEST)) {
+            PreparedStatement updatePreparedStatement = getConnection()
+                .prepareStatement(ReservationDAO.UPDATE_REQUEST)) {
             updatePreparedStatement.setInt(1,
                 reservationDTO.getLivreDTO().getIdLivre());
             updatePreparedStatement.setInt(2,
@@ -155,7 +158,8 @@ public class ReservationDAO extends DAO {
      */
     public void delete(ReservationDTO reservationDTO) throws DAOException {
         try(
-            PreparedStatement deletePreparedStatement = getConnection().prepareStatement(ReservationDAO.DELETE_REQUEST)) {
+            PreparedStatement deletePreparedStatement = getConnection()
+                .prepareStatement(ReservationDAO.DELETE_REQUEST)) {
             deletePreparedStatement.setInt(1,
                 reservationDTO.getIdReservation());
             deletePreparedStatement.executeUpdate();
@@ -173,7 +177,8 @@ public class ReservationDAO extends DAO {
     public List<ReservationDTO> getAll() throws DAOException {
         List<ReservationDTO> reservations = Collections.emptyList();
         try(
-            PreparedStatement getAllPreparedStatement = getConnection().prepareStatement(ReservationDAO.GET_ALL_REQUEST)) {
+            PreparedStatement getAllPreparedStatement = getConnection()
+                .prepareStatement(ReservationDAO.GET_ALL_REQUEST)) {
             try(
                 ResultSet resultSet = getAllPreparedStatement.executeQuery()) {
                 ReservationDTO reservationDTO = null;
@@ -205,7 +210,8 @@ public class ReservationDAO extends DAO {
     public List<ReservationDTO> findByLivre(int idLivre) throws DAOException {
         List<ReservationDTO> reservations = Collections.emptyList();
         try(
-            PreparedStatement findByLivrePreparedStatement = getConnection().prepareStatement(ReservationDAO.FIND_BY_LIVRE_REQUEST)) {
+            PreparedStatement findByLivrePreparedStatement = getConnection()
+                .prepareStatement(ReservationDAO.FIND_BY_LIVRE_REQUEST)) {
             findByLivrePreparedStatement.setInt(1,
                 idLivre);
             try(
@@ -239,7 +245,8 @@ public class ReservationDAO extends DAO {
     public List<ReservationDTO> findByMembre(int idMembre) throws DAOException {
         List<ReservationDTO> reservations = Collections.emptyList();
         try(
-            PreparedStatement findByMembrePreparedStatement = getConnection().prepareStatement(ReservationDAO.FIND_BY_MEMBRE_REQUEST)) {
+            PreparedStatement findByMembrePreparedStatement = getConnection()
+                .prepareStatement(ReservationDAO.FIND_BY_MEMBRE_REQUEST)) {
             findByMembrePreparedStatement.setInt(1,
                 idMembre);
             try(

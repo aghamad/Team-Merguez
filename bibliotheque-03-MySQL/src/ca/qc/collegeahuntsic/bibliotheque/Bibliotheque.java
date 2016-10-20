@@ -160,9 +160,7 @@ public final class Bibliotheque {
                 final PretDTO pretDTO = new PretDTO();
                 pretDTO.setMembreDTO(membreDTO);
                 pretDTO.setLivreDTO(livreDTO);
-                /*Bibliotheque.gestionnaireBibliotheque.getMembreService().emprunter(membreDTO,
-                    livreDTO);
-                */
+
                 Bibliotheque.gestionnaireBibliotheque.getPretService().commencer(pretDTO);
                 Bibliotheque.gestionnaireBibliotheque.commit();
             } else if("renouveler".equals(command)) {
@@ -171,19 +169,6 @@ public final class Bibliotheque {
                 pretDTO.setIdPret(Bibliotheque.readInt(tokenizer));
 
                 Bibliotheque.gestionnaireBibliotheque.getPretService().renouveler(pretDTO);
-                Bibliotheque.gestionnaireBibliotheque.commit();
-            } else if("retourner".equals(command)) {
-                final MembreDTO membreDTO = new MembreDTO();
-                membreDTO.setIdMembre(Bibliotheque.readInt(tokenizer));
-                final LivreDTO livreDTO = new LivreDTO();
-                livreDTO.setIdLivre(Bibliotheque.readInt(tokenizer));
-                final PretDTO pretDTO = new PretDTO();
-                pretDTO.setMembreDTO(membreDTO);
-                pretDTO.setLivreDTO(livreDTO);
-                /*Bibliotheque.gestionnaireBibliotheque.getMembreService().retourner(membreDTO,
-                    livreDTO);
-                 */
-                Bibliotheque.gestionnaireBibliotheque.getPretService().retourner(pretDTO);
                 Bibliotheque.gestionnaireBibliotheque.commit();
             } else if("inscrire".equals(command)) {
                 final MembreDTO membreDTO = new MembreDTO();
@@ -201,35 +186,33 @@ public final class Bibliotheque {
                 // Juste pour éviter deux timestamps de réservation strictement identiques
                 Thread.sleep(1);
                 final ReservationDTO reservationDTO = new ReservationDTO();
-                reservationDTO.setIdReservation(Bibliotheque.readInt(tokenizer));
                 final MembreDTO membreDTO = new MembreDTO();
                 membreDTO.setIdMembre(Bibliotheque.readInt(tokenizer));
+
                 final LivreDTO livreDTO = new LivreDTO();
                 livreDTO.setIdLivre(Bibliotheque.readInt(tokenizer));
+
                 reservationDTO.setLivreDTO(livreDTO);
                 reservationDTO.setMembreDTO(membreDTO);
-                /*Bibliotheque.gestionnaireBibliotheque.getReservationService().reserver(reservationDTO,
-                membreDTO,
-                livreDTO);
-                 */
+
                 Bibliotheque.gestionnaireBibliotheque.getReservationService()
                     .reserver(reservationDTO);
                 Bibliotheque.gestionnaireBibliotheque.commit();
+            } else if("retourner".equals(command)) {
+
+                final PretDTO pretDTO = new PretDTO();
+                pretDTO.setIdPret(Bibliotheque.readInt(tokenizer));
+
+                Bibliotheque.gestionnaireBibliotheque.getPretService().retourner(pretDTO);
+                Bibliotheque.gestionnaireBibliotheque.commit();
+
             } else if("utiliser".equals(command)) {
+
                 final ReservationDTO reservationDTO = new ReservationDTO();
                 reservationDTO.setIdReservation(Bibliotheque.readInt(tokenizer));
-                final MembreDTO membreDTO = new MembreDTO();
-                membreDTO.setIdMembre(Bibliotheque.readInt(tokenizer));
-                final LivreDTO livreDTO = new LivreDTO();
-                livreDTO.setIdLivre(Bibliotheque.readInt(tokenizer));
-                reservationDTO.setLivreDTO(livreDTO);
-                reservationDTO.setMembreDTO(membreDTO);
+
                 Bibliotheque.gestionnaireBibliotheque.getReservationService()
                     .utiliser(reservationDTO);
-                /*Bibliotheque.gestionnaireBibliotheque.getReservationService().utiliser(reservationDTO,
-                    membreDTO,
-                    livreDTO);
-                */
                 Bibliotheque.gestionnaireBibliotheque.commit();
             } else if("annuler".equals(command)) {
                 final ReservationDTO reservationDTO = new ReservationDTO();
