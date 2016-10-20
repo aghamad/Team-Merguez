@@ -62,7 +62,8 @@ public final class Bibliotheque {
     public static void main(String[] arguments) throws Exception {
         // Validation du nombre de paramètres
         if(arguments.length < 5) {
-            System.out.println("Usage: java Bibliotheque <serveur> <bd> <user> <password> <fichier-transactions>");
+            System.out.println(
+                "Usage: java Bibliotheque <serveur> <bd> <user> <password> <fichier-transactions>");
             System.out.println(Connexion.getServeursSupportes());
             return;
         }
@@ -72,7 +73,8 @@ public final class Bibliotheque {
             final InputStream sourceTransaction = Bibliotheque.class.getResourceAsStream("/"
                 + arguments[4]);
             try(
-                BufferedReader reader = new BufferedReader(new InputStreamReader(sourceTransaction))) {
+                BufferedReader reader = new BufferedReader(
+                    new InputStreamReader(sourceTransaction))) {
 
                 Bibliotheque.gestionnaireBibliotheque = new BibliothequeCreateur(arguments[0],
                     arguments[1],
@@ -131,7 +133,8 @@ public final class Bibliotheque {
      * @param tokenizer L'entrée à décoder
      * @throws BibliothequeException Si une erreur survient
      */
-    private static void executerTransaction(StringTokenizer tokenizer) throws BibliothequeException {
+    private static void executerTransaction(StringTokenizer tokenizer)
+        throws BibliothequeException {
         try {
             final String command = tokenizer.nextToken();
 
@@ -139,7 +142,6 @@ public final class Bibliotheque {
                 Bibliotheque.afficherAide();
             } else if("acquerir".equals(command)) {
                 final LivreDTO livreDTO = new LivreDTO();
-                livreDTO.setIdLivre(Bibliotheque.readInt(tokenizer));
                 livreDTO.setTitre(Bibliotheque.readString(tokenizer));
                 livreDTO.setAuteur(Bibliotheque.readString(tokenizer));
                 livreDTO.setDateAcquisition(Bibliotheque.readDate(tokenizer));
@@ -164,15 +166,10 @@ public final class Bibliotheque {
                 Bibliotheque.gestionnaireBibliotheque.getPretService().commencer(pretDTO);
                 Bibliotheque.gestionnaireBibliotheque.commit();
             } else if("renouveler".equals(command)) {
-                final MembreDTO membreDTO = new MembreDTO();
-                membreDTO.setIdMembre(Bibliotheque.readInt(tokenizer));
-                final LivreDTO livreDTO = new LivreDTO();
-                livreDTO.setIdLivre(Bibliotheque.readInt(tokenizer));
+
                 final PretDTO pretDTO = new PretDTO();
-                pretDTO.setMembreDTO(membreDTO);
-                pretDTO.setLivreDTO(livreDTO);
-                /* Bibliotheque.gestionnaireBibliotheque.getMembreService().renouveler(membreDTO,
-                    livreDTO); */
+                pretDTO.setIdPret(Bibliotheque.readInt(tokenizer));
+
                 Bibliotheque.gestionnaireBibliotheque.getPretService().renouveler(pretDTO);
                 Bibliotheque.gestionnaireBibliotheque.commit();
             } else if("retourner".equals(command)) {
@@ -190,7 +187,6 @@ public final class Bibliotheque {
                 Bibliotheque.gestionnaireBibliotheque.commit();
             } else if("inscrire".equals(command)) {
                 final MembreDTO membreDTO = new MembreDTO();
-                membreDTO.setIdMembre(Bibliotheque.readInt(tokenizer));
                 membreDTO.setNom(Bibliotheque.readString(tokenizer));
                 membreDTO.setTelephone(Bibliotheque.readLong(tokenizer));
                 membreDTO.setLimitePret(Bibliotheque.readInt(tokenizer));
@@ -216,7 +212,8 @@ public final class Bibliotheque {
                 membreDTO,
                 livreDTO);
                  */
-                Bibliotheque.gestionnaireBibliotheque.getReservationService().reserver(reservationDTO);
+                Bibliotheque.gestionnaireBibliotheque.getReservationService()
+                    .reserver(reservationDTO);
                 Bibliotheque.gestionnaireBibliotheque.commit();
             } else if("utiliser".equals(command)) {
                 final ReservationDTO reservationDTO = new ReservationDTO();
@@ -227,7 +224,8 @@ public final class Bibliotheque {
                 livreDTO.setIdLivre(Bibliotheque.readInt(tokenizer));
                 reservationDTO.setLivreDTO(livreDTO);
                 reservationDTO.setMembreDTO(membreDTO);
-                Bibliotheque.gestionnaireBibliotheque.getReservationService().utiliser(reservationDTO);
+                Bibliotheque.gestionnaireBibliotheque.getReservationService()
+                    .utiliser(reservationDTO);
                 /*Bibliotheque.gestionnaireBibliotheque.getReservationService().utiliser(reservationDTO,
                     membreDTO,
                     livreDTO);
@@ -236,7 +234,8 @@ public final class Bibliotheque {
             } else if("annuler".equals(command)) {
                 final ReservationDTO reservationDTO = new ReservationDTO();
                 reservationDTO.setIdReservation(Bibliotheque.readInt(tokenizer));
-                Bibliotheque.gestionnaireBibliotheque.getReservationService().annuler(reservationDTO);
+                Bibliotheque.gestionnaireBibliotheque.getReservationService()
+                    .annuler(reservationDTO);
                 Bibliotheque.gestionnaireBibliotheque.commit();
                 // } else if("listerLivres".equals(command)) {
                 //     Bibliotheque.gestionBibliothque.livreDAO.listerLivres();
@@ -377,9 +376,10 @@ public final class Bibliotheque {
             try {
                 return FormatteurDate.timestampValue(token);
             } catch(ParseException parseException) {
-                throw new BibliothequeException("Date en format YYYY-MM-DD attendue à la place  de \""
-                    + token
-                    + "\"");
+                throw new BibliothequeException(
+                    "Date en format YYYY-MM-DD attendue à la place  de \""
+                        + token
+                        + "\"");
             }
         }
         throw new BibliothequeException("Autre paramètre attendu");

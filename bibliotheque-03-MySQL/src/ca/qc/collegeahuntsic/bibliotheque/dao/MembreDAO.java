@@ -200,7 +200,7 @@ public class MembreDAO extends DAO {
 
     /**
      * Retourne un livre.
-     * // remove this
+     *
      * @param membreDTO Le membre à mettre à jour
      * @throws DAOException S'il y a une erreur avec la base de données
      */
