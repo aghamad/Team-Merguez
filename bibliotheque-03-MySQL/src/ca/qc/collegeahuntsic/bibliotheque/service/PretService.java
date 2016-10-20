@@ -5,7 +5,6 @@
 package ca.qc.collegeahuntsic.bibliotheque.service;
 
 import java.sql.Timestamp;
-import java.util.Collections;
 import java.util.List;
 import ca.qc.collegeahuntsic.bibliotheque.dao.LivreDAO;
 import ca.qc.collegeahuntsic.bibliotheque.dao.MembreDAO;
@@ -37,378 +36,30 @@ public class PretService extends Service {
     /**
      * Crée le service de la table <code>pret</code>.
      *
-     * @param pret Le DAO de la table pret
-     * @param livre Le DAO de la table livre
-     * @param membre Le DAO de la table membre
-     * @param reservation Le DAO de la table reservation
+     * @param pretDAO Le DAO de la table <code>pret</code>
+     * @param membreDAO Le DAO de la table <code>membre</code>
+     * @param livreDAO Le DAO de la table <code>livre</code>
+     * @param reservationDAO Le DAO de la table <code>reservation</code>
      */
-    public PretService(PretDAO pret,
-        MembreDAO membre,
-        LivreDAO livre,
-        ReservationDAO reservation) {
-
+    public PretService(PretDAO pretDAO,
+        MembreDAO membreDAO,
+        LivreDAO livreDAO,
+        ReservationDAO reservationDAO) {
         super();
-        setPretDAO(pret);
-        setMembreDAO(membre);
-        setLivreDAO(livre);
-        setReservationDAO(reservation);
-    }
-
-    /**
-     * Ajoute un nouveau pret.
-     *
-     * @param pretDTO Le pret à ajouter
-     * @throws ServiceException S'il y a une erreur avec la base de données
-     */
-    public void add(PretDTO pretDTO) throws ServiceException {
-        try {
-            getPretDAO().add(pretDTO);
-        } catch(final DAOException sqlException) {
-            throw new ServiceException();
-        }
-    }
-
-    /**
-     * Supprime un pret.
-     *
-     * @param pretDTO Le pret à supprimer
-     * @throws ServiceException S'il y a une erreur dans la base de données
-     */
-    public void delete(PretDTO pretDTO) throws ServiceException {
-        try {
-            getPretDAO().delete(pretDTO);
-        } catch(final DAOException sqlException) {
-            throw new ServiceException();
-        }
-    }
-
-    /**
-     * Met à jour un pret.
-     *
-     * @param pretDTO Le pret à mettre à jour
-     * @throws ServiceException S'il y a une erreur dans la base de données
-     */
-    public void update(PretDTO pretDTO) throws ServiceException {
-        try {
-            getPretDAO().update(pretDTO);
-        } catch(final DAOException sqlException) {
-            throw new ServiceException();
-        }
-    }
-
-    /**
-     * Lit un pret.
-     *
-     * @param idPret L'ID du pret à lire
-     * @return Le pret lu
-     * @throws ServiceException S'il y a une erreur dans la base de données
-     */
-    public PretDTO read(int idPret) throws ServiceException {
-
-        PretDTO pretDTO = null;
-
-        try {
-            pretDTO = getPretDAO().read(idPret);
-        } catch(final DAOException sqlException) {
-            throw new ServiceException();
-        }
-
-        return pretDTO;
-    }
-
-    /**
-     * Trouve tous les prets.
-     *
-     * @return La liste des prets; une liste vide sinon
-     * @throws ServiceException S'il y a une erreur avec la base de données
-     */
-    public List<PretDTO> getAll() throws ServiceException {
-
-        List<PretDTO> listeDTO = Collections.emptyList();
-
-        try {
-            listeDTO = getPretDAO().getAll();
-        } catch(final DAOException sqlException) {
-            throw new ServiceException();
-        }
-        return listeDTO;
-    }
-
-    /**
-     * Trouve les prêts non terminés d'un membre.
-     *
-     * @param idMembre Le id du membre à utiliser
-     * @return La liste des prets correspondants; une liste vide sinon
-     * @throws ServiceException S'il y a une erreur avec la base de données
-     */
-    public List<PretDTO> findByMembre(int idMembre) throws ServiceException {
-
-        List<PretDTO> listePrets = Collections.emptyList();
-        try {
-            listePrets = getPretDAO().findByMembre(idMembre);
-        } catch(final DAOException sqlException) {
-            throw new ServiceException();
-        }
-        return listePrets;
-    }
-
-    /**
-     * Trouve les prêts non terminés à partir d'un livre.
-     *
-     * @param idLivre Le id du livre à utiliser
-     * @return La liste des prets correspondants; une liste vide sinon
-     * @throws ServiceException S'il y a une erreur avec la base de données
-     */
-    public List<PretDTO> findByLivre(int idLivre) throws ServiceException {
-
-        List<PretDTO> listePrets = Collections.emptyList();
-        try {
-            listePrets = getPretDAO().findByLivre(idLivre);
-        } catch(final DAOException sqlException) {
-            throw new ServiceException();
-        }
-        return listePrets;
-    }
-
-    /**
-     * Trouve les prêts non terminés à partir d'une date de pret.
-     *
-     * @param datePret La date de pret à utiliser
-     * @return La liste des prets correspondants; une liste vide sinon
-     * @throws ServiceException S'il y a une erreur avec la base de données
-     */
-    public List<PretDTO> findByDatePret(Timestamp datePret) throws ServiceException {
-
-        List<PretDTO> listePrets = Collections.emptyList();
-        try {
-            listePrets = getPretDAO().findByDatePret(datePret);
-        } catch(final DAOException sqlException) {
-            throw new ServiceException();
-        }
-        return listePrets;
-    }
-
-    /**
-     * Trouve les prêts non terminés à partir d'une date de retour.
-     *
-     * @param dateRetour La date de retour à utiliser
-     * @return La liste des prets correspondants; une liste vide sinon
-     * @throws ServiceException S'il y a une erreur avec la base de données
-     */
-    public List<PretDTO> findByDateRetour(Timestamp dateRetour) throws ServiceException {
-
-        List<PretDTO> listePrets = Collections.emptyList();
-
-        try {
-            listePrets = getPretDAO().findByDatePret(dateRetour);
-        } catch(final DAOException sqlException) {
-            throw new ServiceException();
-        }
-        return listePrets;
-    }
-
-    /**
-     * Renouvelle le prêt d'un livre.
-     *
-     * @param pretDTO Le prêt à renouveler
-     * @throws ServiceException Si le prêt n'existe pas, si le membre n'existe pas, si le livre n'existe pas, si le livre n'a pas encore été prêté, si le livre a été prêter à quelqu'un d'autre, si le livre a été réservé ou s'il y a une erreur avec la base de données
-     */
-    public void renouveler(PretDTO pretDTO) throws ServiceException {
-        try {
-
-            final PretDTO unPretDTO = getPretDAO().read(pretDTO.getIdPret());
-            // Vérifie si le prêt existe
-            if(unPretDTO == null) {
-                throw new ServiceException("Le prêt "
-                    + pretDTO.getIdPret()
-                    + " n'existe pas");
-            }
-
-            final LivreDTO unLivreDTO = getLivreDAO().read(unPretDTO.getLivreDTO().getIdLivre());
-            // Vérifie si le livre existe
-            if(unLivreDTO == null) {
-                throw new ServiceException("Le livre "
-                    + unPretDTO.getLivreDTO().getIdLivre()
-                    + " n'existe pas");
-            }
-
-            final MembreDTO unMembreDTO = getMembreDAO().read(unPretDTO.getMembreDTO().getIdMembre());
-            // Vérifie si le livre existe
-            if(unMembreDTO == null) {
-                throw new ServiceException("Le membre "
-                    + unPretDTO.getMembreDTO().getIdMembre()
-                    + " n'existe pas");
-            }
-
-            // Vérifie si le livre est emprunté par le membre qui tente de renouveler
-            final List<PretDTO> prets = findByMembre(unMembreDTO.getIdMembre());
-
-            if(!prets.isEmpty()) {
-                // Les prets du membre
-                boolean pretDumembre = false;
-                for(final PretDTO pret : prets) {
-                    if(pret.getMembreDTO().getIdMembre() == unPretDTO.getMembreDTO().getIdMembre()) {
-                        pretDumembre = true;
-                    }
-                }
-                if(!pretDumembre) {
-                    throw new ServiceException("Le pret "
-                        + pretDTO.getIdPret()
-                        + " n'est pas emprunter par ce membre");
-                }
-
-            }
-
-            // Vérifie si le livre est réservé par quelqu'un d'autre
-            final List<ReservationDTO> reservations = getReservationDAO().findByLivre(unLivreDTO.getIdLivre());
-            if(!reservations.isEmpty()) {
-                throw new ServiceException("Le livre "
-                    + unPretDTO.getLivreDTO().getIdLivre()
-                    + " est réservé");
-            }
-
-            unPretDTO.setDatePret(new Timestamp(System.currentTimeMillis()));
-            update(unPretDTO);
-
-        } catch(final DAOException daoException) {
-            throw new ServiceException(daoException);
-        }
-    }
-
-    /**
-     * Retourne un livre.
-     *
-     * @param pretDTO Le prêt à retourner
-     * @throws ServiceException Si le prêt n'existe pas,
-     *                          Si le livre n'a pas encore été prêté,
-     *                          Si le livre a été prêté à quelqu'un d'autre ou
-     *                          S'il y a une erreur avec la base de données
-     */
-    public void retourner(PretDTO pretDTO) throws ServiceException {
-        try {
-
-            final PretDTO unPretDTO = getPretDAO().read(pretDTO.getIdPret());
-            // Vérifie si le prêt existe
-            if(unPretDTO == null) {
-                throw new ServiceException("Le prêt "
-                    + pretDTO.getIdPret()
-                    + " n'existe pas");
-            }
-
-            final LivreDTO unLivreDTO = getLivreDAO().read(unPretDTO.getLivreDTO().getIdLivre());
-            // Vérifie si le livre existe
-            if(unLivreDTO == null) {
-                throw new ServiceException("Le livre "
-                    + unPretDTO.getLivreDTO().getIdLivre()
-                    + " n'existe pas");
-            }
-
-            final MembreDTO unMembreDTO = getMembreDAO().read(unPretDTO.getMembreDTO().getIdMembre());
-            // Vérifie si le livre existe
-            if(unMembreDTO == null) {
-                throw new ServiceException("Le membre "
-                    + unPretDTO.getMembreDTO().getIdMembre()
-                    + " n'existe pas");
-            }
-
-            // Vérifie si le livre a été prêté
-            final List<PretDTO> prets = findByMembre(unMembreDTO.getIdMembre());
-            if(prets.isEmpty()) {
-                throw new ServiceException("le livre "
-                    + unPretDTO.getLivreDTO().getIdLivre()
-                    + " n'a pas encore été prêté.");
-            }
-
-            // Vérifie si le livre a été prêté par quelqu'un d'autre.
-            boolean pretDuMembre = false;
-            for(final PretDTO pret : prets) {
-                pretDuMembre = pret.equals(unPretDTO);
-                if(!pretDuMembre) {
-                    throw new ServiceException("Le pret "
-                        + pretDTO.getIdPret()
-                        + " n'est pas emprunter par ce membre");
-                }
-            }
-
-            getMembreDAO().retourner(unMembreDTO);
-            unPretDTO.setDateRetour(new Timestamp(System.currentTimeMillis()));
-            update(unPretDTO);
-
-        } catch(final DAOException daoException) {
-            throw new ServiceException(daoException);
-        }
-
-    }
-
-    /**
-     * Commence un prêt.
-     *
-     * @param pretDTO Le prêt à commencer
-     * @throws ServiceException  Si le membre n'existe pas,
-     * si le livre n'existe pas,
-     * si le livre a été prêté,
-     * si le livre a été réservé,
-     * si le membre a atteint sa limite de prêt
-     * ou s'il y a une erreur avec la base de données
-     *
-     */
-    public void commencer(PretDTO pretDTO) throws ServiceException {
-        try {
-
-            final LivreDTO livreDTO = getLivreDAO().read(pretDTO.getLivreDTO().getIdLivre());
-            final MembreDTO membreDTO = getMembreDAO().read(pretDTO.getMembreDTO().getIdMembre());
-
-            // Vérifie si le membre n'existe pas
-            if(membreDTO == null) {
-                throw new ServiceException("Le membre "
-                    + pretDTO.getMembreDTO().getIdMembre()
-                    + " n'existe pas");
-            }
-
-            // Vérifie si le livre n'existe pas
-            if(livreDTO == null) {
-                throw new ServiceException("Le livre "
-                    + pretDTO.getLivreDTO().getIdLivre()
-                    + " n'existe pas");
-            }
-
-            // Vérifie si le livre est déjà prêté
-            final List<PretDTO> prets = getPretDAO().findByLivre(livreDTO.getIdLivre());
-            if(!prets.isEmpty()) {
-                for(final PretDTO unPretDTO : prets) {
-                    if(unPretDTO.getDateRetour() == null) {
-                        throw new ServiceException("Le livre "
-                            + livreDTO.getTitre()
-                            + " (ID du livre : "
-                            + livreDTO.getIdLivre()
-                            + ")"
-                            + " est déjà prêté");
-                    }
-                }
-            }
-
-            // Vérifie si le livre est réservé par quelqu'un.
-            if(!getReservationDAO().findByLivre(livreDTO.getIdLivre()).isEmpty()) {
-                throw new ServiceException("Le livre "
-                    + livreDTO.getIdLivre()
-                    + " est réservé");
-            }
-
-            getMembreDAO().update(membreDTO);
-            pretDTO.setDatePret(new Timestamp(System.currentTimeMillis()));
-            add(pretDTO);
-        } catch(final DAOException daoException) {
-            throw new ServiceException(daoException);
-        }
+        setPretDAO(pretDAO);
+        setMembreDAO(membreDAO);
+        setLivreDAO(livreDAO);
+        setReservationDAO(reservationDAO);
     }
 
     // Region Getters and Setters
+
     /**
      * Getter de la variable d'instance <code>this.pretDAO</code>.
      *
      * @return La variable d'instance <code>this.pretDAO</code>
      */
-    public PretDAO getPretDAO() {
+    private PretDAO getPretDAO() {
         return this.pretDAO;
     }
 
@@ -417,7 +68,7 @@ public class PretService extends Service {
      *
      * @param pretDAO La valeur à utiliser pour la variable d'instance <code>this.pretDAO</code>
      */
-    public void setPretDAO(PretDAO pretDAO) {
+    private void setPretDAO(PretDAO pretDAO) {
         this.pretDAO = pretDAO;
     }
 
@@ -426,7 +77,7 @@ public class PretService extends Service {
      *
      * @return La variable d'instance <code>this.membreDAO</code>
      */
-    public MembreDAO getMembreDAO() {
+    private MembreDAO getMembreDAO() {
         return this.membreDAO;
     }
 
@@ -435,7 +86,7 @@ public class PretService extends Service {
      *
      * @param membreDAO La valeur à utiliser pour la variable d'instance <code>this.membreDAO</code>
      */
-    public void setMembreDAO(MembreDAO membreDAO) {
+    private void setMembreDAO(MembreDAO membreDAO) {
         this.membreDAO = membreDAO;
     }
 
@@ -444,7 +95,7 @@ public class PretService extends Service {
      *
      * @return La variable d'instance <code>this.livreDAO</code>
      */
-    public LivreDAO getLivreDAO() {
+    private LivreDAO getLivreDAO() {
         return this.livreDAO;
     }
 
@@ -453,7 +104,7 @@ public class PretService extends Service {
      *
      * @param livreDAO La valeur à utiliser pour la variable d'instance <code>this.livreDAO</code>
      */
-    public void setLivreDAO(LivreDAO livreDAO) {
+    private void setLivreDAO(LivreDAO livreDAO) {
         this.livreDAO = livreDAO;
     }
 
@@ -462,7 +113,7 @@ public class PretService extends Service {
      *
      * @return La variable d'instance <code>this.reservationDAO</code>
      */
-    public ReservationDAO getReservationDAO() {
+    private ReservationDAO getReservationDAO() {
         return this.reservationDAO;
     }
 
@@ -471,10 +122,316 @@ public class PretService extends Service {
      *
      * @param reservationDAO La valeur à utiliser pour la variable d'instance <code>this.reservationDAO</code>
      */
-    public void setReservationDAO(ReservationDAO reservationDAO) {
+    private void setReservationDAO(ReservationDAO reservationDAO) {
         this.reservationDAO = reservationDAO;
     }
-
     // EndRegion Getters and Setters
+
+    /**
+     * Ajoute un nouveau prêt.
+     *
+     * @param pretDTO Le prêt à ajouter
+     * @throws ServiceException S'il y a une erreur avec la base de données
+     */
+    public void add(PretDTO pretDTO) throws ServiceException {
+        try {
+            getPretDAO().add(pretDTO);
+        } catch(DAOException daoException) {
+            throw new ServiceException(daoException);
+        }
+    }
+
+    /**
+     * Lit un prêt. Si aucun prêt n'est trouvé, <code>null</code> est retourné.
+     *
+     * @param idPret L'ID du prêt à lire
+     * @return Le prêt lu ; <code>null</code> sinon
+     * @throws ServiceException S'il y a une erreur avec la base de données
+     */
+    public PretDTO read(int idPret) throws ServiceException {
+        try {
+            return getPretDAO().read(idPret);
+        } catch(DAOException daoException) {
+            throw new ServiceException(daoException);
+        }
+    }
+
+    /**
+     * Met à jour un prêt.
+     *
+     * @param pretDTO Le prêt à mettre à jour
+     * @throws ServiceException S'il y a une erreur avec la base de données
+     */
+    public void update(PretDTO pretDTO) throws ServiceException {
+        try {
+            getPretDAO().update(pretDTO);
+        } catch(DAOException daoException) {
+            throw new ServiceException(daoException);
+        }
+    }
+
+    /**
+     * Supprime un prêt.
+     *
+     * @param pretDTO Le prêt à supprimer
+     * @throws ServiceException S'il y a une erreur avec la base de données
+     */
+    public void delete(PretDTO pretDTO) throws ServiceException {
+        try {
+            getPretDAO().delete(pretDTO);
+        } catch(DAOException daoException) {
+            throw new ServiceException(daoException);
+        }
+    }
+
+    /**
+     * Trouve tous les prêts.
+     *
+     * @return La liste des prêts ; une liste vide sinon
+     * @throws ServiceException S'il y a une erreur avec la base de données
+     */
+    public List<PretDTO> getAll() throws ServiceException {
+        try {
+            return getPretDAO().getAll();
+        } catch(DAOException daoException) {
+            throw new ServiceException(daoException);
+        }
+    }
+
+    /**
+     * Trouve les prêts non terminés d'un membre.
+     *
+     * @param idMembre L'ID du membre à trouver
+     * @return La liste des prêts correspondants ; une liste vide sinon
+     * @throws ServiceException S'il y a une erreur avec la base de données
+     */
+    public List<PretDTO> findByMembre(int idMembre) throws ServiceException {
+        try {
+            return getPretDAO().findByMembre(idMembre);
+        } catch(DAOException daoException) {
+            throw new ServiceException(daoException);
+        }
+    }
+
+    /**
+     * Trouve les livres en cours d'emprunt.
+     *
+     * @param idLivre L'ID du livre à trouver
+     * @return La liste des prêts correspondants ; une liste vide sinon
+     * @throws ServiceException S'il y a une erreur avec la base de données
+     */
+    public List<PretDTO> findByLivre(int idLivre) throws ServiceException {
+        try {
+            return getPretDAO().findByLivre(idLivre);
+        } catch(DAOException daoException) {
+            throw new ServiceException(daoException);
+        }
+    }
+
+    /**
+     * Trouve les prêts à partir d'une date de prêt.
+     *
+     * @param datePret La date de prêt à trouver
+     * @return La liste des prêts correspondants ; une liste vide sinon
+     * @throws ServiceException S'il y a une erreur avec la base de données
+     */
+    public List<PretDTO> findByDatePret(Timestamp datePret) throws ServiceException {
+        try {
+            return getPretDAO().findByDatePret(datePret);
+        } catch(DAOException daoException) {
+            throw new ServiceException(daoException);
+        }
+    }
+
+    /**
+     * Trouve les prêts à partir d'une date de retour.
+     *
+     * @param dateRetour La date de retour à trouver
+     * @return La liste des prêts correspondants ; une liste vide sinon
+     * @throws ServiceException S'il y a une erreur avec la base de données
+     */
+    public List<PretDTO> findByDateRetour(Timestamp dateRetour) throws ServiceException {
+        try {
+            return getPretDAO().findByDateRetour(dateRetour);
+        } catch(DAOException daoException) {
+            throw new ServiceException(daoException);
+        }
+    }
+
+    /**
+     * Commence un prêt.
+     *
+     * @param pretDTO Le prêt à commencer
+     * @throws ServiceException Si le membre n'existe pas, si le livre n'existe pas, si le livre a été prêté, si le livre a été réservé, si le
+     *         membre a atteint sa limite de prêt ou s'il y a une erreur avec la base de données
+     */
+    public void commencer(PretDTO pretDTO) throws ServiceException {
+        try {
+            final MembreDTO unMembreDTO = getMembreDAO().read(pretDTO.getMembreDTO().getIdMembre());
+            if(unMembreDTO == null) {
+                throw new ServiceException("Le membre "
+                    + pretDTO.getMembreDTO().getIdMembre()
+                    + " n'existe pas");
+            }
+            final LivreDTO unLivreDTO = getLivreDAO().read(pretDTO.getLivreDTO().getIdLivre());
+            if(unLivreDTO == null) {
+                throw new ServiceException("Le livre "
+                    + pretDTO.getLivreDTO().getIdLivre()
+                    + " n'existe pas");
+            }
+            List<PretDTO> prets = findByLivre(unLivreDTO.getIdLivre());
+            if(!prets.isEmpty()) {
+                final PretDTO unPretDTO = prets.get(0);
+                final MembreDTO emprunteur = getMembreDAO().read(unPretDTO.getMembreDTO().getIdMembre());
+                throw new ServiceException("Le livre "
+                    + unLivreDTO.getTitre()
+                    + " (ID de livre : "
+                    + unLivreDTO.getIdLivre()
+                    + ") a été prêté à "
+                    + emprunteur.getNom()
+                    + " (ID de membre : "
+                    + emprunteur.getIdMembre()
+                    + ")");
+            }
+            prets = findByMembre(unMembreDTO.getIdMembre());
+            if(prets.size() == unMembreDTO.getLimitePret()) {
+                throw new ServiceException("Le membre "
+                    + unMembreDTO.getNom()
+                    + " (ID de membre : "
+                    + unMembreDTO.getIdMembre()
+                    + ") a atteint sa limite de prêt ("
+                    + unMembreDTO.getLimitePret()
+                    + " emprunt(s) maximum)");
+            }
+            final List<ReservationDTO> reservations = getReservationDAO().findByLivre(unLivreDTO.getIdLivre());
+            if(!reservations.isEmpty()) {
+                final ReservationDTO uneReservationDTO = reservations.get(0);
+                final MembreDTO booker = getMembreDAO().read(uneReservationDTO.getMembreDTO().getIdMembre());
+                throw new ServiceException("Le livre "
+                    + unLivreDTO.getTitre()
+                    + " (ID de livre : "
+                    + unLivreDTO.getIdLivre()
+                    + ") est réservé pour "
+                    + booker.getNom()
+                    + " (ID de membre : "
+                    + booker.getIdMembre()
+                    + ")");
+            }
+            pretDTO.setDatePret(new Timestamp(System.currentTimeMillis()));
+            add(pretDTO);
+        } catch(DAOException daoException) {
+            throw new ServiceException(daoException);
+        }
+    }
+
+    /**
+     * Renouvelle le prêt d'un livre.
+     *
+     * @param pretDTO Le prêt à renouveler
+     * @throws ServiceException Si le prêt n'existe pas, si le livre n'a pas encore été prêté, si le livre a été prêté à quelqu'un d'autre, si
+     *         le livre a été réservé ou s'il y a une erreur avec la base de données
+     */
+    public void renouveler(PretDTO pretDTO) throws ServiceException {
+        try {
+            final PretDTO unPretDTO = read(pretDTO.getIdPret());
+            if(unPretDTO == null) {
+                throw new ServiceException("Le prêt "
+                    + pretDTO.getIdPret()
+                    + " n'existe pas");
+            }
+            final MembreDTO unMembreDTO = getMembreDAO().read(unPretDTO.getMembreDTO().getIdMembre());
+            final LivreDTO unLivreDTO = getLivreDAO().read(unPretDTO.getLivreDTO().getIdLivre());
+            final List<PretDTO> prets = findByMembre(unMembreDTO.getIdMembre());
+            if(prets.isEmpty()) {
+                throw new ServiceException("Le livre "
+                    + unLivreDTO.getTitre()
+                    + " (ID de livre : "
+                    + unLivreDTO.getIdLivre()
+                    + ") n'est pas encore prêté");
+            }
+            boolean aEteEmprunteParMembre = false;
+            for(PretDTO unAutrePretDTO : prets) {
+                aEteEmprunteParMembre = unMembreDTO.equals(unAutrePretDTO.getMembreDTO())
+                    && unLivreDTO.equals(unAutrePretDTO.getLivreDTO());
+            }
+            if(!aEteEmprunteParMembre) {
+                throw new ServiceException("Le livre "
+                    + unLivreDTO.getTitre()
+                    + " (ID de livre : "
+                    + unLivreDTO.getIdLivre()
+                    + ") n'a pas été prêté à "
+                    + unMembreDTO.getNom()
+                    + " (ID de membre : "
+                    + unMembreDTO.getIdMembre()
+                    + ")");
+            }
+            final List<ReservationDTO> reservations = getReservationDAO().findByLivre(unLivreDTO.getIdLivre());
+            if(!reservations.isEmpty()) {
+                final ReservationDTO uneReservationDTO = reservations.get(0);
+                final MembreDTO booker = getMembreDAO().read(uneReservationDTO.getMembreDTO().getIdMembre());
+                throw new ServiceException("Le livre "
+                    + unLivreDTO.getTitre()
+                    + " (ID de livre : "
+                    + unLivreDTO.getIdLivre()
+                    + ") est réservé pour "
+                    + booker.getNom()
+                    + " (ID de membre : "
+                    + booker.getIdMembre()
+                    + ")");
+            }
+            unPretDTO.setDatePret(new Timestamp(System.currentTimeMillis()));
+            update(unPretDTO);
+        } catch(DAOException daoException) {
+            throw new ServiceException(daoException);
+        }
+    }
+
+    /**
+     * Retourne un livre.
+     *
+     * @param pretDTO Le prêt à terminer
+     * @throws ServiceException Si le prêt n'existe pas, si le livre n'a pas encore été prêté, si le livre a été prêté à quelqu'un d'autre ou
+     *         s'il y a une erreur avec la base de données
+     */
+    public void retourner(PretDTO pretDTO) throws ServiceException {
+        try {
+            final PretDTO unPretDTO = read(pretDTO.getIdPret());
+            if(unPretDTO == null) {
+                throw new ServiceException("Le prêt "
+                    + pretDTO.getIdPret()
+                    + " n'existe pas");
+            }
+            final MembreDTO unMembreDTO = getMembreDAO().read(unPretDTO.getMembreDTO().getIdMembre());
+            final LivreDTO unLivreDTO = getLivreDAO().read(unPretDTO.getLivreDTO().getIdLivre());
+            final List<PretDTO> prets = findByMembre(unMembreDTO.getIdMembre());
+            if(prets.isEmpty()) {
+                throw new ServiceException("Le livre "
+                    + unLivreDTO.getTitre()
+                    + " (ID de livre : "
+                    + unLivreDTO.getIdLivre()
+                    + ") n'est pas encore prêté");
+            }
+            boolean aEteEmprunteParMembre = false;
+            for(PretDTO unAutrePretDTO : prets) {
+                aEteEmprunteParMembre = unMembreDTO.equals(unAutrePretDTO.getMembreDTO())
+                    && unLivreDTO.equals(unAutrePretDTO.getLivreDTO());
+            }
+            if(!aEteEmprunteParMembre) {
+                throw new ServiceException("Le livre "
+                    + unLivreDTO.getTitre()
+                    + " (ID de livre : "
+                    + unLivreDTO.getIdLivre()
+                    + ") n'a pas été prêté à "
+                    + unMembreDTO.getNom()
+                    + " (ID de membre : "
+                    + unMembreDTO.getIdMembre()
+                    + ")");
+            }
+            unPretDTO.setDateRetour(new Timestamp(System.currentTimeMillis()));
+            update(unPretDTO);
+        } catch(DAOException daoException) {
+            throw new ServiceException(daoException);
+        }
+    }
 
 }
