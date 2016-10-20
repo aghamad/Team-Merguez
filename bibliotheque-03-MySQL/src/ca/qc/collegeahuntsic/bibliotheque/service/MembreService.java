@@ -5,8 +5,8 @@
 package ca.qc.collegeahuntsic.bibliotheque.service;
 
 import java.util.List;
-import ca.qc.collegeahuntsic.bibliotheque.dao.LivreDAO;
 import ca.qc.collegeahuntsic.bibliotheque.dao.MembreDAO;
+import ca.qc.collegeahuntsic.bibliotheque.dao.PretDAO;
 import ca.qc.collegeahuntsic.bibliotheque.dao.ReservationDAO;
 import ca.qc.collegeahuntsic.bibliotheque.dto.MembreDTO;
 import ca.qc.collegeahuntsic.bibliotheque.exception.DAOException;
@@ -24,23 +24,26 @@ public class MembreService extends Service {
 
     private ReservationDAO reservationDAO;
 
+    private PretDAO pretDAO;
+
     /**
      * Crée le service de la table <code>membre</code>.
      *
      * @param membreDAO Le DAO de la table <code>membre</code>
-     * @param livreDAO Le DAO de la table <code>livre</code>
      * @param reservationDAO Le DAO de la table <code>reservation</code>
+     * @param pretDAO Le DAO de la table <code>pret</code>
      */
     public MembreService(MembreDAO membreDAO,
-        LivreDAO livreDAO,
-        ReservationDAO reservationDAO) {
+        ReservationDAO reservationDAO,
+        PretDAO pretDAO) {
         super();
         setMembreDAO(membreDAO);
-
+        setPretDAO(pretDAO);
         setReservationDAO(reservationDAO);
     }
 
     // Region Getters and Setters
+
     /**
      * Getter de la variable d'instance <code>this.membreDAO</code>.
      *
@@ -75,6 +78,24 @@ public class MembreService extends Service {
      */
     private void setReservationDAO(ReservationDAO reservationDAO) {
         this.reservationDAO = reservationDAO;
+    }
+
+    /**
+     * Getter de la variable d'instance <code>this.pretDAO</code>.
+     *
+     * @return La variable d'instance <code>this.pretDAO</code>
+     */
+    private PretDAO getPretDAO() {
+        return this.pretDAO;
+    }
+
+    /**
+     * Setter de la variable d'instance <code>this.pretDAO</code>.
+     *
+     * @param pretDAO La valeur à utiliser pour la variable d'instance <code>this.pretDAO</code>
+     */
+    private void setPretDAO(PretDAO pretDAO) {
+        this.pretDAO = pretDAO;
     }
 
     // EndRegion Getters and Setters
@@ -154,7 +175,8 @@ public class MembreService extends Service {
      * Inscrit un membre.
      *
      * @param membreDTO Le membre à ajouter
-     * @throws ServiceException Si le membre existe déjà ou s'il y a une erreur avec la base de données
+     * @throws ServiceException Si le membre existe déjà ou
+     *                          S'il y a une erreur avec la base de données
      */
     public void inscrire(MembreDTO membreDTO) throws ServiceException {
         if(read(membreDTO.getIdMembre()) != null) {
@@ -169,8 +191,10 @@ public class MembreService extends Service {
      * Désincrit un membre.
      *
      * @param membreDTO Le membre à désinscrire.
-     * @throws ServiceException Si le membre n'existe pas, si le membre a encore des prêts, s'il a des réservations ou s'il y a une erreur avec
-     *         la base de données
+     * @throws ServiceException Si le membre n'existe pas,
+     *                          Si le membre a encore des prêts,
+     *                          S'il a des réservations
+     *                          ou S'il y a une erreur avec la base de données
      */
     public void desinscrire(MembreDTO membreDTO) throws ServiceException {
         try {
@@ -188,6 +212,15 @@ public class MembreService extends Service {
                     + unMembreDTO.getIdMembre()
                     + ") a des réservations");
             }
+
+            if(!getPretDAO().findByMembre(unMembreDTO.getIdMembre()).isEmpty()) {
+                throw new ServiceException("Le membre "
+                    + unMembreDTO.getNom()
+                    + " (ID de membre : "
+                    + unMembreDTO.getIdMembre()
+                    + ") a encore des prêts");
+            }
+
             delete(unMembreDTO);
         } catch(DAOException daoException) {
             throw new ServiceException(daoException);

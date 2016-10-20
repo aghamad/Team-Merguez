@@ -56,18 +56,19 @@ public class BibliothequeCreateur {
             final ReservationDAO reservationDAO = new ReservationDAO(getConnexion());
             final PretDAO pretDAO = new PretDAO(getConnexion());
             setLivreService(new LivreService(livreDAO,
-                membreDAO,
-                reservationDAO));
+                reservationDAO,
+                pretDAO));
             setMembreService(new MembreService(membreDAO,
-                livreDAO,
-                reservationDAO));
+                reservationDAO,
+                pretDAO));
             setPretService(new PretService(pretDAO,
                 membreDAO,
                 livreDAO,
                 reservationDAO));
             setReservationService(new ReservationService(reservationDAO,
                 livreDAO,
-                membreDAO));
+                membreDAO,
+                pretDAO));
         } catch(ConnexionException connexionException) {
             throw new BibliothequeException(connexionException);
         }

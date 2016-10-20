@@ -6,7 +6,6 @@ package ca.qc.collegeahuntsic.bibliotheque.service;
 
 import java.util.List;
 import ca.qc.collegeahuntsic.bibliotheque.dao.LivreDAO;
-import ca.qc.collegeahuntsic.bibliotheque.dao.MembreDAO;
 import ca.qc.collegeahuntsic.bibliotheque.dao.PretDAO;
 import ca.qc.collegeahuntsic.bibliotheque.dao.ReservationDAO;
 import ca.qc.collegeahuntsic.bibliotheque.dto.LivreDTO;
@@ -32,16 +31,16 @@ public class LivreService extends Service {
      * Crée le service de la table <code>livre</code>.
      *
      * @param livreDAO Le DAO de la table <code>livre</code>
-     * @param membreDAO Le DAO de la table <code>membre</code>
+     * @param pretDAO Le DAO de la table <code>pret</code>
      * @param reservationDAO Le DAO de la table <code>reservation</code>
      */
     public LivreService(LivreDAO livreDAO,
-        MembreDAO membreDAO,
-        ReservationDAO reservationDAO) {
+        ReservationDAO reservationDAO,
+        PretDAO pretDAO) {
         super();
         setLivreDAO(livreDAO);
-
         setReservationDAO(reservationDAO);
+        setPretDAO(pretDAO);
     }
 
     // Region Getters and Setters
@@ -252,17 +251,21 @@ public class LivreService extends Service {
      * Vendre un livre.
      *
      * @param livreDTO Le livre à vendre
-     * @throws ServiceException Si le livre n'existe pas, si le livre a été prêté, si le livre a été réservé ou s'il y a une erreur avec la base
-     *         de données
+     * @throws ServiceException Si le livre n'existe pas,
+     *                          Si le livre a été prêté,
+     *                          Si le livre a été réservé
+     *                          ou S'il y a une erreur avec la base de données
      */
     public void vendre(LivreDTO livreDTO) throws ServiceException {
         try {
+
             final LivreDTO unLivreDTO = read(livreDTO.getIdLivre());
             if(unLivreDTO == null) {
                 throw new ServiceException("Le livre "
                     + livreDTO.getIdLivre()
                     + " n'existe pas");
             }
+
             final List<PretDTO> prets = getPretDAO().findByLivre(unLivreDTO.getIdLivre());
             if(!prets.isEmpty()) {
                 throw new ServiceException("Le livre "
