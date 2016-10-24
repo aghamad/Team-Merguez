@@ -288,9 +288,9 @@ public class ReservationService extends Service {
             }
 
             final ReservationDTO nouvelleReservation = new ReservationDTO();
-            nouvelleReservation.setIdReservation(reservationDTO.getIdReservation());
             nouvelleReservation.setMembreDTO(unMembreDTO);
             nouvelleReservation.setLivreDTO(unLivreDTO);
+            nouvelleReservation.setDateReservation(new Timestamp(System.currentTimeMillis()));
             add(nouvelleReservation);
 
         } catch(DAOException daoException) {
