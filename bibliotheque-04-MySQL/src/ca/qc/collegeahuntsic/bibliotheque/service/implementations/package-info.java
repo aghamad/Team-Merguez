@@ -3,9 +3,9 @@
 // Date de création : 2016-05-18
 
 /**
- * Provides the DAO implementations used with the bibliothèque.
+ * Provides the Service implementations used with the bibliothèque.
  *
  * @author Gilles Bénichou
  */
 
-package ca.qc.collegeahuntsic.bibliotheque.dao.implementations;
+package ca.qc.collegeahuntsic.bibliotheque.service.implementations;
