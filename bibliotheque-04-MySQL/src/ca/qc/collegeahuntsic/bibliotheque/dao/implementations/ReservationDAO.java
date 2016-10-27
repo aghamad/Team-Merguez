@@ -1,3 +1,6 @@
+// Fichier ReservationDAO.java
+// Auteur : Team-Merguez
+// Date de création : 2016-05-18
 
 package ca.qc.collegeahuntsic.bibliotheque.dao.implementations;
 
@@ -22,6 +25,12 @@ import ca.qc.collegeahuntsic.bibliotheque.exception.dao.InvalidSortByPropertyExc
 import ca.qc.collegeahuntsic.bibliotheque.exception.dto.InvalidDTOClassException;
 import ca.qc.collegeahuntsic.bibliotheque.exception.dto.InvalidDTOException;
 
+/**
+ * DAO pour effectuer des CRUDs avec la table <code>reservation</code>.
+ *
+ * @author Team-Merguez
+ *
+ */
 public class ReservationDAO extends DAO implements IReservationDAO {
 
     private static final String ADD_REQUEST = "INSERT INTO reservation ( idlivre, "
