@@ -16,6 +16,14 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 public class ReservationDTO extends DTO {
     private static final long serialVersionUID = 1L;
 
+    public static final String ID_RESERVATION_COLUMN_NAME = "idLivre";
+
+    public static final String MEMBREDTO_COLUMN_NAME = "titre";
+
+    public static final String LIVREDTO_COLUMN_NAME = "auteur";
+
+    public static final String DATE_RESERVATION_COLUMN_NAME = "dateAcquisition";
+
     private int idReservation;
 
     private MembreDTO membreDTO;

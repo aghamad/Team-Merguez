@@ -1,5 +1,5 @@
 // Fichier MembreDTO.java
-// Auteur : Gilles Bénichou
+// Auteur : Sasha Benjamin
 // Date de création : 2016-05-18
 
 package ca.qc.collegeahuntsic.bibliotheque.dto;
@@ -14,6 +14,14 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
  */
 public class MembreDTO extends DTO {
     private static final long serialVersionUID = 1L;
+
+    public static final String ID_MEMBRE_COLUMN_NAME = "idMembre";
+
+    public static final String NOM_COLUMN_NAME = "nom";
+
+    public static final String TELEPHONE_COLUMN_NAME = "telephone";
+
+    public static final String LIMITE_PRET_COLUMN_NAME = "limitePret";
 
     private int idMembre;
 

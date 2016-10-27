@@ -16,6 +16,16 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 public class PretDTO extends DTO {
     private static final long serialVersionUID = 1L;
 
+    public static final String ID_PRET_COLUMN_NAME = "idPret";
+
+    public static final String MEMBREDTO_COLUMN_NAME = "membreDTO";
+
+    public static final String LIVREDTO_COLUMN_NAME = "LivreDTO";
+
+    public static final String DATE_PRET_COLUMN_NAME = "datePret";
+
+    public static final String DATE_RETOUR_COLUMN_NAME = "dateRetour";
+
     private int idPret;
 
     private MembreDTO membreDTO;
