@@ -29,8 +29,8 @@ public interface IMembreFacade extends IFacade {
      * @param connexion La connexion à utiliser
      * @param  membreDTO Le membre à inscrire
      * @throws InvalidHibernateSessionException Si la connexion est <code>null</code>
-     * @throws InvalidDTOException Si le livre est <code>null</code>
-     * @throws InvalidDTOClassException Si la classe du livre n'est pas celle que prend en charge le DAO
+     * @throws InvalidDTOException Si le membre est <code>null</code>
+     * @throws InvalidDTOClassException Si la classe du membre n'est pas celle que prend en charge le DAO
      * @throws FacadeException S'il y a une erreur avec la base de données
      */
     void inscrire(Connexion connexion,
@@ -45,14 +45,14 @@ public interface IMembreFacade extends IFacade {
      * @param connexion La connexion à utiliser
      * @param membreDTO Le membre à deinscrire
      * @throws InvalidHibernateSessionException Si la connexion est <code>null</code>
-     * @throws InvalidDTOException Si le livre est <code>null</code>
-     * @throws InvalidDTOClassException Si la classe du livre n'est pas celle que prend en charge le DAO
-     * @throws InvalidPrimaryKeyException Si la clef primaire du livre est <code>null</code>
-     * @throws MissingDTOException Si le livre n'existe pas
+     * @throws InvalidDTOException Si le membre est <code>null</code>
+     * @throws InvalidDTOClassException Si la classe du membre n'est pas celle que prend en charge le DAO
+     * @throws InvalidPrimaryKeyException Si la clef primaire du membre est <code>null</code>
+     * @throws MissingDTOException Si le membre n'existe pas
      * @throws InvalidCriterionException Si l'ID du membre est <code>null</code>
      * @throws InvalidSortByPropertyException Si la propriété à utiliser pour classer est <code>null</code>
-     * @throws ExistingLoanException Si le livre a été prêté
-     * @throws ExistingReservationException Si le livre a été réservé
+     * @throws ExistingLoanException Si le membre a été inscrit
+     * @throws ExistingReservationException Si le membre a été inscrit
      * @throws FacadeException S'il y a une erreur avec la base de données
      */
     void desinscrire(Connexion connexion,

@@ -22,7 +22,7 @@ import ca.qc.collegeahuntsic.bibliotheque.facade.interfaces.IMembreFacade;
 import ca.qc.collegeahuntsic.bibliotheque.service.interfaces.IMembreService;
 
 /**
- * Facade pour interagir avec le service de livres.
+ * Facade pour interagir avec le service de membres.
  *
  * @author Gilles Bénichou
  */
@@ -30,34 +30,34 @@ public class MembreFacade extends Facade implements IMembreFacade {
     private IMembreService membreService;
 
     /**
-     * Crée la façade de la table <code>livre</code>.
+     * Crée la façade de la table <code>membre</code>.
      *
-     * @param membreService Le service de la table <code>livre</code>
-     * @throws InvalidServiceException Si le service de livres est <code>null</code>
+     * @param membreService Le service de la table <code>membre</code>
+     * @throws InvalidServiceException Si le service des membres est <code>null</code>
      */
     public MembreFacade(IMembreService membreService) throws InvalidServiceException {
         // TODO: Change the constructor visibility to package when switching to Spring
         super();
         if(membreService == null) {
-            throw new InvalidServiceException("Le service de livres ne peut être null");
+            throw new InvalidServiceException("Le service de membres ne peut être null");
         }
         setMembreService(this.membreService);
     }
 
     // Region Getters and Setters
     /**
-     * Getter de la variable d'instance <code>this.livreService</code>.
+     * Getter de la variable d'instance <code>this.membreService</code>.
      *
-     * @return La variable d'instance <code>this.livreService</code>
+     * @return La variable d'instance <code>this.membreService</code>
      */
     public IMembreService getMembreService() {
         return this.membreService;
     }
 
     /**
-     * Setter de la variable d'instance <code>this.livreService</code>.
+     * Setter de la variable d'instance <code>this.membreService</code>.
      *
-     * @param membreService La valeur à utiliser pour la variable d'instance <code>this.livreService</code>
+     * @param membreService La valeur à utiliser pour la variable d'instance <code>this.membreService</code>
      */
     public void setMembreService(IMembreService membreService) {
         this.membreService = membreService;
