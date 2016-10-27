@@ -137,7 +137,6 @@ public class MembreService extends Service implements IMembreService {
         } catch(DAOException daoException) {
             throw new ServiceException(daoException);
         }
-
     }
 
     /**
@@ -272,7 +271,7 @@ public class MembreService extends Service implements IMembreService {
                 membreDTO.getIdMembre());
 
             if(unMembreDTO == null) {
-                throw new ServiceException("Le membre "
+                throw new MissingDTOException("Le membre "
                     + membreDTO.getIdMembre()
                     + " n'existe pas");
             }
@@ -280,7 +279,7 @@ public class MembreService extends Service implements IMembreService {
             if(!getReservationDAO().findByMembre(connexion,
                 unMembreDTO.getIdMembre(),
                 MembreDTO.ID_MEMBRE_COLUMN_NAME).isEmpty()) {
-                throw new ServiceException("Le membre "
+                throw new ExistingReservationException("Le membre "
                     + membreDTO.getNom()
                     + " (ID de membre : "
                     + membreDTO.getIdMembre()
@@ -290,7 +289,7 @@ public class MembreService extends Service implements IMembreService {
             if(!getPretDAO().findByMembre(connexion,
                 unMembreDTO.getIdMembre(),
                 MembreDTO.ID_MEMBRE_COLUMN_NAME).isEmpty()) {
-                throw new ServiceException("Le membre "
+                throw new ExistingLoanException("Le membre "
                     + unMembreDTO.getNom()
                     + " (ID de membre : "
                     + unMembreDTO.getIdMembre()
