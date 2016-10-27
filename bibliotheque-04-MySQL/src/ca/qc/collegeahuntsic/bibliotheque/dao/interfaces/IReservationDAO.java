@@ -9,6 +9,13 @@ import ca.qc.collegeahuntsic.bibliotheque.exception.dao.InvalidCriterionExceptio
 import ca.qc.collegeahuntsic.bibliotheque.exception.dao.InvalidHibernateSessionException;
 import ca.qc.collegeahuntsic.bibliotheque.exception.dao.InvalidSortByPropertyException;
 
+/**
+*
+* Interface DAO pour manipuler les réservations dans la base de données.
+*
+* @author Team-Merguez
+*/
+
 public interface IReservationDAO extends IDAO {
     /**
      * Trouve les réservations d'un membre.
