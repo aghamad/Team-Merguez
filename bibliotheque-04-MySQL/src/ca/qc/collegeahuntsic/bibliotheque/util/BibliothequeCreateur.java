@@ -14,6 +14,7 @@ import ca.qc.collegeahuntsic.bibliotheque.exception.ConnexionException;
 import ca.qc.collegeahuntsic.bibliotheque.service.implementations.LivreService;
 import ca.qc.collegeahuntsic.bibliotheque.service.implementations.MembreService;
 import ca.qc.collegeahuntsic.bibliotheque.service.implementations.PretService;
+import ca.qc.collegeahuntsic.bibliotheque.service.implementations.ReservationService;
 
 /**
  * Utilitaire de création des outils de la bibliothèque.
@@ -79,7 +80,7 @@ public class BibliothequeCreateur {
      *
      * @return La variable d'instance <code>this.connexion</code>
      */
-    private Connexion getConnexion() {
+    public Connexion getConnexion() {
         return this.connexion;
     }
 
