@@ -78,6 +78,14 @@ public class ReservationDAO extends DAO implements IReservationDAO {
         + "                                               FROM   reservation "
         + "                                               WHERE  idMembre = ?";
 
+    /**
+    *
+    * Crée le DAO de la table reservation.
+    *
+    * @param ReservationDTOClass La classe de reservation DTO à utiliser
+    * @throws InvalidDTOClassException Si la classe de DTO est null
+    */
+
     protected ReservationDAO(final Class<ReservationDTO> ReservationDTOClass) throws InvalidDTOClassException {
         super(ReservationDTOClass);
 
