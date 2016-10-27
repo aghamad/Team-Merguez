@@ -14,7 +14,6 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
  * @author Gilles Bénichou
  */
 public class ReservationDTO extends DTO {
-    private static final long serialVersionUID = 1L;
 
     public static final String ID_RESERVATION_COLUMN_NAME = "idLivre";
 
@@ -23,6 +22,8 @@ public class ReservationDTO extends DTO {
     public static final String LIVREDTO_COLUMN_NAME = "auteur";
 
     public static final String DATE_RESERVATION_COLUMN_NAME = "dateAcquisition";
+
+    private static final long serialVersionUID = 1L;
 
     private int idReservation;
 

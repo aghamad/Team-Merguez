@@ -13,7 +13,6 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
  * @author Gilles Bénichou
  */
 public class MembreDTO extends DTO {
-    private static final long serialVersionUID = 1L;
 
     public static final String ID_MEMBRE_COLUMN_NAME = "idMembre";
 
@@ -22,6 +21,8 @@ public class MembreDTO extends DTO {
     public static final String TELEPHONE_COLUMN_NAME = "telephone";
 
     public static final String LIMITE_PRET_COLUMN_NAME = "limitePret";
+
+    private static final long serialVersionUID = 1L;
 
     private int idMembre;
 

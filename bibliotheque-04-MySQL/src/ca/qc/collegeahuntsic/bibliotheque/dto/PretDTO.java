@@ -14,7 +14,6 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
  * @author Gilles Bénichou
  */
 public class PretDTO extends DTO {
-    private static final long serialVersionUID = 1L;
 
     public static final String ID_PRET_COLUMN_NAME = "idPret";
 
@@ -25,6 +24,8 @@ public class PretDTO extends DTO {
     public static final String DATE_PRET_COLUMN_NAME = "datePret";
 
     public static final String DATE_RETOUR_COLUMN_NAME = "dateRetour";
+
+    private static final long serialVersionUID = 1L;
 
     private int idPret;
 
