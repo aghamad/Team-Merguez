@@ -137,7 +137,7 @@ public class MembreDAO extends DAO implements IMembreDAO {
                 ResultSet resultSet = readPreparedStatement.executeQuery()) {
                 if(resultSet.next()) {
                     membreDTO = new MembreDTO();
-                    membreDTO.setIdMembre(resultSet.getInt(1));
+                    membreDTO.setIdMembre(resultSet.getString(1));
                     membreDTO.setNom(resultSet.getString(2));
                     membreDTO.setTelephone(resultSet.getLong(3));
                     membreDTO.setLimitePret(resultSet.getInt(4));
@@ -177,7 +177,7 @@ public class MembreDAO extends DAO implements IMembreDAO {
                 membreDTO.getTelephone());
             updatePreparedStatement.setInt(3,
                 membreDTO.getLimitePret());
-            updatePreparedStatement.setInt(4,
+            updatePreparedStatement.setString(4,
                 membreDTO.getIdMembre());
             updatePreparedStatement.executeUpdate();
         } catch(SQLException sqlException) {
@@ -208,7 +208,7 @@ public class MembreDAO extends DAO implements IMembreDAO {
         final MembreDTO membreDTO = (MembreDTO) dto;
         try(
             PreparedStatement deletePreparedStatement = connexion.getConnection().prepareStatement(MembreDAO.DELETE_REQUEST)) {
-            deletePreparedStatement.setInt(1,
+            deletePreparedStatement.setString(1,
                 membreDTO.getIdMembre());
             deletePreparedStatement.executeUpdate();
         } catch(SQLException sqlException) {
@@ -241,7 +241,7 @@ public class MembreDAO extends DAO implements IMembreDAO {
                     membres = new ArrayList<>();
                     do {
                         membreDTO = new MembreDTO();
-                        membreDTO.setIdMembre(resultSet.getInt(1));
+                        membreDTO.setIdMembre(resultSet.getString(1));
                         membreDTO.setNom(resultSet.getString(2));
                         membreDTO.setTelephone(resultSet.getLong(3));
                         membreDTO.setLimitePret(resultSet.getInt(4));
@@ -288,7 +288,7 @@ public class MembreDAO extends DAO implements IMembreDAO {
                     membres = new ArrayList<>();
                     do {
                         membreDTO = new MembreDTO();
-                        membreDTO.setIdMembre(resultSet.getInt(1));
+                        membreDTO.setIdMembre(resultSet.getString(1));
                         membreDTO.setNom(resultSet.getString(2));
                         membreDTO.setTelephone(resultSet.getLong(3));
                         membreDTO.setLimitePret(resultSet.getInt(4));

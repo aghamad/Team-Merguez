@@ -136,7 +136,7 @@ public class PretDAO extends DAO implements IPretDAO {
         try(
             PreparedStatement addPreparedStatement = connexion.getConnection().prepareStatement(PretDAO.ADD_REQUEST)) {
 
-            addPreparedStatement.setInt(1,
+            addPreparedStatement.setString(1,
                 pretDTO.getMembreDTO().getIdMembre());
             addPreparedStatement.setString(2,
                 pretDTO.getLivreDTO().getIdLivre());
@@ -175,7 +175,7 @@ public class PretDAO extends DAO implements IPretDAO {
         try(
             PreparedStatement deletePreparedStatement = connexion.getConnection().prepareStatement(PretDAO.DELETE_REQUEST)) {
 
-            deletePreparedStatement.setInt(1,
+            deletePreparedStatement.setString(1,
                 pretDTO.getIdPret());
 
             deletePreparedStatement.executeUpdate();
@@ -208,7 +208,7 @@ public class PretDAO extends DAO implements IPretDAO {
         try(
             PreparedStatement updatePreparedStatement = connexion.getConnection().prepareStatement(PretDAO.UPDATE_REQUEST)) {
 
-            updatePreparedStatement.setInt(1,
+            updatePreparedStatement.setString(1,
                 pretDTO.getMembreDTO().getIdMembre());
             updatePreparedStatement.setString(2,
                 pretDTO.getLivreDTO().getIdLivre());
@@ -216,7 +216,7 @@ public class PretDAO extends DAO implements IPretDAO {
                 pretDTO.getDatePret());
             updatePreparedStatement.setTimestamp(4,
                 pretDTO.getDateRetour());
-            updatePreparedStatement.setInt(5,
+            updatePreparedStatement.setString(5,
                 pretDTO.getIdPret());
 
             updatePreparedStatement.executeUpdate();
@@ -254,10 +254,10 @@ public class PretDAO extends DAO implements IPretDAO {
                 if(resultSet.next()) {
 
                     pretDTO = new PretDTO();
-                    pretDTO.setIdPret(resultSet.getInt(1));
+                    pretDTO.setIdPret(resultSet.getString(1));
 
                     final MembreDTO membreDTO = new MembreDTO();
-                    membreDTO.setIdMembre(resultSet.getInt(2));
+                    membreDTO.setIdMembre(resultSet.getString(2));
                     pretDTO.setMembreDTO(membreDTO);
 
                     final LivreDTO livreDTO = new LivreDTO();
@@ -300,8 +300,8 @@ public class PretDAO extends DAO implements IPretDAO {
                 listeDTO = new ArrayList<>();
                 do {
                     pretDTO = new PretDTO();
-                    pretDTO.setIdPret(resultSet.getInt(1));
-                    pretDTO.getMembreDTO().setIdMembre(resultSet.getInt(2));
+                    pretDTO.setIdPret(resultSet.getString(1));
+                    pretDTO.getMembreDTO().setIdMembre(resultSet.getString(2));
                     pretDTO.getLivreDTO().setIdLivre(resultSet.getString(3));
                     pretDTO.setDatePret(resultSet.getTimestamp(4));
                     pretDTO.setDateRetour(resultSet.getTimestamp(5));
@@ -348,9 +348,9 @@ public class PretDAO extends DAO implements IPretDAO {
                     listePrets = new ArrayList<>();
                     do {
                         pretDTO = new PretDTO();
-                        pretDTO.setIdPret(resultSet.getInt(1));
+                        pretDTO.setIdPret(resultSet.getString(1));
                         final MembreDTO membreDTO = new MembreDTO();
-                        membreDTO.setIdMembre(resultSet.getInt(2));
+                        membreDTO.setIdMembre(resultSet.getString(2));
                         pretDTO.setMembreDTO(membreDTO);
                         final LivreDTO livreDTO = new LivreDTO();
                         livreDTO.setIdLivre(resultSet.getString(3));
@@ -402,9 +402,9 @@ public class PretDAO extends DAO implements IPretDAO {
                     listePrets = new ArrayList<>();
                     do {
                         pretDTO = new PretDTO();
-                        pretDTO.setIdPret(resultSet.getInt(1));
+                        pretDTO.setIdPret(resultSet.getString(1));
                         final MembreDTO membreDTO = new MembreDTO();
-                        membreDTO.setIdMembre(resultSet.getInt(2));
+                        membreDTO.setIdMembre(resultSet.getString(2));
                         pretDTO.setMembreDTO(membreDTO);
                         final LivreDTO livreDTO = new LivreDTO();
                         livreDTO.setIdLivre(resultSet.getString(3));
@@ -454,9 +454,9 @@ public class PretDAO extends DAO implements IPretDAO {
                     listePrets = new ArrayList<>();
                     do {
                         pretDTO = new PretDTO();
-                        pretDTO.setIdPret(resultSet.getInt(1));
+                        pretDTO.setIdPret(resultSet.getString(1));
                         final MembreDTO membreDTO = new MembreDTO();
-                        membreDTO.setIdMembre(resultSet.getInt(2));
+                        membreDTO.setIdMembre(resultSet.getString(2));
                         pretDTO.setMembreDTO(membreDTO);
                         final LivreDTO livreDTO = new LivreDTO();
                         livreDTO.setIdLivre(resultSet.getString(3));
@@ -507,9 +507,9 @@ public class PretDAO extends DAO implements IPretDAO {
                     listePrets = new ArrayList<>();
                     do {
                         pretDTO = new PretDTO();
-                        pretDTO.setIdPret(resultSet.getInt(1));
+                        pretDTO.setIdPret(resultSet.getString(1));
                         final MembreDTO membreDTO = new MembreDTO();
-                        membreDTO.setIdMembre(resultSet.getInt(2));
+                        membreDTO.setIdMembre(resultSet.getString(2));
                         pretDTO.setMembreDTO(membreDTO);
                         final LivreDTO livreDTO = new LivreDTO();
                         livreDTO.setIdLivre(resultSet.getString(3));
