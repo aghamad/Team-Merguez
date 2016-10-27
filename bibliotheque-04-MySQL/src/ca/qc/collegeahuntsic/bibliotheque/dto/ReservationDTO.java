@@ -15,13 +15,13 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
  */
 public class ReservationDTO extends DTO {
 
-    public static final String ID_RESERVATION_COLUMN_NAME = "idLivre";
+    public static final String ID_RESERVATION_COLUMN_NAME = "idReservation";
 
-    public static final String MEMBREDTO_COLUMN_NAME = "titre";
+    public static final String ID_MEMBRE_COLUMN_NAME = "idMembre";
 
-    public static final String LIVREDTO_COLUMN_NAME = "auteur";
+    public static final String ID_LIVRE_COLUMN_NAME = "idLivre";
 
-    public static final String DATE_RESERVATION_COLUMN_NAME = "dateAcquisition";
+    public static final String DATE_RESERVATION_COLUMN_NAME = "dateReservation";
 
     private static final long serialVersionUID = 1L;
 
