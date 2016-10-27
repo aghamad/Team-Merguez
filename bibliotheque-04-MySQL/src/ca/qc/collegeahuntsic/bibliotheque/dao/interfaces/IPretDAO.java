@@ -88,7 +88,7 @@ public interface IPretDAO extends IDAO {
      * La liste est classée par ordre croissant sur sortByPropertyName.
      * Si aucun prêt n'est trouvé, une List vide est retournée.
      *
-     * @param connexion La connexion à utiliser
+     * @param connexion La connexion à utiliser.
      * @param dateRetour La date de retour à trouver
      * @param sortByPropertyName Le nom de la propriété à utiliser pour classer
      * @return La liste des prets correspondants ; une liste vide sinon
