@@ -33,10 +33,6 @@ public class MembreService extends Service implements IMembreService {
 
     private IMembreDAO membreDAO;
 
-    private IPretDAO pretDAO;
-
-    private IReservationDAO reservationDAO;
-
     /**
      *
      * Crée le service de la table membre.
@@ -91,7 +87,6 @@ public class MembreService extends Service implements IMembreService {
      * @param pretDAO La valeur à utiliser pour la variable d'instance <code>this.pretDAO</code>
      */
     private void setPretDAO(IPretDAO pretDAO) {
-        this.pretDAO = pretDAO;
     }
 
     /**
@@ -100,7 +95,6 @@ public class MembreService extends Service implements IMembreService {
      * @param reservationDAO La valeur à utiliser pour la variable d'instance <code>this.reservationDAO</code>
      */
     private void setReservationDAO(IReservationDAO reservationDAO) {
-        this.reservationDAO = reservationDAO;
     }
     // EndRegion Getters and Setters
 
