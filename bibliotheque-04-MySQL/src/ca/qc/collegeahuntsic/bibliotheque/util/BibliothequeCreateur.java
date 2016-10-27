@@ -4,17 +4,16 @@
 
 package ca.qc.collegeahuntsic.bibliotheque.util;
 
-import ca.qc.collegeahuntsic.bibliotheque.dao.LivreDAO;
-import ca.qc.collegeahuntsic.bibliotheque.dao.MembreDAO;
-import ca.qc.collegeahuntsic.bibliotheque.dao.PretDAO;
-import ca.qc.collegeahuntsic.bibliotheque.dao.ReservationDAO;
+import ca.qc.collegeahuntsic.bibliotheque.dao.implementations.LivreDAO;
+import ca.qc.collegeahuntsic.bibliotheque.dao.implementations.MembreDAO;
+import ca.qc.collegeahuntsic.bibliotheque.dao.implementations.PretDAO;
+import ca.qc.collegeahuntsic.bibliotheque.dao.implementations.ReservationDAO;
 import ca.qc.collegeahuntsic.bibliotheque.db.Connexion;
 import ca.qc.collegeahuntsic.bibliotheque.exception.BibliothequeException;
 import ca.qc.collegeahuntsic.bibliotheque.exception.ConnexionException;
-import ca.qc.collegeahuntsic.bibliotheque.service.LivreService;
-import ca.qc.collegeahuntsic.bibliotheque.service.MembreService;
-import ca.qc.collegeahuntsic.bibliotheque.service.PretService;
-import ca.qc.collegeahuntsic.bibliotheque.service.ReservationService;
+import ca.qc.collegeahuntsic.bibliotheque.service.implementations.LivreService;
+import ca.qc.collegeahuntsic.bibliotheque.service.implementations.MembreService;
+import ca.qc.collegeahuntsic.bibliotheque.service.implementations.PretService;
 
 /**
  * Utilitaire de création des outils de la bibliothèque.
