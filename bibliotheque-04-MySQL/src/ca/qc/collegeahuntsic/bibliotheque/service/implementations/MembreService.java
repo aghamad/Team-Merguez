@@ -33,6 +33,10 @@ public class MembreService extends Service implements IMembreService {
 
     private IMembreDAO membreDAO;
 
+    private IPretDAO pretDAO;
+
+    private IReservationDAO reservationDAO;
+
     /**
      *
      * Crée le service de la table membre.
@@ -82,11 +86,30 @@ public class MembreService extends Service implements IMembreService {
     }
 
     /**
+     * Getter de la variable d'instance <code>this.preDAO</code>.
+     *
+     * @return La variable d'instance <code>this.preDAO</code>
+     */
+    private IPretDAO getPretDAO() {
+        return this.pretDAO;
+    }
+
+    /**
      * Setter de la variable d'instance <code>this.pretDAO</code>.
      *
      * @param pretDAO La valeur à utiliser pour la variable d'instance <code>this.pretDAO</code>
      */
     private void setPretDAO(IPretDAO pretDAO) {
+        this.pretDAO = pretDAO;
+    }
+
+    /**
+     * Getter de la variable d'instance <code>this.membreDAO</code>.
+     *
+     * @return La variable d'instance <code>this.membreDAO</code>
+     */
+    private IReservationDAO getReservationDAO() {
+        return this.reservationDAO;
     }
 
     /**
@@ -95,6 +118,7 @@ public class MembreService extends Service implements IMembreService {
      * @param reservationDAO La valeur à utiliser pour la variable d'instance <code>this.reservationDAO</code>
      */
     private void setReservationDAO(IReservationDAO reservationDAO) {
+        this.reservationDAO = reservationDAO;
     }
     // EndRegion Getters and Setters
 
@@ -213,7 +237,18 @@ public class MembreService extends Service implements IMembreService {
         InvalidDTOException,
         InvalidDTOClassException,
         ServiceException {
-        // TODO Auto-generated method stub
+        try {
+            if(get(connexion,
+                membreDTO.getIdMembre()) != null) {
+                throw new ServiceException("Le membre "
+                    + membreDTO.getIdMembre()
+                    + " existe déjà");
+            }
+            add(connexion,
+                membreDTO);
+        } catch(InvalidPrimaryKeyException invalidPrimaryKeyException) {
+            throw new ServiceException(invalidPrimaryKeyException);
+        }
 
     }
 
@@ -232,8 +267,40 @@ public class MembreService extends Service implements IMembreService {
         InvalidSortByPropertyException,
         ExistingReservationException,
         ServiceException {
-        // TODO Auto-generated method stub
+        try {
+            final MembreDTO unMembreDTO = get(connexion,
+                membreDTO.getIdMembre());
 
+            if(unMembreDTO == null) {
+                throw new ServiceException("Le membre "
+                    + membreDTO.getIdMembre()
+                    + " n'existe pas");
+            }
+
+            if(!getReservationDAO().findByMembre(connexion,
+                unMembreDTO.getIdMembre(),
+                MembreDTO.ID_MEMBRE_COLUMN_NAME).isEmpty()) {
+                throw new ServiceException("Le membre "
+                    + membreDTO.getNom()
+                    + " (ID de membre : "
+                    + membreDTO.getIdMembre()
+                    + ") a des réservations");
+            }
+
+            if(!getPretDAO().findByMembre(connexion,
+                unMembreDTO.getIdMembre(),
+                MembreDTO.ID_MEMBRE_COLUMN_NAME).isEmpty()) {
+                throw new ServiceException("Le membre "
+                    + unMembreDTO.getNom()
+                    + " (ID de membre : "
+                    + unMembreDTO.getIdMembre()
+                    + ") a encore des prêts");
+            }
+
+            delete(connexion,
+                unMembreDTO);
+        } catch(DAOException daoException) {
+            throw new ServiceException(daoException);
+        }
     }
-
 }
