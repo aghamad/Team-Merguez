@@ -6,7 +6,6 @@ package ca.qc.collegeahuntsic.bibliotheque.service.interfaces;
 
 import java.util.List;
 import ca.qc.collegeahuntsic.bibliotheque.db.Connexion;
-import ca.qc.collegeahuntsic.bibliotheque.dto.LivreDTO;
 import ca.qc.collegeahuntsic.bibliotheque.dto.MembreDTO;
 import ca.qc.collegeahuntsic.bibliotheque.exception.dao.InvalidCriterionException;
 import ca.qc.collegeahuntsic.bibliotheque.exception.dao.InvalidHibernateSessionException;
@@ -26,7 +25,7 @@ import ca.qc.collegeahuntsic.bibliotheque.exception.service.ServiceException;
  */
 public interface IMembreService extends IService {
     /**
-     * Ajoute un nouveau livre dans la base de données.
+     * Ajoute un nouveau membre dans la base de données.
      *
      * @param  connexion La connexion à utiliser
      * @param  membreDTO Le membre à ajouter
@@ -42,7 +41,7 @@ public interface IMembreService extends IService {
         ServiceException;
 
     /**
-     * Lit un livre à partir de la base de données. Si aucun livre n'est trouvé, <code>null</code> est retourné.
+     * Lit un membre à partir de la base de données. Si aucun membre n'est trouvé, <code>null</code> est retourné.
      *
      * @param  connexion La connexion à utiliser
      * @param  idMembre L'ID du membre à lire
@@ -51,13 +50,13 @@ public interface IMembreService extends IService {
      * @throws InvalidPrimaryKeyException Si la clef primaire du membre est <code>null</code>
      * @throws ServiceException S'il y a une erreur avec la base de données
      */
-    LivreDTO get(Connexion connexion,
+    MembreDTO get(Connexion connexion,
         String idMembre) throws InvalidHibernateSessionException,
         InvalidPrimaryKeyException,
         ServiceException;
 
     /**
-     * Met à jour un livre dans la base de données.
+     * Met à jour un membre dans la base de données.
      *
      * @param  connexion La connexion à utiliser
      * @param  membreDTO Le membre à mettre à jour
@@ -73,7 +72,7 @@ public interface IMembreService extends IService {
         ServiceException;
 
     /**
-     * Supprime un livre de la base de données.
+     * Supprime un membre de la base de données.
      *
      * @param  connexion La connexion à utiliser
      * @param  membreDTO Le membre à supprimer
@@ -89,7 +88,7 @@ public interface IMembreService extends IService {
         ServiceException;
 
     /**
-     * Trouve tous les livres de la base de données. La liste est classée par ordre croissant sur <code>sortByPropertyName</code>. Si aucun
+     * Trouve tous les membres de la base de données. La liste est classée par ordre croissant sur <code>sortByPropertyName</code>. Si aucun
      * livre n'est trouvé, une {@link List} vide est retournée.
      *
      * @param  connexion La connexion à utiliser
