@@ -39,7 +39,7 @@ public class ReservationDAO extends DAO implements IReservationDAO {
         + "                                    VALUES                  ("
         + "                                                             ?, "
         + "                                                             ?, "
-        + "                                                             CURRENT_TIMESTAMP)";
+        + "                                                             SYSTIMESTAMP)";
 
     private static final String READ_REQUEST = "SELECT idReservation, "
         + "                                            idLivre, "
