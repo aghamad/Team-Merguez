@@ -7,8 +7,8 @@ package ca.qc.collegeahuntsic.bibliotheque.util;
 import java.sql.SQLException;
 import java.sql.Statement;
 import ca.qc.collegeahuntsic.bibliotheque.db.Connexion;
-import ca.qc.collegeahuntsic.bibliotheque.exception.BDCreateurException;
-import ca.qc.collegeahuntsic.bibliotheque.exception.ConnexionException;
+import ca.qc.collegeahuntsic.bibliotheque.exception.db.ConnexionException;
+import ca.qc.collegeahuntsic.bibliotheque.exception.util.BDCreateurException;
 
 /**
  * Utilitaire de création de la base de données.
@@ -37,8 +37,7 @@ public final class BDCreateur {
      */
     public static void main(String[] arguments) throws BDCreateurException {
         if(arguments.length < 4) {
-            System.out.println(
-                "Usage : java BDCreateur <type_serveur> <nom_schema> <nom_utilisateur> <mot_passe>");
+            System.out.println("Usage : java BDCreateur <type_serveur> <nom_schema> <nom_utilisateur> <mot_passe>");
         } else {
             try(
                 Connexion connexion = new Connexion(arguments[0],

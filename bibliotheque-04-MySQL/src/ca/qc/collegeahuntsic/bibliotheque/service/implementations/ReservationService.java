@@ -82,10 +82,20 @@ public class ReservationService extends Service implements IReservationService {
 
     // Region Getters and Setters
 
+    /**
+     *Getter de la variable d'instance <code>this.livreDAO</code>.
+     *
+     * @return La variable d'instance <code>this.livreDAO</code>
+     */
     private ILivreDAO getLivreDAO() {
         return this.livreDAO;
     }
 
+    /**
+     * Setter de la variable d'instance <code>this.livreDAO</code>.
+     *
+     * @param livreDAO La valeur à utiliser pour la variable d'instance <code>this.livreDAO</code>
+     */
     private void setLivreDAO(ILivreDAO livreDAO) {
         this.livreDAO = livreDAO;
     }

@@ -1,12 +1,11 @@
 // Fichier IReservationFacade.java
-// Auteur : Gilles Benichou
+// Auteur : Team-Merguez
 // Date de création : 2016-10-27
 
 package ca.qc.collegeahuntsic.bibliotheque.facade.interfaces;
 
 import ca.qc.collegeahuntsic.bibliotheque.db.Connexion;
 import ca.qc.collegeahuntsic.bibliotheque.dto.ReservationDTO;
-import ca.qc.collegeahuntsic.bibliotheque.exception.FacadeException;
 import ca.qc.collegeahuntsic.bibliotheque.exception.dao.InvalidCriterionException;
 import ca.qc.collegeahuntsic.bibliotheque.exception.dao.InvalidHibernateSessionException;
 import ca.qc.collegeahuntsic.bibliotheque.exception.dao.InvalidPrimaryKeyException;
@@ -14,6 +13,7 @@ import ca.qc.collegeahuntsic.bibliotheque.exception.dao.InvalidSortByPropertyExc
 import ca.qc.collegeahuntsic.bibliotheque.exception.dto.InvalidDTOClassException;
 import ca.qc.collegeahuntsic.bibliotheque.exception.dto.InvalidDTOException;
 import ca.qc.collegeahuntsic.bibliotheque.exception.dto.MissingDTOException;
+import ca.qc.collegeahuntsic.bibliotheque.exception.facade.FacadeException;
 import ca.qc.collegeahuntsic.bibliotheque.exception.service.ExistingLoanException;
 import ca.qc.collegeahuntsic.bibliotheque.exception.service.ExistingReservationException;
 import ca.qc.collegeahuntsic.bibliotheque.exception.service.InvalidLoanLimitException;
@@ -22,7 +22,7 @@ import ca.qc.collegeahuntsic.bibliotheque.exception.service.MissingLoanException
 /**
  * Interface de façade pour manipuler les réservations dans la base de données.
  *
- * @author Gilles Benichou
+ * @author Team-Merguez
  */
 public interface IReservationFacade extends IFacade {
 
