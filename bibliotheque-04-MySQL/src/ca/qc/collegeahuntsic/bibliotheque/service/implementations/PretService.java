@@ -1,5 +1,5 @@
 // Fichier PretService.java
-// Auteur : Gilles Benichou
+// Auteur : Team-Merguez
 // Date de création : 2016-10-27
 
 package ca.qc.collegeahuntsic.bibliotheque.service.implementations;
@@ -35,7 +35,7 @@ import ca.qc.collegeahuntsic.bibliotheque.service.interfaces.IPretService;
 /**
  * Service de la table <code>pret</code>.
  *
- * @author Gilles Benichou
+ * @author Team-Merguez
  */
 public class PretService extends Service implements IPretService {
 
