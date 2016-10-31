@@ -103,7 +103,7 @@ public class PretDAO extends DAO implements IPretDAO {
         + "                                            WHERE  dateRetour = ?";
 
     /**
-     * Crée le DAO de la table <code>pret</code>.
+     *  Crée le DAO de la table <code>pret</code>.
      *
      * @param pretDTOClass La classe de Pret DTO à utiliser
      * @throws InvalidDTOClassException Si la classe de DTO est <code>null</code>
