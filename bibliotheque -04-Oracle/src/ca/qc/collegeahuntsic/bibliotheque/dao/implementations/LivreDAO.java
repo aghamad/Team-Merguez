@@ -251,7 +251,7 @@ public class LivreDAO extends DAO implements ILivreDAO {
     }
 
     /**
-     * {@inheritDoc}
+     *  {@inheritDoc}
      */
     @Override
     public List<LivreDTO> findByTitre(Connexion connexion,
