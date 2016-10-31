@@ -61,7 +61,7 @@ public class LivreDAO extends DAO implements ILivreDAO {
     private static final String FIND_BY_TITRE = "SELECT idLivre, "
         + "                                             titre, "
         + "                                             auteur, "
-        + "                                             dateAcquisition "
+        + "                                             dateAcquisition FROM dual "
         + "                                      FROM   livre "
         + "                                      WHERE  LOWER(titre) LIKE LOWER(?)";
 
