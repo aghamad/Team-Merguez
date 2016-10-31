@@ -33,15 +33,15 @@ public class MembreFacade extends Facade implements IMembreFacade {
      * Crée la façade de la table <code>membre</code>.
      *
      * @param membreService Le service de la table <code>membre</code>
-     * @throws InvalidServiceException Si le service des membres est <code>null</code>
+     * @throws InvalidServiceException Si le service de membre est <code>null</code>
      */
     public MembreFacade(IMembreService membreService) throws InvalidServiceException {
         // TODO: Change the constructor visibility to package when switching to Spring
         super();
         if(membreService == null) {
-            throw new InvalidServiceException("Le service de membres ne peut être null");
+            throw new InvalidServiceException("Le service de livres ne peut être null");
         }
-        setMembreService(this.membreService);
+        setMembreService(membreService);
     }
 
     // Region Getters and Setters
