@@ -63,14 +63,14 @@ public class PretDAO extends DAO implements IPretDAO {
         + "                                               idMembre, "
         + "                                               idLivre, "
         + "                                               datePret, "
-        + "                                               dateRetour FROM dual "
+        + "                                               dateRetour "
         + "                                        FROM   pret";
 
     private static final String FIND_BY_MEMBRE = "SELECT   idPret, "
         + "                                                idMembre, "
         + "                                                idLivre, "
         + "                                                datePret, "
-        + "                                                dateRetour FROM dual "
+        + "                                                dateRetour "
         + "                                       FROM     pret "
         + "                                       WHERE    idMembre = ? "
         + "                                       AND      dateRetour IS NULL "
@@ -80,7 +80,7 @@ public class PretDAO extends DAO implements IPretDAO {
         + "                                               idMembre, "
         + "                                               idLivre, "
         + "                                               datePret, "
-        + "                                               dateRetour FROM dual "
+        + "                                               dateRetour "
         + "                                      FROM     pret "
         + "                                      WHERE    idLivre = ? "
         + "                                      AND      dateRetour IS NULL "
@@ -90,7 +90,7 @@ public class PretDAO extends DAO implements IPretDAO {
         + "                                                 idMembre, "
         + "                                                 idLivre, "
         + "                                                 datePret, "
-        + "                                                 dateRetour FROM dual "
+        + "                                                 dateRetour "
         + "                                          FROM   pret "
         + "                                          WHERE  datePret = ?";
 
@@ -98,7 +98,7 @@ public class PretDAO extends DAO implements IPretDAO {
         + "                                                   idMembre, "
         + "                                                   idLivre, "
         + "                                                   datePret, "
-        + "                                                   dateRetour FROM dual "
+        + "                                                   dateRetour "
         + "                                            FROM   pret "
         + "                                            WHERE  dateRetour = ?";
 
