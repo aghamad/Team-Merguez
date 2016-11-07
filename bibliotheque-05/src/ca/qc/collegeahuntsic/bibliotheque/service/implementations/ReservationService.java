@@ -34,7 +34,7 @@ import ca.qc.collegeahuntsic.bibliotheque.service.interfaces.IReservationService
 /**
  * Service de la table <code>réservation</code>.
  *
- * @author Team-Merguez
+ * @author  Team-Merguez
  */
 public class ReservationService extends Service implements IReservationService {
 
