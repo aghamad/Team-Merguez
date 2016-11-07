@@ -9,6 +9,7 @@ import ca.qc.collegeahuntsic.bibliotheque.dao.interfaces.ILivreDAO;
 import ca.qc.collegeahuntsic.bibliotheque.dto.LivreDTO;
 import ca.qc.collegeahuntsic.bibliotheque.exception.dao.DAOException;
 import ca.qc.collegeahuntsic.bibliotheque.exception.dao.InvalidCriterionException;
+import ca.qc.collegeahuntsic.bibliotheque.exception.dao.InvalidCriterionValueException;
 import ca.qc.collegeahuntsic.bibliotheque.exception.dao.InvalidHibernateSessionException;
 import ca.qc.collegeahuntsic.bibliotheque.exception.dao.InvalidSortByPropertyException;
 import ca.qc.collegeahuntsic.bibliotheque.exception.dto.InvalidDTOClassException;
@@ -42,8 +43,8 @@ public class LivreDAO extends DAO implements ILivreDAO {
         String sortByPropertyName) throws InvalidHibernateSessionException,
         InvalidCriterionException,
         InvalidSortByPropertyException,
-        DAOException {
-
+        DAOException,
+        InvalidCriterionValueException {
         return (List<LivreDTO>) find(session,
             LivreDTO.TITRE_COLUMN_NAME,
             titre,

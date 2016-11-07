@@ -8,6 +8,7 @@ import java.util.List;
 import ca.qc.collegeahuntsic.bibliotheque.dto.LivreDTO;
 import ca.qc.collegeahuntsic.bibliotheque.exception.dao.DAOException;
 import ca.qc.collegeahuntsic.bibliotheque.exception.dao.InvalidCriterionException;
+import ca.qc.collegeahuntsic.bibliotheque.exception.dao.InvalidCriterionValueException;
 import ca.qc.collegeahuntsic.bibliotheque.exception.dao.InvalidHibernateSessionException;
 import ca.qc.collegeahuntsic.bibliotheque.exception.dao.InvalidSortByPropertyException;
 import org.hibernate.Session;
@@ -28,6 +29,7 @@ public interface ILivreDAO extends IDAO {
      * @return La liste des livres correspondants ; une liste vide sinon
      * @throws InvalidHibernateSessionException Si la connexion est <code>null</code>
      * @throws InvalidCriterionException Si le titre est <code>null</code>
+     * @throws InvalidCriterionValueException Si la valeur à trouver est null
      * @throws InvalidSortByPropertyException Si la propriété à utiliser pour classer est <code>null</code>
      * @throws DAOException S'il y a une erreur avec la base de données
      */
@@ -35,6 +37,7 @@ public interface ILivreDAO extends IDAO {
         String titre,
         String sortByPropertyName) throws InvalidHibernateSessionException,
         InvalidCriterionException,
+        InvalidCriterionValueException,
         InvalidSortByPropertyException,
         DAOException;
 }
