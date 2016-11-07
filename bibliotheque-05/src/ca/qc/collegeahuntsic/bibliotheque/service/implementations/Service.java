@@ -55,7 +55,7 @@ public class Service implements IService {
      *
      * @param dao La valeur à utiliser pour la variable d'instance <code>this.dao</code>
      */
-    private void setDao(IDAO dao) {
+    protected void setDao(IDAO dao) {
         this.dao = dao;
     }
     // EndRegion Getters and Setters
