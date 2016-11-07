@@ -6,6 +6,7 @@ package ca.qc.collegeahuntsic.bibliotheque.dao.interfaces;
 
 import java.io.Serializable;
 import java.util.List;
+import ca.qc.collegeahuntsic.bibliotheque.db.Connexion;
 import ca.qc.collegeahuntsic.bibliotheque.dto.DTO;
 import ca.qc.collegeahuntsic.bibliotheque.exception.dao.DAOException;
 import ca.qc.collegeahuntsic.bibliotheque.exception.dao.InvalidHibernateSessionException;
@@ -30,7 +31,7 @@ public interface IDAO {
      * @throws InvalidDTOException Si le DTO est <code>null</code>
      * @throws DAOException S'il y a une erreur avec la base de données
      */
-    void add(Session session,
+    void add(Connexion connexion,
         DTO dto) throws InvalidHibernateSessionException,
         InvalidDTOException,
         DAOException;
@@ -59,7 +60,7 @@ public interface IDAO {
      * @throws InvalidDTOException Si le DTO est <code>null</code>
      * @throws DAOException S'il y a une erreur avec la base de données
      */
-    void update(Session session,
+    void update(Connexion connexion,
         DTO dto) throws InvalidHibernateSessionException,
         InvalidDTOException,
         DAOException;
