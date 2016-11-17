@@ -31,7 +31,7 @@ public class PretFacade extends Facade implements IPretFacade {
      * @param pretService Le service de la table <code>pret</code>
      * @throws InvalidServiceException Si le service de pret est <code>null</code>
      */
-    public PretFacade(IPretService pretService) throws InvalidServiceException {
+    PretFacade(IPretService pretService) throws InvalidServiceException {
         super(pretService);
         if(pretService == null) {
             throw new InvalidServiceException("Le service de prets ne peut être null");
