@@ -29,7 +29,7 @@
                    </column>
          </property>
 
-		 <many-to-one name="membreDTO"
+        <many-to-one name="membreDTO"
                      class="ca.qc.collegeahuntsic.bibliotheque.dto.MembreDTO"
                      not-null="true">
                      <column name="IDMEMBRE">

@@ -225,20 +225,12 @@ public class LivreService extends Service implements ILivreService {
                 unLivreDTO);
         } catch(
             DAOException
+            | InvalidPrimaryKeyException
+            | InvalidCriterionException
+            | InvalidCriterionValueException
+            | InvalidSortByPropertyException
             | MissingDTOException daoException) {
             throw new ServiceException(daoException);
-        } catch(InvalidPrimaryKeyException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch(InvalidCriterionException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch(InvalidCriterionValueException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        } catch(InvalidSortByPropertyException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
         }
     }
 }
