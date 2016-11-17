@@ -1,6 +1,6 @@
 // Fichier Service.java
 // Auteur : Gilles Bénichou
-// Date de  création : 2016-05-18
+// Date de création : 2016-05-18
 
 package ca.qc.collegeahuntsic.bibliotheque.service.implementations;
 
@@ -55,7 +55,7 @@ public class Service implements IService {
      *
      * @param dao La valeur à utiliser pour la variable d'instance <code>this.dao</code>
      */
-    protected void setDao(IDAO dao) {
+    private void setDao(IDAO dao) {
         this.dao = dao;
     }
     // EndRegion Getters and Setters
