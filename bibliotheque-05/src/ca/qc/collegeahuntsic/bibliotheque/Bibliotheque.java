@@ -146,6 +146,46 @@ public final class Bibliotheque {
         try {
             final String command = tokenizer.nextToken();
 
+            switch(command) {
+                case "aide":
+                    Bibliotheque.afficherAide();
+                    break;
+                case "inscrire":
+                    Bibliotheque.inscrireMembre(tokenizer);
+                    break;
+                case "deinscrire":
+                    Bibliotheque.deinscrireMembre(tokenizer);
+                    break;
+                case "acquerir":
+                    Bibliotheque.acquerirLivre(tokenizer);
+                    break;
+                case "vendre":
+                    Bibliotheque.vendreLivre(tokenizer);
+                    break;
+                case "preter":
+                    Bibliotheque.preterLivre(tokenizer);
+                    break;
+                case "renouveler":
+                    Bibliotheque.renouvelerPret(tokenizer);
+                    break;
+                case "retourner":
+                    Bibliotheque.terminerPret(tokenizer);
+                    break;
+                case "reserver":
+                    Bibliotheque.placerReservation(tokenizer);
+                    break;
+                case "utiliser":
+                    Bibliotheque.utiliserReservation(tokenizer);
+                    break;
+                case "annuler":
+                    Bibliotheque.annulerReservation(tokenizer);
+                    break;
+                case "--":
+                    break;
+                default:
+                    Bibliotheque.LOGGER.info(" Transactions non reconnu . Essayer \"aide\"");
+            }
+
             if("aide".equals(command)) {
                 Bibliotheque.afficherAide();
             } else if("acquerir".equals(command)) {
