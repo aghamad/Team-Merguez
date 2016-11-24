@@ -242,13 +242,9 @@ public class PretService extends Service implements IPretService {
                     + " n'existe pas");
             }
 
-            final LivreDTO livreDTO = (LivreDTO) getLivreDAO().get(session,
-                unPretDTO.getLivreDTO().getIdLivre());
-            final MembreDTO membreDTO = (MembreDTO) getMembreDAO().get(session,
-                unPretDTO.getMembreDTO().getIdMembre());
-            final List<PretDTO> prets = findByMembre(session,
-                membreDTO.getIdMembre(),
-                MembreDTO.ID_MEMBRE_COLUMN_NAME);
+            final LivreDTO livreDTO = unPretDTO.getLivreDTO();
+            final MembreDTO membreDTO = unPretDTO.getMembreDTO();
+            final List<PretDTO> prets = new ArrayList<>(membreDTO.getPrets());
 
             //Vérifie s'il y a au moins un pret associé à livre.
             if(prets.isEmpty()) {
@@ -269,8 +265,6 @@ public class PretService extends Service implements IPretService {
                     + " n'est pas emprunter par ce membre");
             }
 
-            getMembreDAO().update(session,
-                membreDTO);
             unPretDTO.setDateRetour(new Timestamp(System.currentTimeMillis()));
             update(session,
                 unPretDTO);
@@ -278,9 +272,6 @@ public class PretService extends Service implements IPretService {
             DAOException
             | InvalidPrimaryKeyException
             | ExistingLoanException
-            | InvalidCriterionException
-            | InvalidCriterionValueException
-            | InvalidSortByPropertyException
             | MissingDTOException daoException) {
             throw new ServiceException(daoException);
         }
