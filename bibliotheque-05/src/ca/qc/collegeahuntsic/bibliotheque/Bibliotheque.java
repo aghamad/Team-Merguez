@@ -178,11 +178,10 @@ public final class Bibliotheque {
     }
 
     /**
+     * Annuler un reservation.
      *
-     * TODO Auto-generated method javadoc
-     *
-     * @param tokenizer
-     * @throws BibliothequeException
+     * @param tokenizer L'entrée à décoder
+     * @throws BibliothequeException Si une erreur survient
      */
     private static void annulerReservation(StringTokenizer tokenizer) throws BibliothequeException {
         try {
@@ -205,11 +204,10 @@ public final class Bibliotheque {
     }
 
     /**
+     * Reserver un livre.
      *
-     * TODO Auto-generated method javadoc
-     *
-     * @param tokenizer
-     * @throws BibliothequeException
+     * @param tokenizer L'entrée à décoder
+     * @throws BibliothequeException Si une erreur survient
      */
     private static void placerReservation(StringTokenizer tokenizer) throws BibliothequeException {
         try {
@@ -245,9 +243,10 @@ public final class Bibliotheque {
     }
 
     /**
-     * TODO Auto-generated method javadoc
+     * Preter un livre.
      *
-     * @param tokenizer
+     * @param tokenizer L'entrée à décoder
+     * @throws BibliothequeException Si une erreur survient
      */
     private static void preterLivre(StringTokenizer tokenizer) throws BibliothequeException {
         try {
@@ -278,12 +277,11 @@ public final class Bibliotheque {
     }
 
     /**
-    *
-    * TODO Auto-generated method javadoc
-    *
-    * @param tokenizer
-    * @throws BibliothequeException
-    */
+     * Vendre un livre.
+     *
+     * @param tokenizer L'entrée à décoder
+     * @throws BibliothequeException Si une erreur survient
+     */
     private static void vendreLivre(StringTokenizer tokenizer) throws BibliothequeException {
         try {
             final LivreDTO livreDTO = new LivreDTO();
