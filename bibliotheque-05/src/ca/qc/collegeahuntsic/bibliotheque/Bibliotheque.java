@@ -179,7 +179,15 @@ public final class Bibliotheque {
                 default:
                     // Bibliotheque.LOGGER.info(" Transactions non reconnu . Essayer \"aide\"");
             }
+        }
+    }
 
+    private static void annulerReservation(StringTokenizer tokenizer) {
+        final ReservationDTO reservationDTO = new ReservationDTO();
+        reservationDTO.setIdReservation(Bibliotheque.readString(tokenizer));
+        Bibliotheque.gestionnaireBibliotheque.getReservationFacade().annuler(Bibliotheque.gestionnaireBibliotheque.getSession();
+                reservationDTO);
+         Bibliotheque.gestionnaireBibliotheque.commitTransaction();
 
     }
 
