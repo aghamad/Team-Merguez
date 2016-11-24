@@ -306,6 +306,27 @@ public final class Bibliotheque {
         }
     }
 
+    private static void inscrireMembre(StringTokenizer tokenizer) {
+        // TODO Auto-generated method stub
+        try {
+            Bibliotheque.gestionnaireBibliotheque.beginTransaction();
+            final MembreDTO membreDTO = new MembreDTO();
+            membreDTO.setNom(Bibliotheque.readString(tokenizer));
+            membreDTO.setTelephone(Bibliotheque.readString(tokenizer));
+            membreDTO.setLimitePret(Bibliotheque.readString(tokenizer));
+            Bibliotheque.gestionnaireBibliotheque.getMembreFacade().inscrire(Bibliotheque.gestionnaireBibliotheque.getSession(),
+                membreDTO);
+            Bibliotheque.gestionnaireBibliotheque.commitTransaction();
+        } catch(
+            InvalidHibernateSessionException
+            | InvalidDTOException
+            | FacadeException exception) {
+            Bibliotheque.LOGGER.error(" **** "
+                + exception.getMessage());
+            Bibliotheque.gestionnaireBibliotheque.rollbackTransaction();
+        }
+    }
+
     /**
      * Affiche le menu des transactions acceptées par le système.
      */
