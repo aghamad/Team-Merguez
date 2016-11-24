@@ -39,10 +39,6 @@ public class ReservationService extends Service implements IReservationService {
 
     private IReservationDAO reservationDAO;
 
-    private ILivreDAO livreDAO;
-
-    private IMembreDAO membreDAO;
-
     private IPretDAO pretDAO;
 
     /**

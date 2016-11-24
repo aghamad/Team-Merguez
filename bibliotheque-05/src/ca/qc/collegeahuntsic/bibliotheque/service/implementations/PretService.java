@@ -165,7 +165,7 @@ public class PretService extends Service implements IPretService {
             final PretDTO unPretDTO = (PretDTO) getPretDAO().get(session,
                 pretDTO.getIdPret());
 
-            unPretDTO.getMembreDTO();
+            final MembreDTO membreDTO = unPretDTO.getMembreDTO();
             final LivreDTO livreDTO = unPretDTO.getLivreDTO();
 
             if(livreDTO.getPrets().isEmpty()) {
@@ -178,6 +178,24 @@ public class PretService extends Service implements IPretService {
                 throw new ExistingLoanException("Le livre "
                     + pretDTO.getIdPret()
                     + "a déjà été reservé");
+            }
+
+            boolean belongsToMember = false;
+
+            final List<PretDTO> prets = new ArrayList<>(membreDTO.getPrets());
+            // Regard si le livre en question appartient au membre
+            for(PretDTO pretDuMembre : prets) {
+                if(livreDTO.equals(pretDuMembre.getLivreDTO())) {
+                    belongsToMember = true;
+                }
+            }
+
+            if(!belongsToMember) {
+                throw new MissingLoanException("Le livre "
+                    + livreDTO.getTitre()
+                    + " n'est pas prêté par"
+                    + membreDTO.getIdMembre()
+                    + ")");
             }
 
             unPretDTO.setDatePret(new Timestamp(System.currentTimeMillis()));
