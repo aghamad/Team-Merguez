@@ -226,6 +226,7 @@ public class PretService extends Service implements IPretService {
 
             final LivreDTO livreDTO = unPretDTO.getLivreDTO();
             final MembreDTO membreDTO = unPretDTO.getMembreDTO();
+
             final List<PretDTO> prets = new ArrayList<>(membreDTO.getPrets());
 
             // Vérifie s'il y a au moins un pret associé à livre.
