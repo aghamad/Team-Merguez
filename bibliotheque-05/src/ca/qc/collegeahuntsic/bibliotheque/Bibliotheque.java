@@ -154,7 +154,7 @@ public final class Bibliotheque {
                     Bibliotheque.inscrireMembre(tokenizer);
                     break;
                 case "deinscrire":
-                    Bibliotheque.deinscrireMembre(tokenizer);
+                    Bibliotheque.desinscrireMembre(tokenizer);
                     break;
                 case "acquerir":
                     Bibliotheque.acquerirLivre(tokenizer);
@@ -306,8 +306,102 @@ public final class Bibliotheque {
         }
     }
 
-    private static void inscrireMembre(StringTokenizer tokenizer) {
-        // TODO Auto-generated method stub
+    /**
+     *
+     * Renouveler un prêt.
+     *
+     * @param tokenizer L'entrée à décoder
+     * @throws BibliothequeException Si une erreur survient
+     */
+    private static void renouvelerPret(StringTokenizer tokenizer) throws BibliothequeException {
+        try {
+            final PretDTO pretDTO = new PretDTO();
+            pretDTO.setIdPret(Bibliotheque.readString(tokenizer));
+            Bibliotheque.gestionnaireBibliotheque.getPretFacade().renouveler(Bibliotheque.gestionnaireBibliotheque.getSession(),
+                pretDTO);
+        } catch(
+            BibliothequeException
+            | InvalidHibernateSessionException
+            | InvalidDTOException
+            | FacadeException
+            | ExistingReservationException
+            | MissingLoanException e) {
+            /*
+            Bibliotheque.LOGGER.error(" **** "
+                + exception.getMessage()); */
+            Bibliotheque.gestionnaireBibliotheque.rollbackTransaction();
+        }
+
+    }
+
+    /**
+     *
+     * Utiliser une reservation.
+     *
+     * @param tokenizer L'entrée à décoder
+     * @throws BibliothequeException Si une erreur survient
+     */
+    private static void utiliserReservation(StringTokenizer tokenizer) throws BibliothequeException {
+        try {
+            final ReservationDTO reservationDTO = new ReservationDTO();
+            reservationDTO.setIdReservation(Bibliotheque.readString(tokenizer));
+
+            Bibliotheque.gestionnaireBibliotheque.getReservationFacade().utiliser(Bibliotheque.gestionnaireBibliotheque.getSession(),
+                reservationDTO);
+            Bibliotheque.gestionnaireBibliotheque.commitTransaction();
+        } catch(
+            BibliothequeException
+            | InvalidHibernateSessionException
+            | InvalidDTOException
+            | FacadeException
+            | ExistingReservationException
+            | ExistingLoanException
+            | InvalidLoanLimitException e) {
+            /*
+            Bibliotheque.LOGGER.error(" **** "
+                + exception.getMessage()); */
+            Bibliotheque.gestionnaireBibliotheque.rollbackTransaction();
+        }
+    }
+
+    /**
+     *
+     * Acquerir un livre.
+     *
+     * @param tokenizer L'entrée à décoder
+     * @throws BibliothequeException Si une erreur survient
+     */
+    private static void acquerirLivre(StringTokenizer tokenizer) throws BibliothequeException {
+        try {
+            Bibliotheque.gestionnaireBibliotheque.beginTransaction();
+            final LivreDTO livreDTO = new LivreDTO();
+            livreDTO.setTitre(Bibliotheque.readString(tokenizer));
+            livreDTO.setAuteur(Bibliotheque.readString(tokenizer));
+            livreDTO.setDateAcquisition(Bibliotheque.readDate(tokenizer));
+            Bibliotheque.gestionnaireBibliotheque.getLivreFacade().acquerir(Bibliotheque.gestionnaireBibliotheque.getSession(),
+                livreDTO);
+            Bibliotheque.gestionnaireBibliotheque.commitTransaction();
+        } catch(
+            BibliothequeException
+            | InvalidHibernateSessionException
+            | InvalidDTOException
+            | FacadeException e) {
+            /*
+            Bibliotheque.LOGGER.error(" **** "
+                + exception.getMessage()); */
+            Bibliotheque.gestionnaireBibliotheque.rollbackTransaction();
+        }
+
+    }
+
+    /**
+     *
+     * Inscrit un membre.
+     *
+     * @param tokenizer L'entrée à décoder
+     * @throws BibliothequeException Si une erreur survient
+     */
+    private static void inscrireMembre(StringTokenizer tokenizer) throws BibliothequeException {
         try {
             Bibliotheque.gestionnaireBibliotheque.beginTransaction();
             final MembreDTO membreDTO = new MembreDTO();
@@ -321,12 +415,20 @@ public final class Bibliotheque {
             InvalidHibernateSessionException
             | InvalidDTOException
             | FacadeException exception) {
+            /*
             Bibliotheque.LOGGER.error(" **** "
-                + exception.getMessage());
+                + exception.getMessage()); */
             Bibliotheque.gestionnaireBibliotheque.rollbackTransaction();
         }
     }
 
+    /**
+     *
+     * Deinscrit un membre.
+     *
+     * @param tokenizer L'entrée à décoder
+     * @throws BibliothequeException Si une erreur survient
+     */
     private static void desinscrireMembre(final StringTokenizer tokenizer) throws BibliothequeException {
         try {
             final String idMembre = Bibliotheque.readString(tokenizer);
@@ -350,8 +452,10 @@ public final class Bibliotheque {
             | ExistingLoanException
             | ExistingReservationException
             | MissingDTOException exception) {
+            /*
             Bibliotheque.LOGGER.error("**** "
                 + exception.getMessage());
+            */
             Bibliotheque.gestionnaireBibliotheque.rollbackTransaction();
         }
     }

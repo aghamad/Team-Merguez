@@ -93,10 +93,10 @@ public class MembreDTO extends DTO {
     /**
      * Setter de la variable d'instance <code>this.telephone</code>.
      *
-     * @param telephone La valeur à utiliser pour la variable d'instance <code>this.telephone</code>
+     * @param string La valeur à utiliser pour la variable d'instance <code>this.telephone</code>
      */
-    public void setTelephone(long telephone) {
-        this.telephone = telephone;
+    public void setTelephone(String string) {
+        this.telephone = string;
     }
 
     /**
@@ -111,10 +111,10 @@ public class MembreDTO extends DTO {
     /**
      * Setter de la variable d'instance <code>this.limitePret</code>.
      *
-     * @param limitePret La valeur à utiliser pour la variable d'instance <code>this.limitePret</code>
+     * @param string La valeur à utiliser pour la variable d'instance <code>this.limitePret</code>
      */
-    public void setLimitePret(int limitePret) {
-        this.limitePret = limitePret;
+    public void setLimitePret(String string) {
+        this.limitePret = string;
     }
     // EndRegion Getters and Setters
 
