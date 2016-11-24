@@ -11,17 +11,13 @@ import java.io.InputStreamReader;
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.util.StringTokenizer;
-import ca.qc.collegeahuntsic.bibliotheque.db.Connexion;
 import ca.qc.collegeahuntsic.bibliotheque.dto.LivreDTO;
 import ca.qc.collegeahuntsic.bibliotheque.dto.MembreDTO;
 import ca.qc.collegeahuntsic.bibliotheque.dto.PretDTO;
 import ca.qc.collegeahuntsic.bibliotheque.dto.ReservationDTO;
 import ca.qc.collegeahuntsic.bibliotheque.exception.BibliothequeException;
-import ca.qc.collegeahuntsic.bibliotheque.exception.dao.InvalidCriterionException;
 import ca.qc.collegeahuntsic.bibliotheque.exception.dao.InvalidHibernateSessionException;
 import ca.qc.collegeahuntsic.bibliotheque.exception.dao.InvalidPrimaryKeyException;
-import ca.qc.collegeahuntsic.bibliotheque.exception.dao.InvalidSortByPropertyException;
-import ca.qc.collegeahuntsic.bibliotheque.exception.dto.InvalidDTOClassException;
 import ca.qc.collegeahuntsic.bibliotheque.exception.dto.InvalidDTOException;
 import ca.qc.collegeahuntsic.bibliotheque.exception.dto.MissingDTOException;
 import ca.qc.collegeahuntsic.bibliotheque.exception.facade.FacadeException;
@@ -137,57 +133,74 @@ public final class Bibliotheque {
      * @throws BibliothequeException Si une erreur survient
      */
     private static void executerTransaction(StringTokenizer tokenizer) throws BibliothequeException {
-        try {
-            final String command = tokenizer.nextToken();
+        final String command = tokenizer.nextToken();
 
-            switch(command) {
-                case "aide":
-                    Bibliotheque.afficherAide();
-                    break;
-                case "inscrire":
-                    Bibliotheque.inscrireMembre(tokenizer);
-                    break;
-                case "deinscrire":
-                    Bibliotheque.desinscrireMembre(tokenizer);
-                    break;
-                case "acquerir":
-                    Bibliotheque.acquerirLivre(tokenizer);
-                    break;
-                case "vendre":
-                    Bibliotheque.vendreLivre(tokenizer);
-                    break;
-                case "preter":
-                    Bibliotheque.preterLivre(tokenizer);
-                    break;
-                case "renouveler":
-                    Bibliotheque.renouvelerPret(tokenizer);
-                    break;
-                //   case "retourner":
-                //         Bibliotheque.terminerPret(tokenizer);
-                //       break;
-                case "reserver":
-                    Bibliotheque.placerReservation(tokenizer);
-                    break;
-                case "utiliser":
-                    Bibliotheque.utiliserReservation(tokenizer);
-                    break;
-                case "annuler":
-                    Bibliotheque.annulerReservation(tokenizer);
-                    break;
-                case "--":
-                    break;
-                default:
-                    // Bibliotheque.LOGGER.info(" Transactions non reconnu . Essayer \"aide\"");
-            }
+        switch(command) {
+            case "aide":
+                Bibliotheque.afficherAide();
+                break;
+            case "inscrire":
+                Bibliotheque.inscrireMembre(tokenizer);
+                break;
+            case "deinscrire":
+                Bibliotheque.desinscrireMembre(tokenizer);
+                break;
+            case "acquerir":
+                Bibliotheque.acquerirLivre(tokenizer);
+                break;
+            case "vendre":
+                Bibliotheque.vendreLivre(tokenizer);
+                break;
+            case "preter":
+                Bibliotheque.preterLivre(tokenizer);
+                break;
+            case "renouveler":
+                Bibliotheque.renouvelerPret(tokenizer);
+                break;
+            //   case "retourner":
+            //         Bibliotheque.terminerPret(tokenizer);
+            //       break;
+            case "reserver":
+                Bibliotheque.placerReservation(tokenizer);
+                break;
+            case "utiliser":
+                Bibliotheque.utiliserReservation(tokenizer);
+                break;
+            case "annuler":
+                Bibliotheque.annulerReservation(tokenizer);
+                break;
+            case "--":
+                break;
+            default:
+                System.out.println("Haha");
+                // Bibliotheque.LOGGER.info(" Transactions non reconnu . Essayer \"aide\"");
         }
     }
 
-    private static void annulerReservation(StringTokenizer tokenizer) {
-        final ReservationDTO reservationDTO = new ReservationDTO();
-        reservationDTO.setIdReservation(Bibliotheque.readString(tokenizer));
-        Bibliotheque.gestionnaireBibliotheque.getReservationFacade().annuler(Bibliotheque.gestionnaireBibliotheque.getSession();
+    /**
+     *
+     * TODO Auto-generated method javadoc
+     *
+     * @param tokenizer
+     * @throws BibliothequeException
+     */
+    private static void annulerReservation(StringTokenizer tokenizer) throws BibliothequeException {
+        try {
+            Bibliotheque.gestionnaireBibliotheque.commitTransaction();
+            final ReservationDTO reservationDTO = new ReservationDTO();
+            reservationDTO.setIdReservation(Bibliotheque.readString(tokenizer));
+            Bibliotheque.gestionnaireBibliotheque.getReservationFacade().annuler(Bibliotheque.gestionnaireBibliotheque.getSession(),
                 reservationDTO);
-         Bibliotheque.gestionnaireBibliotheque.commitTransaction();
+        } catch(
+            BibliothequeException
+            | InvalidHibernateSessionException
+            | InvalidDTOException
+            | FacadeException e) {
+            /*
+            Bibliotheque.LOGGER.error(" **** "
+                + exception.getMessage()); */
+            Bibliotheque.gestionnaireBibliotheque.rollbackTransaction();
+        }
 
     }
 
@@ -502,48 +515,6 @@ public final class Bibliotheque {
     private static String readString(StringTokenizer tokenizer) throws BibliothequeException {
         if(tokenizer.hasMoreElements()) {
             return tokenizer.nextToken();
-        }
-        throw new BibliothequeException("Autre paramètre attendu");
-    }
-
-    /**
-     * Lit un integer de la transaction.
-     *
-     * @param tokenizer La transaction à décoder
-     * @return Le integer lu
-     * @throws BibliothequeException Si l'élément lu est manquant ou n'est pas un integer
-     */
-    private static int readInt(StringTokenizer tokenizer) throws BibliothequeException {
-        if(tokenizer.hasMoreElements()) {
-            final String token = tokenizer.nextToken();
-            try {
-                return Integer.valueOf(token).intValue();
-            } catch(NumberFormatException numberFormatException) {
-                throw new BibliothequeException("Nombre attendu à la place de \""
-                    + token
-                    + "\"");
-            }
-        }
-        throw new BibliothequeException("Autre paramètre attendu");
-    }
-
-    /**
-     * Lit un long de la transaction.
-     *
-     * @param tokenizer La transaction à décoder
-     * @return Le long lu
-     * @throws BibliothequeException Si l'élément lu est manquant ou n'est pas un long
-     */
-    private static long readLong(StringTokenizer tokenizer) throws BibliothequeException {
-        if(tokenizer.hasMoreElements()) {
-            final String token = tokenizer.nextToken();
-            try {
-                return Long.valueOf(token).longValue();
-            } catch(NumberFormatException numberFormatException) {
-                throw new BibliothequeException("Nombre attendu à la place de \""
-                    + token
-                    + "\"");
-            }
         }
         throw new BibliothequeException("Autre paramètre attendu");
     }

@@ -29,9 +29,9 @@ public class MembreDTO extends DTO {
 
     private String nom;
 
-    private long telephone;
+    private String telephone;
 
-    private int limitePret;
+    private String limitePret;
 
     private Set<PretDTO> prets;
 
@@ -86,7 +86,7 @@ public class MembreDTO extends DTO {
      *
      * @return La variable d'instance <code>this.telephone</code>
      */
-    public long getTelephone() {
+    public String getTelephone() {
         return this.telephone;
     }
 
@@ -95,7 +95,7 @@ public class MembreDTO extends DTO {
      *
      * @param string La valeur à utiliser pour la variable d'instance <code>this.telephone</code>
      */
-    public void setTelephone(long string) {
+    public void setTelephone(String string) {
         this.telephone = string;
     }
 
@@ -104,7 +104,7 @@ public class MembreDTO extends DTO {
      *
      * @return La variable d'instance <code>this.limitePret</code>
      */
-    public int getLimitePret() {
+    public String getLimitePret() {
         return this.limitePret;
     }
 
@@ -113,7 +113,7 @@ public class MembreDTO extends DTO {
      *
      * @param string La valeur à utiliser pour la variable d'instance <code>this.limitePret</code>
      */
-    public void setLimitePret(int string) {
+    public void setLimitePret(String string) {
         this.limitePret = string;
     }
     // EndRegion Getters and Setters
