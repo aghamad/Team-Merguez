@@ -327,6 +327,35 @@ public final class Bibliotheque {
         }
     }
 
+    private static void desinscrireMembre(final StringTokenizer tokenizer) throws BibliothequeException {
+        try {
+            final String idMembre = Bibliotheque.readString(tokenizer);
+            final MembreDTO membreDTO = (MembreDTO) Bibliotheque.gestionnaireBibliotheque.getMembreFacade().get(
+                Bibliotheque.gestionnaireBibliotheque.getSession(),
+                idMembre);
+            if(membreDTO == null) {
+                throw new MissingDTOException("Le membre "
+                    + idMembre
+                    + " n'existe pas");
+            }
+
+            Bibliotheque.gestionnaireBibliotheque.getMembreFacade().desinscrire(Bibliotheque.gestionnaireBibliotheque.getSession(),
+                membreDTO);
+            Bibliotheque.gestionnaireBibliotheque.commitTransaction();
+        } catch(
+            InvalidHibernateSessionException
+            | InvalidPrimaryKeyException
+            | InvalidDTOException
+            | FacadeException
+            | ExistingLoanException
+            | ExistingReservationException
+            | MissingDTOException exception) {
+            Bibliotheque.LOGGER.error("**** "
+                + exception.getMessage());
+            Bibliotheque.gestionnaireBibliotheque.rollbackTransaction();
+        }
+    }
+
     /**
      * Affiche le menu des transactions acceptées par le système.
      */
