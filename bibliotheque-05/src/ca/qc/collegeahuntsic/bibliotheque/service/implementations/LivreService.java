@@ -8,13 +8,13 @@ import java.util.ArrayList;
 import java.util.List;
 import ca.qc.collegeahuntsic.bibliotheque.dao.interfaces.ILivreDAO;
 import ca.qc.collegeahuntsic.bibliotheque.dto.LivreDTO;
+import ca.qc.collegeahuntsic.bibliotheque.dto.MembreDTO;
 import ca.qc.collegeahuntsic.bibliotheque.dto.PretDTO;
 import ca.qc.collegeahuntsic.bibliotheque.dto.ReservationDTO;
 import ca.qc.collegeahuntsic.bibliotheque.exception.dao.DAOException;
 import ca.qc.collegeahuntsic.bibliotheque.exception.dao.InvalidCriterionException;
 import ca.qc.collegeahuntsic.bibliotheque.exception.dao.InvalidCriterionValueException;
 import ca.qc.collegeahuntsic.bibliotheque.exception.dao.InvalidHibernateSessionException;
-import ca.qc.collegeahuntsic.bibliotheque.exception.dao.InvalidPrimaryKeyException;
 import ca.qc.collegeahuntsic.bibliotheque.exception.dao.InvalidSortByPropertyException;
 import ca.qc.collegeahuntsic.bibliotheque.exception.dto.InvalidDTOException;
 import ca.qc.collegeahuntsic.bibliotheque.exception.dto.MissingDTOException;
@@ -32,8 +32,6 @@ import org.hibernate.Session;
  */
 public class LivreService extends Service implements ILivreService {
 
-    private ILivreDAO livreDAO;
-
     /**
      * Crée le service de la table <code>livre</code>.
      *
@@ -46,26 +44,6 @@ public class LivreService extends Service implements ILivreService {
         super(livreDAO);
     }
 
-    // Region Getters and Setters
-    /**
-     * Getter de la variable d'instance <code>this.LivreDAO</code>.
-     *
-     * @return La variable d'instance <code>this.livreDAO</code>
-     */
-    public ILivreDAO getLivreDAO() {
-        return this.livreDAO;
-    }
-
-    /**
-     * Setter de la variable d'instance <code>this.livreDAO</code>.
-     *
-     * @param livreDAO La valeur à utiliser pour la variable d'instance <code>this.pretDAO</code>
-     */
-    public void setLivreDAO(ILivreDAO livreDAO) {
-        this.livreDAO = livreDAO;
-    }
-
-    // End Getters and Setters
     @Override
     public List<LivreDTO> findByTitre(Session session,
         String titre,
@@ -75,7 +53,7 @@ public class LivreService extends Service implements ILivreService {
         InvalidSortByPropertyException,
         ServiceException {
         try {
-            return getLivreDAO().findByTitre(session,
+            return ((ILivreDAO) getDao()).findByTitre(session,
                 titre,
                 sortByPropertyName);
         } catch(DAOException daoException) {
@@ -91,6 +69,13 @@ public class LivreService extends Service implements ILivreService {
         LivreDTO livreDTO) throws InvalidHibernateSessionException,
         InvalidDTOException,
         ServiceException {
+        if(session == null) {
+            throw new InvalidHibernateSessionException("La session ne peut être null");
+        }
+        if(livreDTO == null) {
+            throw new InvalidDTOException("Le livre ne peut être null");
+        }
+
         add(session,
             livreDTO);
     }
@@ -105,58 +90,63 @@ public class LivreService extends Service implements ILivreService {
         ExistingLoanException,
         ExistingReservationException,
         ServiceException {
+        if(session == null) {
+            throw new InvalidHibernateSessionException("La session ne peut être null");
+        }
+        if(livreDTO == null) {
+            throw new InvalidDTOException("Le livre ne peut être null");
+        }
 
         try {
-            final LivreDTO unLivreDTO = (LivreDTO) get(session,
-                livreDTO.getIdLivre());
-            if(!unLivreDTO.getIdLivre().isEmpty()) {
+
+            if(!livreDTO.getIdLivre().isEmpty()) {
                 throw new MissingDTOException("Le livre "
                     + livreDTO.getIdLivre()
                     + " n'existe pas");
             }
 
-            final List<PretDTO> prets = new ArrayList<>(unLivreDTO.getPrets());
+            final List<PretDTO> prets = new ArrayList<>(livreDTO.getPrets());
             if(!prets.isEmpty()) {
                 for(PretDTO pretDTO : prets) {
-                    if(pretDTO.getDateRetour().before(unLivreDTO.getDateAcquisition())) {
+                    if(pretDTO.getDateRetour() == null) {
+                        final MembreDTO emprunteur = pretDTO.getMembreDTO();
                         throw new ExistingLoanException("Le livre "
-                            + unLivreDTO.getTitre()
+                            + livreDTO.getTitre()
                             + " (ID de livre : "
-                            + unLivreDTO.getIdLivre()
+                            + livreDTO.getIdLivre()
                             + ") a été prêté à "
-                            + pretDTO.getMembreDTO().getNom()
+                            + emprunteur.getNom()
                             + " (ID de membre : "
-                            + pretDTO.getMembreDTO().getIdMembre()
+                            + emprunteur.getIdMembre()
                             + ")");
                     }
                 }
             }
 
-            final List<ReservationDTO> reservations = new ArrayList<>(unLivreDTO.getReservations());
+            final List<ReservationDTO> reservations = new ArrayList<>(livreDTO.getReservations());
             if(!reservations.isEmpty()) {
                 for(ReservationDTO reservationDTO : reservations) {
-                    if(reservationDTO.getDateReservation().before(unLivreDTO.getDateAcquisition())) {
-
+                    if(reservationDTO.getDateReservation() == null) {
+                        final MembreDTO emprunteur = reservationDTO.getMembreDTO();
                         throw new ExistingReservationException("Le livre "
-                            + unLivreDTO.getTitre()
+                            + livreDTO.getTitre()
                             + " (ID de livre : "
-                            + unLivreDTO.getIdLivre()
+                            + livreDTO.getIdLivre()
                             + ") est réservé pour "
-                            + reservationDTO.getMembreDTO().getNom()
+                            + emprunteur.getNom()
                             + " (ID de membre : "
-                            + reservationDTO.getMembreDTO().getIdMembre()
+                            + emprunteur.getIdMembre()
                             + ")");
                     }
                 }
 
             }
             delete(session,
-                unLivreDTO);
+                livreDTO);
         } catch(
             ExistingReservationException
             | ExistingLoanException
             | ServiceException
-            | InvalidPrimaryKeyException
             | MissingDTOException daoException) {
             throw new ServiceException(daoException);
         }

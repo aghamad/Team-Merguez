@@ -107,4 +107,5 @@ public interface IDAO {
         String sortByPropertyName) throws InvalidHibernateSessionException,
         InvalidSortByPropertyException,
         DAOException;
+
 }
