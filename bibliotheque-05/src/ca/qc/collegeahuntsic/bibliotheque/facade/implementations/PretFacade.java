@@ -38,7 +38,6 @@ public class PretFacade extends Facade implements IPretFacade {
         }
         setPretService(pretService);
     }
-
     /**
      * Getter de la variable d'instance <code>this.pretService</code>.
      *
@@ -56,7 +55,6 @@ public class PretFacade extends Facade implements IPretFacade {
     private void setPretService(IPretService pretService) {
         this.pretService = pretService;
     }
-
     /**
      * {@inheritDoc}
      */
