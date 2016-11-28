@@ -11,7 +11,6 @@ import ca.qc.collegeahuntsic.bibliotheque.exception.dao.DAOException;
 import ca.qc.collegeahuntsic.bibliotheque.exception.dao.InvalidCriterionException;
 import ca.qc.collegeahuntsic.bibliotheque.exception.dao.InvalidCriterionValueException;
 import ca.qc.collegeahuntsic.bibliotheque.exception.dao.InvalidHibernateSessionException;
-import ca.qc.collegeahuntsic.bibliotheque.exception.dao.InvalidPrimaryKeyException;
 import ca.qc.collegeahuntsic.bibliotheque.exception.dao.InvalidSortByPropertyException;
 import ca.qc.collegeahuntsic.bibliotheque.exception.dto.InvalidDTOException;
 import ca.qc.collegeahuntsic.bibliotheque.exception.service.ExistingLoanException;
@@ -95,19 +94,14 @@ public class MembreService extends Service implements IMembreService {
         MembreDTO membreDTO) throws InvalidHibernateSessionException,
         InvalidDTOException,
         ServiceException {
-        try {
-            if(get(session,
-                membreDTO.getIdMembre()) != null) {
-                throw new ServiceException("Le membre "
-                    + membreDTO.getIdMembre()
-                    + " existe déjà");
-            }
-            add(session,
-                membreDTO);
-        } catch(InvalidPrimaryKeyException invalidPrimaryKeyException) {
-            throw new ServiceException(invalidPrimaryKeyException);
+        if(session == null) {
+            throw new InvalidHibernateSessionException("La session ne peut être null");
         }
-
+        if(membreDTO == null) {
+            throw new InvalidDTOException("Le membre DTO ne peut être null");
+        }
+        add(session,
+            membreDTO);
     }
 
     /* (non-Javadoc)
@@ -120,32 +114,33 @@ public class MembreService extends Service implements IMembreService {
         ExistingLoanException,
         ExistingReservationException,
         ServiceException {
-        final MembreDTO unMembreDTO;
-        try {
-            unMembreDTO = (MembreDTO) get(session,
-                membreDTO.getIdMembre());
 
-            if(!unMembreDTO.getPrets().isEmpty()) {
-                throw new ExistingLoanException("Le membre "
-                    + unMembreDTO.getNom()
-                    + " (ID de membre : "
-                    + unMembreDTO.getIdMembre()
-                    + ") a encore des prêts");
-            }
-
-            if(!unMembreDTO.getReservations().isEmpty()) {
-                throw new ExistingReservationException("Le membre "
-                    + membreDTO.getNom()
-                    + " (ID de membre : "
-                    + membreDTO.getIdMembre()
-                    + ") a des réservations");
-            }
-
-            delete(session,
-                unMembreDTO);
-        } catch(InvalidPrimaryKeyException invalidPrimaryKeyException) {
-            throw new ServiceException(invalidPrimaryKeyException);
+        if(session == null) {
+            throw new InvalidHibernateSessionException("La session ne peut être null");
         }
+        if(membreDTO == null) {
+            throw new InvalidDTOException("Le membre DTO ne peut être null");
+        }
+
+        if(!membreDTO.getPrets().isEmpty()) {
+            throw new ExistingLoanException("Le membre "
+                + membreDTO.getNom()
+                + " (ID de membre : "
+                + membreDTO.getIdMembre()
+                + ") a encore des prêts");
+        }
+
+        if(!membreDTO.getReservations().isEmpty()) {
+            throw new ExistingReservationException("Le membre "
+                + membreDTO.getNom()
+                + " (ID de membre : "
+                + membreDTO.getIdMembre()
+                + ") a des réservations");
+        }
+
+        delete(session,
+            membreDTO);
+
     }
 
 }

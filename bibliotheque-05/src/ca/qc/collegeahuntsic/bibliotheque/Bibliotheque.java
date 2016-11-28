@@ -250,6 +250,7 @@ public final class Bibliotheque {
      */
     private static void preterLivre(StringTokenizer tokenizer) throws BibliothequeException {
         try {
+            Bibliotheque.gestionnaireBibliotheque.beginTransaction();
             final MembreDTO membreDTO = new MembreDTO();
             membreDTO.setIdMembre(Bibliotheque.readString(tokenizer));
             final LivreDTO livreDTO = new LivreDTO();
@@ -284,18 +285,28 @@ public final class Bibliotheque {
      */
     private static void vendreLivre(StringTokenizer tokenizer) throws BibliothequeException {
         try {
-            final LivreDTO livreDTO = new LivreDTO();
-            livreDTO.setIdLivre(Bibliotheque.readString(tokenizer));
+            Bibliotheque.gestionnaireBibliotheque.beginTransaction();
+            final String idLivre = Bibliotheque.readString(tokenizer);
+
+            final LivreDTO livreDTO = (LivreDTO) Bibliotheque.gestionnaireBibliotheque.getLivreFacade().get(Bibliotheque.gestionnaireBibliotheque.getSession(),
+                idLivre);
+
+            if(livreDTO == null) {
+                throw new MissingDTOException("Le livre "
+                    + idLivre
+                    + " n'existe pas");
+            }
             Bibliotheque.gestionnaireBibliotheque.getLivreFacade().vendre(Bibliotheque.gestionnaireBibliotheque.getSession(),
                 livreDTO);
             Bibliotheque.gestionnaireBibliotheque.commitTransaction();
         } catch(
-            BibliothequeException
-            | InvalidHibernateSessionException
+            InvalidHibernateSessionException
             | InvalidDTOException
             | ExistingLoanException
             | ExistingReservationException
-            | FacadeException e) {
+            | FacadeException
+            | MissingDTOException
+            | InvalidPrimaryKeyException e) {
             /*
             Bibliotheque.LOGGER.error(" **** "
                 + exception.getMessage()); */
@@ -312,6 +323,7 @@ public final class Bibliotheque {
      */
     private static void renouvelerPret(StringTokenizer tokenizer) throws BibliothequeException {
         try {
+            Bibliotheque.gestionnaireBibliotheque.beginTransaction();
             final PretDTO pretDTO = new PretDTO();
             pretDTO.setIdPret(Bibliotheque.readString(tokenizer));
             Bibliotheque.gestionnaireBibliotheque.getPretFacade().renouveler(Bibliotheque.gestionnaireBibliotheque.getSession(),
@@ -340,6 +352,7 @@ public final class Bibliotheque {
      */
     private static void utiliserReservation(StringTokenizer tokenizer) throws BibliothequeException {
         try {
+            Bibliotheque.gestionnaireBibliotheque.beginTransaction();
             final ReservationDTO reservationDTO = new ReservationDTO();
             reservationDTO.setIdReservation(Bibliotheque.readString(tokenizer));
 
@@ -379,8 +392,7 @@ public final class Bibliotheque {
                 livreDTO);
             Bibliotheque.gestionnaireBibliotheque.commitTransaction();
         } catch(
-            BibliothequeException
-            | InvalidHibernateSessionException
+            InvalidHibernateSessionException
             | InvalidDTOException
             | FacadeException e) {
             /*
@@ -428,6 +440,7 @@ public final class Bibliotheque {
      */
     private static void desinscrireMembre(final StringTokenizer tokenizer) throws BibliothequeException {
         try {
+            Bibliotheque.gestionnaireBibliotheque.beginTransaction();
             final String idMembre = Bibliotheque.readString(tokenizer);
             final MembreDTO membreDTO = (MembreDTO) Bibliotheque.gestionnaireBibliotheque.getMembreFacade().get(
                 Bibliotheque.gestionnaireBibliotheque.getSession(),
