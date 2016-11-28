@@ -43,7 +43,7 @@ public class PretService extends Service implements IPretService {
      * @param pretDAO Le DAO de la table pret
      * @throws InvalidDAOException Si un des DTOs passés en paramètres sont null
      */
-    public PretService(IPretDAO pretDAO) throws InvalidDAOException {
+    PretService(IPretDAO pretDAO) throws InvalidDAOException {
         super(pretDAO);
 
         setPretDAO(pretDAO);

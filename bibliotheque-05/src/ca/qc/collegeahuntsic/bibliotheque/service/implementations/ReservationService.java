@@ -43,7 +43,7 @@ public class ReservationService extends Service implements IReservationService {
      * @throws InvalidDAOException Si le DAO de livre est <code>null</code>, si le DAO de membre est <code>null</code>, si le DAO de prêt est
      * <code>null</code> ou si le DAO de réservation est <code>null</code>
      */
-    public ReservationService(IPretDAO pretDAO,
+    ReservationService(IPretDAO pretDAO,
         IReservationDAO reservationDAO) throws InvalidDAOException {
         super(reservationDAO);
         if(pretDAO == null) {

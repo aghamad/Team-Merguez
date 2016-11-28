@@ -17,7 +17,6 @@ import ca.qc.collegeahuntsic.bibliotheque.exception.dao.InvalidCriterionValueExc
 import ca.qc.collegeahuntsic.bibliotheque.exception.dao.InvalidHibernateSessionException;
 import ca.qc.collegeahuntsic.bibliotheque.exception.dao.InvalidSortByPropertyException;
 import ca.qc.collegeahuntsic.bibliotheque.exception.dto.InvalidDTOException;
-import ca.qc.collegeahuntsic.bibliotheque.exception.dto.MissingDTOException;
 import ca.qc.collegeahuntsic.bibliotheque.exception.service.ExistingLoanException;
 import ca.qc.collegeahuntsic.bibliotheque.exception.service.ExistingReservationException;
 import ca.qc.collegeahuntsic.bibliotheque.exception.service.InvalidDAOException;
@@ -39,7 +38,7 @@ public class LivreService extends Service implements ILivreService {
      * @throws InvalidDAOException Si le DAO de livre est <code>null</code>, si le DAO de membre est <code>null</code>, si le DAO de prêt est
      *         <code>null</code> ou si le DAO de réservation est <code>null</code>
      */
-    public LivreService(ILivreDAO livreDAO) throws InvalidDAOException {
+    LivreService(ILivreDAO livreDAO) throws InvalidDAOException {
         // TODO: Change the constructor visibility to package when switching to Spring
         super(livreDAO);
     }
@@ -99,17 +98,12 @@ public class LivreService extends Service implements ILivreService {
 
         try {
 
-            if(!livreDTO.getIdLivre().isEmpty()) {
-                throw new MissingDTOException("Le livre "
-                    + livreDTO.getIdLivre()
-                    + " n'existe pas");
-            }
-
             final List<PretDTO> prets = new ArrayList<>(livreDTO.getPrets());
             if(!prets.isEmpty()) {
                 for(PretDTO pretDTO : prets) {
-                    if(pretDTO.getDateRetour() == null) {
-                        final MembreDTO emprunteur = pretDTO.getMembreDTO();
+                    if(!prets.isEmpty()) {
+                        final PretDTO pretDTOs = prets.get(0);
+                        final MembreDTO emprunteur = pretDTOs.getMembreDTO();
                         throw new ExistingLoanException("Le livre "
                             + livreDTO.getTitre()
                             + " (ID de livre : "
@@ -126,7 +120,7 @@ public class LivreService extends Service implements ILivreService {
             final List<ReservationDTO> reservations = new ArrayList<>(livreDTO.getReservations());
             if(!reservations.isEmpty()) {
                 for(ReservationDTO reservationDTO : reservations) {
-                    if(reservationDTO.getDateReservation() == null) {
+                    if(!reservations.isEmpty()) {
                         final MembreDTO emprunteur = reservationDTO.getMembreDTO();
                         throw new ExistingReservationException("Le livre "
                             + livreDTO.getTitre()
@@ -141,13 +135,13 @@ public class LivreService extends Service implements ILivreService {
                 }
 
             }
+
             delete(session,
                 livreDTO);
         } catch(
             ExistingReservationException
             | ExistingLoanException
-            | ServiceException
-            | MissingDTOException daoException) {
+            | ServiceException daoException) {
             throw new ServiceException(daoException);
         }
     }

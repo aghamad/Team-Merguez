@@ -38,7 +38,7 @@ public class MembreService extends Service implements IMembreService {
      * @throws InvalidDAOException Si le DAO de livre est <code>null</code>, si le DAO de membre est <code>null</code>, si le DAO de prêt est
      *         <code>null</code> ou si le DAO de réservation est <code>null</code>
      */
-    public MembreService(IMembreDAO membreDAO) throws InvalidDAOException {
+    MembreService(IMembreDAO membreDAO) throws InvalidDAOException {
 
         super(membreDAO);
         if(membreDAO == null) {
