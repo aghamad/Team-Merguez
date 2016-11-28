@@ -67,8 +67,8 @@ public class MembreService extends Service implements IMembreService {
     }
     // EndRegion Getters and Setters
 
-    /* (non-Javadoc)
-     * @see ca.qc.collegeahuntsic.bibliotheque.service.interfaces.IMembreService#findByNom(org.hibernate.Session, java.lang.String, java.lang.String)
+    /**
+     * {@inheritDoc}
      */
     @Override
     public List<MembreDTO> findByNom(Session session,
@@ -87,8 +87,8 @@ public class MembreService extends Service implements IMembreService {
         }
     }
 
-    /* (non-Javadoc)
-     * @see ca.qc.collegeahuntsic.bibliotheque.service.interfaces.IMembreService#inscrire(org.hibernate.Session, ca.qc.collegeahuntsic.bibliotheque.dto.MembreDTO)
+    /**
+     * {@inheritDoc}
      */
     @Override
     public void inscrire(Session session,
@@ -110,8 +110,8 @@ public class MembreService extends Service implements IMembreService {
 
     }
 
-    /* (non-Javadoc)
-     * @see ca.qc.collegeahuntsic.bibliotheque.service.interfaces.IMembreService#desinscrire(org.hibernate.Session, ca.qc.collegeahuntsic.bibliotheque.dto.MembreDTO)
+    /**
+     * {@inheritDoc}
      */
     @Override
     public void desinscrire(Session session,

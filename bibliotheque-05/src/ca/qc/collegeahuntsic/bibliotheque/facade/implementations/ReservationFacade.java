@@ -41,6 +41,24 @@ public class ReservationFacade extends Facade implements IReservationFacade {
     }
 
     /**
+     * Getter de la variable d'instance <code>this.reservationService</code>.
+     *
+     * @return La variable d'instance <code>this.reservationService</code>
+     */
+    public IReservationService getReservationService() {
+        return this.reservationService;
+    }
+
+    /**
+     * Setter de la variable d'instance <code>this.reservationService</code>.
+     *
+     * @param reservationService La valeur à utiliser pour la variable d'instance <code>this.reservationService</code>
+     */
+    public void setReservationService(IReservationService reservationService) {
+        this.reservationService = reservationService;
+    }
+
+    /**
      * {@inheritDoc}
      */
     @Override
@@ -94,23 +112,4 @@ public class ReservationFacade extends Facade implements IReservationFacade {
             throw new FacadeException(serviceException);
         }
     }
-
-    /**
-     * Getter de la variable d'instance <code>this.reservationService</code>.
-     *
-     * @return La variable d'instance <code>this.reservationService</code>
-     */
-    public IReservationService getReservationService() {
-        return this.reservationService;
-    }
-
-    /**
-     * Setter de la variable d'instance <code>this.reservationService</code>.
-     *
-     * @param reservationService La valeur à utiliser pour la variable d'instance <code>this.reservationService</code>
-     */
-    public void setReservationService(IReservationService reservationService) {
-        this.reservationService = reservationService;
-    }
-
 }

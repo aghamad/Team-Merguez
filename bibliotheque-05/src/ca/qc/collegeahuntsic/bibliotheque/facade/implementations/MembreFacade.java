@@ -31,7 +31,6 @@ public class MembreFacade extends Facade implements IMembreFacade {
      * @throws InvalidServiceException Si le service de membre est <code>null</code>
      */
     MembreFacade(IMembreService membreService) throws InvalidServiceException {
-        // TODO: Change the constructor visibility to package when switching to Spring
         super(membreService);
         if(membreService == null) {
             throw new InvalidServiceException("Le service de livres ne peut être null");

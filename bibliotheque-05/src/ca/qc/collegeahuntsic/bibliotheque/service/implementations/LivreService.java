@@ -39,7 +39,6 @@ public class LivreService extends Service implements ILivreService {
      *         <code>null</code> ou si le DAO de réservation est <code>null</code>
      */
     LivreService(ILivreDAO livreDAO) throws InvalidDAOException {
-        // TODO: Change the constructor visibility to package when switching to Spring
         super(livreDAO);
     }
 
