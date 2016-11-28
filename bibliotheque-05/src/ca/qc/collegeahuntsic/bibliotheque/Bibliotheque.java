@@ -178,7 +178,7 @@ public final class Bibliotheque {
     }
 
     /**
-     * Annuler un reservation.
+     * Annuler  un reservation.
      *
      * @param tokenizer L'entrée à décoder
      * @throws BibliothequeException Si une erreur survient
