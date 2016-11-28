@@ -50,8 +50,26 @@ public class PretService extends Service implements IPretService {
 
     }
 
-    /* (non-Javadoc)
-     * @see ca.qc.collegeahuntsic.bibliotheque.service.interfaces.IPretService#findByMembre(org.hibernate.Session, java.lang.String, java.lang.String)
+    /**
+     * Getter de la variable d'instance <code>this.pretDAO</code>.
+     *
+     * @return La variable d'instance <code>this.pretDAO</code>
+     */
+    private IPretDAO getPretDAO() {
+        return this.pretDAO;
+    }
+
+    /**
+     * Setter de la variable d'instance <code>this.pretDAO</code>.
+     *
+     * @param pretDAO La valeur à utiliser pour la variable d'instance <code>this.pretDAO</code>
+     */
+    private void setPretDAO(IPretDAO pretDAO) {
+        this.pretDAO = pretDAO;
+    }
+
+    /**
+     * {@inheritDoc}
      */
     @Override
     public List<PretDTO> findByMembre(Session session,
@@ -70,8 +88,8 @@ public class PretService extends Service implements IPretService {
         }
     }
 
-    /* (non-Javadoc)
-     * @see ca.qc.collegeahuntsic.bibliotheque.service.interfaces.IPretService#findByDatePret(org.hibernate.Session, java.sql.Timestamp, java.lang.String)
+    /**
+     * {@inheritDoc}
      */
     @Override
     public List<PretDTO> findByDatePret(Session session,
@@ -90,8 +108,8 @@ public class PretService extends Service implements IPretService {
         }
     }
 
-    /* (non-Javadoc)
-     * @see ca.qc.collegeahuntsic.bibliotheque.service.interfaces.IPretService#findByDateRetour(org.hibernate.Session, java.sql.Timestamp, java.lang.String)
+    /**
+     * {@inheritDoc}
      */
     @Override
     public List<PretDTO> findByDateRetour(Session session,
@@ -110,8 +128,8 @@ public class PretService extends Service implements IPretService {
         }
     }
 
-    /* (non-Javadoc)
-     * @see ca.qc.collegeahuntsic.bibliotheque.service.interfaces.IPretService#commencer(org.hibernate.Session, ca.qc.collegeahuntsic.bibliotheque.dto.PretDTO)
+    /**
+     * {@inheritDoc}
      */
     @Override
     public void commencer(Session session,
@@ -151,8 +169,8 @@ public class PretService extends Service implements IPretService {
 
     }
 
-    /* (non-Javadoc)
-     * @see ca.qc.collegeahuntsic.bibliotheque.service.interfaces.IPretService#renouveler(org.hibernate.Session, ca.qc.collegeahuntsic.bibliotheque.dto.PretDTO)
+    /**
+     * {@inheritDoc}
      */
     @Override
     public void renouveler(Session session,
@@ -211,8 +229,8 @@ public class PretService extends Service implements IPretService {
 
     }
 
-    /* (non-Javadoc)
-     * @see ca.qc.collegeahuntsic.bibliotheque.service.interfaces.IPretService#terminer(org.hibernate.Session, ca.qc.collegeahuntsic.bibliotheque.dto.PretDTO)
+    /**
+     * {@inheritDoc}
      */
     @Override
     public void terminer(Session session,
@@ -259,21 +277,4 @@ public class PretService extends Service implements IPretService {
         }
     }
 
-    /**
-     * Getter de la variable d'instance <code>this.pretDAO</code>.
-     *
-     * @return La variable d'instance <code>this.pretDAO</code>
-     */
-    private IPretDAO getPretDAO() {
-        return this.pretDAO;
-    }
-
-    /**
-     * Setter de la variable d'instance <code>this.pretDAO</code>.
-     *
-     * @param pretDAO La valeur à utiliser pour la variable d'instance <code>this.pretDAO</code>
-     */
-    private void setPretDAO(IPretDAO pretDAO) {
-        this.pretDAO = pretDAO;
-    }
 }

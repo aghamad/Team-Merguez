@@ -38,7 +38,23 @@ public class PretFacade extends Facade implements IPretFacade {
         }
         setPretService(pretService);
     }
+    /**
+     * Getter de la variable d'instance <code>this.pretService</code>.
+     *
+     * @return La variable d'instance <code>this.pretService</code>
+     */
+    private IPretService getPretService() {
+        return this.pretService;
+    }
 
+    /**
+     * Setter de la variable d'instance <code>this.pretService</code>.
+     *
+     * @param pretService La valeur à utiliser pour la variable d'instance <code>this.pretService</code>
+     */
+    private void setPretService(IPretService pretService) {
+        this.pretService = pretService;
+    }
     /**
      * {@inheritDoc}
      */
@@ -96,24 +112,6 @@ public class PretFacade extends Facade implements IPretFacade {
             throw new FacadeException(serviceException);
         }
 
-    }
-
-    /**
-     * Getter de la variable d'instance <code>this.pretService</code>.
-     *
-     * @return La variable d'instance <code>this.pretService</code>
-     */
-    private IPretService getPretService() {
-        return this.pretService;
-    }
-
-    /**
-     * Setter de la variable d'instance <code>this.pretService</code>.
-     *
-     * @param pretService La valeur à utiliser pour la variable d'instance <code>this.pretService</code>
-     */
-    private void setPretService(IPretService pretService) {
-        this.pretService = pretService;
     }
 
 }
