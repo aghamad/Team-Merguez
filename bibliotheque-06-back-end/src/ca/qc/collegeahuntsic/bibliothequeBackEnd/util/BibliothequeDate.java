@@ -8,7 +8,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 /**
- * Un objet {@link java.util.Date} amélioré.
+ * Un objet {@link java.util.Date} amélioré .
  *
  * @author Gilles Bénichou
  */
