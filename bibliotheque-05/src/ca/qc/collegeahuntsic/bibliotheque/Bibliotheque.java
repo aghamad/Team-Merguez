@@ -27,6 +27,8 @@ import ca.qc.collegeahuntsic.bibliotheque.exception.service.InvalidLoanLimitExce
 import ca.qc.collegeahuntsic.bibliotheque.exception.service.MissingLoanException;
 import ca.qc.collegeahuntsic.bibliotheque.util.BibliothequeCreateur;
 import ca.qc.collegeahuntsic.bibliotheque.util.FormatteurDate;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 /**
  * Interface du système de gestion d'une bibliothèque.<br /><br />
@@ -53,6 +55,8 @@ import ca.qc.collegeahuntsic.bibliotheque.util.FormatteurDate;
 public final class Bibliotheque {
     private static BibliothequeCreateur gestionnaireBibliotheque;
 
+    private static final Log LOGGER = LogFactory.getLog(Bibliotheque.class);
+
     /**
      * Constructeur privé pour empêcher toute instanciation.
      */
@@ -69,7 +73,7 @@ public final class Bibliotheque {
     public static void main(String[] arguments) throws Exception {
         // Validation du nombre de paramètres
         if(arguments.length < 1) {
-            System.out.println("Usage: <fichier-transactions>");
+            Bibliotheque.LOGGER.info("Usage: <fichier-transactions>");
             return;
         }
 
@@ -97,7 +101,7 @@ public final class Bibliotheque {
      */
     private static void traiterTransactions(BufferedReader reader) throws Exception {
         Bibliotheque.afficherAide();
-        System.out.println("\n\n\n");
+        Bibliotheque.LOGGER.info("\n\n\n");
         String transaction = Bibliotheque.lireTransaction(reader);
         while(!Bibliotheque.finTransaction(transaction)) {
             // Découpage de la transaction en mots
@@ -120,7 +124,7 @@ public final class Bibliotheque {
     private static String lireTransaction(BufferedReader reader) throws IOException {
         final String transaction = reader.readLine();
         if(transaction != null) {
-            System.out.println("> "
+            Bibliotheque.LOGGER.info("> "
                 + transaction);
         }
         return transaction;
@@ -172,8 +176,7 @@ public final class Bibliotheque {
             case "--":
                 break;
             default:
-                System.out.println("Haha");
-                // Bibliotheque.LOGGER.info(" Transactions non reconnu . Essayer \"aide\"");
+                Bibliotheque.LOGGER.error(" Transactions non reconnu . Essayer \"aide\"");
         }
     }
 
@@ -330,9 +333,9 @@ public final class Bibliotheque {
             | FacadeException
             | MissingDTOException
             | InvalidPrimaryKeyException e) {
-            /*
+
             Bibliotheque.LOGGER.error(" **** "
-                + exception.getMessage()); */
+                + e.getMessage());
             Bibliotheque.gestionnaireBibliotheque.rollbackTransaction();
         }
     }
@@ -358,9 +361,9 @@ public final class Bibliotheque {
             | FacadeException
             | ExistingReservationException
             | MissingLoanException e) {
-            /*
+
             Bibliotheque.LOGGER.error(" **** "
-                + exception.getMessage()); */
+                + e.getMessage());
             Bibliotheque.gestionnaireBibliotheque.rollbackTransaction();
         }
 
@@ -390,9 +393,9 @@ public final class Bibliotheque {
             | ExistingReservationException
             | ExistingLoanException
             | InvalidLoanLimitException e) {
-            /*
+
             Bibliotheque.LOGGER.error(" **** "
-                + exception.getMessage()); */
+                + e.getMessage());
             Bibliotheque.gestionnaireBibliotheque.rollbackTransaction();
         }
     }
@@ -418,9 +421,8 @@ public final class Bibliotheque {
             InvalidHibernateSessionException
             | InvalidDTOException
             | FacadeException e) {
-            /*
             Bibliotheque.LOGGER.error(" **** "
-                + exception.getMessage()); */
+                + e.getMessage());
             Bibliotheque.gestionnaireBibliotheque.rollbackTransaction();
         }
 
@@ -447,9 +449,9 @@ public final class Bibliotheque {
             InvalidHibernateSessionException
             | InvalidDTOException
             | FacadeException exception) {
-            /*
+
             Bibliotheque.LOGGER.error(" **** "
-                + exception.getMessage()); */
+                + exception.getMessage());
             Bibliotheque.gestionnaireBibliotheque.rollbackTransaction();
         }
     }
@@ -485,10 +487,9 @@ public final class Bibliotheque {
             | ExistingLoanException
             | ExistingReservationException
             | MissingDTOException exception) {
-            /*
+
             Bibliotheque.LOGGER.error("**** "
                 + exception.getMessage());
-            */
             Bibliotheque.gestionnaireBibliotheque.rollbackTransaction();
         }
     }
@@ -497,25 +498,25 @@ public final class Bibliotheque {
      * Affiche le menu des transactions acceptées par le système.
      */
     private static void afficherAide() {
-        System.out.println();
-        System.out.println("Chaque transaction comporte un nom et une liste d'arguments");
-        System.out.println("séparés par des espaces. La liste peut être vide.");
-        System.out.println(" Les dates sont en format yyyy-mm-dd.\n");
-        System.out.println("Les transactions sont :");
-        System.out.println("  aide");
-        System.out.println("  acquerir <idLivre> <titre> <auteur> <dateAcquisition>");
-        System.out.println("  preter <idMembre> <idLivre>");
-        System.out.println("  renouveler <idLivre>");
-        System.out.println("  retourner <idLivre>");
-        System.out.println("  vendre <idLivre>");
-        System.out.println("  inscrire <idMembre> <nom> <telephone> <limitePret>");
-        System.out.println("  desinscrire <idMembre>");
-        System.out.println("  reserver <idReservation> <idMembre> <idLivre>");
-        System.out.println("  utiliser <idReservation>");
-        System.out.println("  annuler <idReservation>");
-        // System.out.println("  listerLivresRetard <dateCourante>");
-        // System.out.println("  listerLivresTitre <mot>");
-        // System.out.println("  listerLivres");
+        Bibliotheque.LOGGER.info("");
+        Bibliotheque.LOGGER.info("Chaque transaction comporte un nom et une liste d'arguments");
+        Bibliotheque.LOGGER.info("séparés par des espaces. La liste peut être vide.");
+        Bibliotheque.LOGGER.info(" Les dates sont en format yyyy-mm-dd.\n");
+        Bibliotheque.LOGGER.info("Les transactions sont :");
+        Bibliotheque.LOGGER.info("  aide");
+        Bibliotheque.LOGGER.info("  acquerir <idLivre> <titre> <auteur> <dateAcquisition>");
+        Bibliotheque.LOGGER.info("  preter <idMembre> <idLivre>");
+        Bibliotheque.LOGGER.info("  renouveler <idLivre>");
+        Bibliotheque.LOGGER.info("  retourner <idLivre>");
+        Bibliotheque.LOGGER.info("  vendre <idLivre>");
+        Bibliotheque.LOGGER.info("  inscrire <idMembre> <nom> <telephone> <limitePret>");
+        Bibliotheque.LOGGER.info("  desinscrire <idMembre>");
+        Bibliotheque.LOGGER.info("  reserver <idReservation> <idMembre> <idLivre>");
+        Bibliotheque.LOGGER.info("  utiliser <idReservation>");
+        Bibliotheque.LOGGER.info("  annuler <idReservation>");
+        // Bibliotheque.LOGGER.info("  listerLivresRetard <dateCourante>");
+        // Bibliotheque.LOGGER.info("  listerLivresTitre <mot>");
+        // Bibliotheque.LOGGER.info("  listerLivres");
     }
 
     /**
