@@ -206,9 +206,9 @@ public final class Bibliotheque {
             | FacadeException
             | InvalidPrimaryKeyException
             | MissingDTOException e) {
-
+            
             Bibliotheque.LOGGER.error(" **** "
-                + e.getMessage());
+                + e.getMessage()); 
             Bibliotheque.gestionnaireBibliotheque.rollbackTransaction();
         }
 
