@@ -206,9 +206,9 @@ public final class Bibliotheque {
             | FacadeException
             | InvalidPrimaryKeyException
             | MissingDTOException e) {
-            /*
+
             Bibliotheque.LOGGER.error(" **** "
-                + exception.getMessage()); */
+                + e.getMessage());
             Bibliotheque.gestionnaireBibliotheque.rollbackTransaction();
         }
 
@@ -261,9 +261,9 @@ public final class Bibliotheque {
             | MissingLoanException
             | InvalidPrimaryKeyException
             | MissingDTOException e) {
-            /*
+
             Bibliotheque.LOGGER.error(" **** "
-                + exception.getMessage()); */
+                + e.getMessage());
             Bibliotheque.gestionnaireBibliotheque.rollbackTransaction();
         }
     }
@@ -295,9 +295,8 @@ public final class Bibliotheque {
             | ExistingReservationException
             | FacadeException
             | InvalidLoanLimitException e) {
-            /*
             Bibliotheque.LOGGER.error(" **** "
-                + exception.getMessage()); */
+                + e.getMessage());
             Bibliotheque.gestionnaireBibliotheque.rollbackTransaction();
         }
 
