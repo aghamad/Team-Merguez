@@ -38,11 +38,7 @@
                    <column name="LIMITEPRET">
                    </column>
          </property>
-         <property name="nbPret"
-                   type="int">
-                   <column name="NBPRET">
-                   </column>
-         </property>
+         
 
          <set name="prets"
               order-by="DATEPRET ASC"
