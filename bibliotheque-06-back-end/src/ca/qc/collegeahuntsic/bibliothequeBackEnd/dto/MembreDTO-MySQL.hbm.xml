@@ -13,7 +13,7 @@
 
 <hibernate-mapping>
   <class name="ca.qc.collegeahuntsic.bibliothequeBackEnd.dto.MembreDTO"
-         table="Membre">
+         table="MEMBRE">
          <id name="idMembre"
              type="string">
              <column name="IDMEMBRE">
@@ -23,7 +23,8 @@
          </id>
 
          <property name="nom"
-                   type="string">
+                   type="string"
+                   length="100">
                    <column name="NOM">
                    </column>
          </property>
@@ -33,22 +34,33 @@
                    </column>
          </property>
          <property name="limitePret"
-                  type="int">
-                  <column name="LIMITEPRET">
-                  </column>
+                   type="int">
+                   <column name="LIMITEPRET">
+                   </column>
+         </property>
+         <property name="nbPret"
+                   type="int">
+                   <column name="NBPRET">
+                   </column>
          </property>
 
-         <many-to-one name="membreDTO"
-                      class="ca.qc.collegeahuntsic.bibliothequeBackEnd.dto.MembreDTO"
-                      not-null="true">
-                      <column name="IDMEMBRE">
-                      </column>
-         </many-to-one>
-         <many-to-one name="livreDTO"
-                      class="ca.qc.collegeahuntsic.bibliothequeBackEnd.dto.LivreDTO"
-                      not-null="true">
-                      <column name="IDLIVRE">
-                      </column>
-         </many-to-one>
+         <set name="prets"
+              order-by="DATEPRET ASC"
+              cascade="all">
+              <key>
+                <column name="IDMEMBRE">
+                </column>
+              </key>
+              <one-to-many class="ca.qc.collegeahuntsic.bibliothequeBackEnd.dto.PretDTO"/>
+         </set>
+         <set name="reservations"
+              order-by="DATERESERVATION ASC"
+              cascade="all">
+              <key>
+                <column name="IDMEMBRE">
+                </column>
+              </key>
+              <one-to-many class="ca.qc.collegeahuntsic.bibliothequeBackEnd.dto.ReservationDTO"/>
+         </set>
   </class>
 </hibernate-mapping>

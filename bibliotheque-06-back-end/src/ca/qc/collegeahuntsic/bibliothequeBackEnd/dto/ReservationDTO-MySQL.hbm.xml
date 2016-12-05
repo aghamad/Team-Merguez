@@ -23,7 +23,7 @@
          </id>
 
          <property name="dateReservation"
-                   type="Timestamp">
+                   type="timestamp">
                    <column name="TITRE">
                    </column>
          </property>
