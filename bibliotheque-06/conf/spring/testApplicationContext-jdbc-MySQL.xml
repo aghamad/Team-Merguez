@@ -6,9 +6,9 @@
           "http://www.springframework.org/dtd/spring-beans.dtd">
 
 <!--
-   - Application context
+   - JDBC application context for unit testing 
    -
-   - Author: Gilles Bénichou
+   - Author: Team-Merguez
 -->
 
 <beans>
