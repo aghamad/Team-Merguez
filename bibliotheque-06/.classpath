@@ -26,7 +26,15 @@
 	<classpathentry kind="lib" path="lib/spring.jar"/>
 	<classpathentry kind="lib" path="lib/xercesImpl.jar"/>
 	<classpathentry kind="lib" path="lib/xml-apis.jar"/>
-	<classpathentry kind="lib" path="lib/bibliotheque-back-end-MySQL.jar"/>
-	<classpathentry kind="lib" path="lib/bibliotheque-back-end-Oracle.jar"/>
+	<classpathentry kind="lib" path="lib/bibliotheque-back-end-MySQL.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="jar:platform:/resource/bibliotheque-06/docs/bibliotheque-back-end-javadoc.jar!/javadoc"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="lib/bibliotheque-back-end-Oracle.jar">
+		<attributes>
+			<attribute name="javadoc_location" value="jar:platform:/resource/bibliotheque-06/docs/bibliotheque-back-end-javadoc.jar!/javadoc"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="output" path="classes"/>
 </classpath>
