@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<jardesc>
+    <jar path="bibliotheque-06-back-end/bibliotheque-back-end-javadoc.jar"/>
+    <options buildIfNeeded="true" compress="true" descriptionLocation="/bibliotheque-06-back-end/bibliotheque-back-end-javadoc.jardesc" exportErrors="true" exportWarnings="true" includeDirectoryEntries="false" overwrite="false" saveDescription="true" storeRefactorings="false" useSourceFolders="false"/>
+    <storedRefactorings deprecationInfo="true" structuralOnly="false"/>
+    <selectedProjects/>
+    <manifest generateManifest="true" manifestLocation="" manifestVersion="1.0" reuseManifest="false" saveManifest="false" usesManifest="true">
+        <sealing sealJar="false">
+            <packagesToSeal/>
+            <packagesToUnSeal/>
+        </sealing>
+    </manifest>
+    <selectedElements exportClassFiles="true" exportJavaFiles="false" exportOutputFolder="false">
+        <file path="/bibliotheque-06-back-end/.project"/>
+        <file path="/bibliotheque-06-back-end/bibliotheque-back-end-MySQL.jardesc"/>
+        <file path="/bibliotheque-06-back-end/bibliotheque-back-end-Oracle.jardesc"/>
+        <file path="/bibliotheque-06-back-end/bibliotheque-back-end-MySQL.jar"/>
+        <file path="/bibliotheque-06-back-end/MySQL.sql"/>
+        <file path="/bibliotheque-06-back-end/bibliotheque-back-end-Oracle.jar"/>
+        <file path="/bibliotheque-06-back-end/javadoc.xml"/>
+        <file path="/bibliotheque-06-back-end/.classpath"/>
+        <folder path="/bibliotheque-06-back-end/javadoc"/>
+        <file path="/bibliotheque-06-back-end/.gitignore"/>
+    </selectedElements>
+</jardesc>
