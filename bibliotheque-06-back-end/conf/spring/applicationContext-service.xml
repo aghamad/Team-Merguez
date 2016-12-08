@@ -4,18 +4,15 @@
 <!DOCTYPE beans PUBLIC
           "-//SPRING//DTD BEAN//EN"
           "http://www.springframework.org/dtd/spring-beans.dtd">
-          
-          <!--
-   - Application context
+
+<!--
+   - Services application context
    -
    - Author: Gilles Bénichou
 -->
-     
-     
-     
-<!--=====libreService====--> 
+
 <beans>
-<bean name="livreService"
+  <bean name="livreService"
         parent="transactionProxy">
         <property name="target">
                   <bean class="ca.qc.collegeahuntsic.bibliothequeBackEnd.service.implementations.LivreService">
@@ -25,9 +22,6 @@
                   </bean>
         </property>
   </bean>
-  
- <!--=====MembreService====-->
-
   <bean name="membreService"
         parent="transactionProxy">
         <property name="target">
@@ -38,8 +32,6 @@
                   </bean>
         </property>
   </bean>
-  
- <!--=====PretService====-->
   <bean name="pretService"
         parent="transactionProxy">
         <property name="target">
@@ -50,7 +42,6 @@
                   </bean>
         </property>
   </bean>
-  <!--=====ReservationService====-->
   <bean name="reservationService"
         parent="transactionProxy">
         <property name="target">
@@ -64,5 +55,4 @@
                   </bean>
         </property>
   </bean>
- </beans>
- 
+</beans>
