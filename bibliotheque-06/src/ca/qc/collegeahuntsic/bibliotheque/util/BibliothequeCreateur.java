@@ -34,6 +34,7 @@ public class BibliothequeCreateur {
     private static final String RESERVATION_FACADE_NAME = "reservationFacade";
 
     private static final String APPLICATION_CONTEXT_JDBC_FILENAME = "testApplicationContext-jdbc-MySQL.xml";
+    // Change this to Oracle if we want to use oracle instead on MySQL
 
     private static final String APPLICATION_CONTEXT_DTO_FILENAME = "applicationContext-dto-MySQL.xml";
 

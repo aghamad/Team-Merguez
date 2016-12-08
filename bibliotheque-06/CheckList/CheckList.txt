@@ -1,0 +1,5 @@
+Duplicate a project
+
+1- Change log4j.proprety File path
+2- Changer le javadoc location dans les propreties du project et le javadoc location des Jar bibliotheques
+3- Changer le path de des jar du fichier Javadoc.xml
