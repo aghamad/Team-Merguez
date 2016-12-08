@@ -3,3 +3,7 @@ Duplicate a project
 1- Change log4j.proprety File path
 2- Changer le javadoc location dans les propreties du project et le javadoc location des Jar bibliotheques
 3- Changer le path de des jar du fichier Javadoc.xml
+4- edit jardesc aussi pour qu'ils ne pointent plus à lancien projet patnais 
+
+bibliotheque 6 back end is different 
+faire que 1 et 2 (javadoc location)
