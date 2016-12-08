@@ -29,7 +29,6 @@
         <file path="/bibliotheque-06-back-end/src/ca/qc/collegeahuntsic/bibliothequeBackEnd/dto/LivreDTO-MySQL.hbm.xml"/>
         <javaElement handleIdentifier="=bibliotheque-06-back-end/src&lt;ca.qc.collegeahuntsic.bibliothequeBackEnd.dao.implementations"/>
         <javaElement handleIdentifier="=bibliotheque-06-back-end/src&lt;ca.qc.collegeahuntsic.bibliothequeBackEnd.exception.dto"/>
-        <file path="/bibliotheque-06-back-end/conf/spring/applicationContext-service.xml"/>
         <javaElement handleIdentifier="=bibliotheque-06-back-end/src&lt;ca.qc.collegeahuntsic.bibliothequeBackEnd.dto{PretDTO.java"/>
         <javaElement handleIdentifier="=bibliotheque-06-back-end/src&lt;ca.qc.collegeahuntsic.bibliothequeBackEnd.facade.interfaces"/>
         <javaElement handleIdentifier="=bibliotheque-06-back-end/src&lt;ca.qc.collegeahuntsic.bibliothequeBackEnd.dto{package-info.java"/>
